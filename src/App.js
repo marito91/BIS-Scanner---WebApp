@@ -13,6 +13,8 @@ function App() {
   // Data que muestra los códigos de barra cuando se registran
   const [data, setData] = React.useState("----------");
   // Bandera para activar el componente con la cámara
+  const [index, setIndex] = React.useState(true);
+  // Bandera para activar el componente con la cámara
   const [scanner, setScanner] = React.useState(false);
   // Bandera para activar el componente de devolución
   const [back, setBack] = React.useState(false);
@@ -32,6 +34,9 @@ function App() {
   });
   // Tabla para visualizar el historial solicitado en la sección de Entries
   const [history, setHistory] = React.useState([]);
+
+  // Tabla para visualizar el historial solicitado en la sección de Entries
+  const [rented, setRented] = React.useState([]);
 
   // Función que determina los valores que se asignan dentro del objeto. Dispositivo y número.
   const handleChange = (event) => {
@@ -178,37 +183,80 @@ function App() {
     }
   }
 
+  // Función para limpiar el historial reflejado
   function cleanUp() {
     setHistory([]);
+  }
+
+  // Función para actualizar la lista de dispositivos rentados actualmente
+  function updateRented() {
+    fetch(`${hostbase}/users/devices`, {
+      headers: { "content-type": "application/json" },
+      method: "GET",
+      // body: JSON.stringify({ searchInfo }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        res.status === "Error" ? alert(res.msg) : setRented(res.data);
+      });
   }
 
   // Función para determinar la página que se va a encontrar activa.
   function toggleSection(section) {
     if (section === "scanner") {
+      setScanner(true);
       setBack(false);
       setDownload(false);
-      setScanner(true);
+      setIndex(false);
     } else if (section === "back") {
       setBack(true);
       setDownload(false);
       setScanner(false);
+      setIndex(false);
     } else if (section === "download") {
       setDownload(true);
       setBack(false);
       setScanner(false);
+      setIndex(false);
     }
   }
 
   // Función para regresar a la página principal
   function goBack() {
+    setIndex(true);
     setBack(false);
     setScanner(false);
     setDownload(false);
   }
 
+  // Función para revisar conexión a backend
+  const mensaje = {
+    txt: "Mensaje de prueba",
+  };
+  function testConnection() {
+    fetch(`${hostbase}/users/prueba`, {
+      headers: { "content-type": "application/json" },
+      method: "POST",
+      body: JSON.stringify({ mensaje }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        alert(res.msg);
+      });
+  }
   return (
     <>
       <Header />
+      {index === true ? (
+        <Index
+          toggleSection={toggleSection}
+          testConnection={testConnection}
+          rented={rented}
+          updateRented={updateRented}
+        />
+      ) : (
+        <></>
+      )}
       {scanner === true ? (
         <>
           <div className="barcode-scanner">
@@ -249,18 +297,19 @@ function App() {
                 onChange={handleChange}
                 required
               ></input>
-              <button onClick={() => rent()}>Rent</button>
+              <div style={{ display: "flex" }}>
+                <button style={{ width: "50%" }} onClick={() => rent()}>
+                  Rent
+                </button>
+                <button style={{ width: "50%" }} onClick={() => goBack()}>
+                  Atrás
+                </button>
+              </div>
             </div>
-          </div>
-          <div id="back">
-            <button onClick={() => goBack()}>Atrás</button>
           </div>
         </>
       ) : (
-        <Index
-          toggleSection={toggleSection}
-          downloadEntries={downloadEntries}
-        />
+        <></>
       )}
       {back === true ? (
         <Return

@@ -22,7 +22,6 @@
   background-color: #e3b86d;
   position: absolute;
   width: 100%;
-  height: 100%;
 }
 
 .options {
@@ -69,7 +68,7 @@
 .group {
   display: flex;
   flex-direction: row;
-  gap: 15%;
+  justify-content: space-between;
   margin: 0 2% 2% 0;
 }
 
@@ -151,6 +150,7 @@ select {
   margin-bottom: 2%;
   font-size: large;
   border-color: #172140;
+  text-align: center;
 }
 .titles button:hover {
   background-color: white;
@@ -206,16 +206,19 @@ input {
   border-radius: 0.5rem;
   border-color: #172140;
   font-size: xx-large;
+  text-align: center;
 }
 
 #back button:hover {
   cursor: pointer;
   background-color: white;
   color: #172140;
+  text-align: center;
 }
 
 .index table {
   width: 100%;
+  table-layout: fixed;
 }
 
 .table-container {
@@ -228,8 +231,53 @@ th {
   text-align: left;
   padding: 8px;
   color: #172140;
+  word-wrap: break-word;
+  font-size: small;
 }
 
 .index tr:nth-child(even) {
   background-color: #dddddd;
+}
+
+.devices-list {
+  background-color: #e3b86d;
+  margin: 0 2% 0 2%;
+  border-radius: 0.5rem;
+}
+
+/* Small Devices */
+
+@media (max-width: 768px) {
+  .group {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .group button {
+    width: 50%;
+    text-align: center;
+  }
+  .group img {
+    display: none;
+  }
+  #noncrucial {
+    display: none;
+  }
+}
+
+@media (max-width: 932px) {
+  #noncrucial {
+    display: none;
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .options h2 {
+    text-align: center;
+  }
 }

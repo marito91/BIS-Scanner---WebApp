@@ -38,7 +38,7 @@ export default function Entries({
               ></input>
             </div>
             <div className="device">
-              <label htmlFor="">Indique la fecha que deseada:</label>
+              <label htmlFor="">Indique la fecha deseada:</label>
               <input
                 name="date"
                 value={searchInfo.date}
@@ -60,12 +60,12 @@ export default function Entries({
         <div className="table-container">
           <table>
             <tr>
-              <th>Sección</th>
+              <th id="noncrucial">Sección</th>
               <th>Nombres</th>
               <th>Apellido</th>
-              <th>Documento</th>
+              <th id="noncrucial">Documento</th>
               <th>Fecha</th>
-              <th>Hora</th>
+              <th id="noncrucial">Hora</th>
               <th>Dispositivo</th>
               <th>Número</th>
               <th>Tipo</th>
@@ -73,12 +73,12 @@ export default function Entries({
             {history.map((entry) => (
               <>
                 <tr>
-                  <td>{entry.grade}</td>
+                  <td id="noncrucial">{entry.grade}</td>
                   <td>{entry.firstName}</td>
                   <td>{entry.lastName}</td>
-                  <td>{entry.code}</td>
+                  <td id="noncrucial">{entry.code}</td>
                   <td>{entry.date}</td>
-                  <td>{entry.time}</td>
+                  <td id="noncrucial">{entry.time}</td>
                   <td>{entry.device}</td>
                   <td>{entry.number}</td>
                   <td>{entry.type}</td>
