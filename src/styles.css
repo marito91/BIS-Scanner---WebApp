@@ -104,12 +104,11 @@ body {
   gap: 20px;
 }
 
-.user-btn {
-  margin: 1%;
-}
-
-.updates div {
-  margin: 3%;
+.renting {
+  background-color: #e3b86d;
+  border-radius: 8px;
+  padding: 2rem;
+  overflow: auto;
 }
 
 .devices-list {
@@ -118,6 +117,7 @@ body {
   width: 50%;
   padding: 2rem;
   overflow: auto;
+  margin: 3%;
 }
 
 .list {
@@ -127,6 +127,7 @@ body {
   border-radius: 8px;
   width: 50%;
   padding: 2rem;
+  margin: 3%;
 }
 
 .list button {
@@ -138,13 +139,6 @@ body {
   width: 50%;
   margin: auto;
   padding: 1%;
-}
-
-.group {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0 2% 2% 0;
 }
 
 .titles {
@@ -163,41 +157,10 @@ body {
   padding: 2rem;
 }
 
-.device-selection {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 @media (max-width: 1132px) {
   .barcode-scanner {
     flex-wrap: wrap;
   }
-}
-
-.device-info {
-  display: flex;
-  flex-direction: column;
-  background-color: #172140;
-  margin: 7% 0 7% 0;
-  width: 100%;
-  padding: 1rem;
-  border-radius: 8px;
-}
-
-.device-info input,
-select {
-  padding: 1%;
-  width: 90%;
-  margin: 3% 0 3% 1%;
-}
-
-.device-info label {
-  margin: 2% 0 2% 0;
-  color: #e3b86d;
-  padding: 1%;
-  font-weight: 800;
-  font-size: large;
 }
 
 #documento {
@@ -245,9 +208,32 @@ select {
 .returns {
   background-color: #e3b86d;
   border-radius: 8px;
-  width: 75%;
   padding: 2rem;
-  margin: auto;
+  margin: 0 5% 0 5%;
+}
+
+.rent {
+  display: flex;
+  flex-direction: column;
+  background-color: #e3b86d;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 0 5% 0 5%;
+}
+
+.rent label {
+  font-size: large;
+}
+
+.selection {
+  display: flex;
+  flex-direction: column;
+}
+
+.selection input,
+select {
+  padding: 0.5rem;
+  width: 100%;
 }
 
 .device {
@@ -315,19 +301,6 @@ th {
   font-size: small;
 }
 
-/* .index tr:nth-child(even) {
-  background-color: #dddddd;
-} */
-
-/* .index tr:active {
-  background-color: white;
-} */
-
-/* #selectedUser::selection {
-  color: red;
-  background-color: white;
-} */
-
 h3 img {
   width: 32px;
   height: 32px;
@@ -350,42 +323,12 @@ button img {
 .selected {
   display: flex;
   flex-direction: column;
-}
-
-.device-selection {
-  display: flex;
-  flex-direction: row;
-}
-
-.device-selection select,
-input {
-  width: 100%;
-  padding: 1%;
-  margin: 2% 0 2% 0;
+  text-align: center;
 }
 
 /* Small Devices */
 
-@media (max-width: 768px) {
-  .group {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  .group button {
-    width: 50%;
-    text-align: center;
-  }
-  #noncrucial {
-    display: none;
-  }
-}
-
 @media (max-width: 932px) {
-  #noncrucial {
-    display: none;
-  }
-
   .updates {
     flex-wrap: wrap;
     gap: 20px;
@@ -394,7 +337,7 @@ input {
   .btns {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 2px;
   }
 
   .header {
@@ -412,19 +355,18 @@ input {
     display: none;
   }
 
-  .updates div {
-    width: 100%;
-  }
   .options h2 {
     text-align: center;
   }
 
   .devices-list {
     margin: 0 5% 0 5%;
+    width: 100%;
   }
 
   .list {
-    margin: 0 5% 0 5%;
+    margin: 0 5% 5% 5%;
+    width: 100%;
   }
 
   .section-2 {

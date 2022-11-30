@@ -23,7 +23,7 @@ export default class Barcode extends Component {
       <div>
         <BarcodeReader onError={this.handleError} onScan={this.handleScan} />
         <div className="scanner">
-          <label>Código de barra:</label>
+          <label>Código de barra escaneado:</label>
           <label>{this.state.result}</label>
           <button onClick={() => this.props.handleCode(this.state.result)}>
             Asignar

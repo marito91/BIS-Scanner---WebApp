@@ -142,6 +142,8 @@ function App() {
           .then((res) => {
             // Indica si se pudo o no realizar el alquiler. Existen otras validaciones en backend
             alert(res.msg);
+            // Se refresca la lista de rentados
+            updateRented();
           })
           // Si hay error de conexión se envía una alerta
           .catch(function () {
@@ -175,6 +177,8 @@ function App() {
         .then((res) => {
           // Indica si se pudo realizar la devolución o no
           alert(res.msg);
+          // Se refresca la lista de rentados
+          updateRented();
         })
         // Si hay error de conexión se envía una alerta
         .catch(function () {
@@ -209,6 +213,8 @@ function App() {
           .then((res) => {
             // console.log(res.msg);
             alert(res.msg);
+            // Se refresca la lista de rentados
+            updateRented();
           })
           // Si hay error de conexión se envía una alerta
           .catch(function () {
@@ -261,30 +267,36 @@ function App() {
   }
 
   const downloadFile = function (arr) {
-    const confirmation = window.confirm(
-      "¿Desea descargar los registros seleccionados?"
-    );
-    if (confirmation) {
-      const newArr = arr.map((entry) => [
-        entry.grade,
-        entry.firstName,
-        entry.lastName,
-        entry.code,
-        entry.date,
-        entry.time,
-        entry.device,
-        entry.number,
-        entry.type,
-      ]);
+    if (arr.length === 0) {
+      alert(
+        "No hay información disponible para descargar. Por favor cargue la información con el filtro deseado."
+      );
+    } else {
+      const confirmation = window.confirm(
+        "¿Desea descargar los registros seleccionados?"
+      );
+      if (confirmation) {
+        const newArr = arr.map((entry) => [
+          entry.grade,
+          entry.firstName,
+          entry.lastName,
+          entry.code,
+          entry.date,
+          entry.time,
+          entry.device,
+          entry.number,
+          entry.type,
+        ]);
 
-      let csvContent = "data:text/csv;charset=utf-8,";
-      newArr.forEach(function (entry) {
-        let row = entry.join(",");
-        csvContent += row + "\r\n";
-      });
+        let csvContent = "data:text/csv;charset=utf-8,";
+        newArr.forEach(function (entry) {
+          let row = entry.join(",");
+          csvContent += row + "\r\n";
+        });
 
-      let encodedURI = encodeURI(csvContent);
-      window.open(encodedURI);
+        let encodedURI = encodeURI(csvContent);
+        window.open(encodedURI);
+      }
     }
   };
 
@@ -395,6 +407,7 @@ function App() {
   }
   return (
     <>
+      {updateRented()}
       <Header />
       <Index
         testConnection={testConnection}

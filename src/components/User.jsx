@@ -17,7 +17,14 @@ export default function User({ notify, returnDevice, active }) {
       <h3 htmlFor="">Fecha de alquiler:</h3>
       <label htmlFor="">{active.name === "" ? "" : date}</label>
       <br />
-      <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "20px",
+          marginTop: "2%",
+        }}
+      >
         <button onClick={() => returnDevice([active.device, active.number])}>
           Devolver
           <img src={back} alt="" />

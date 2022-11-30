@@ -90,34 +90,26 @@ export default function Index({
       </div>
       <div className="options">
         <h2>Alquiler de dispositivos</h2>
-        {/* <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "20px",
-          }}
-        >
-          <button onClick={() => toggleSection("scanner")}>
-            Alquilar <img src={scanner} alt="" />
-          </button>
-        </div> */}
-        <div className="updates">
-          <div className="devices-list">
-            <h3>
+        <div className="rent">
+          <div className="">
+            <h3 style={{ textAlign: "center" }}>
               Escanee el código y asígnelo para poder realizar un registro.
             </h3>
             {/* <label>Código de barra: {data}</label> */}
             <Barcode handleCode={handleCode} />
             <div className="selected">
-              <label>Documento seleccionado:</label>
-              {user !== null ? (
-                <label id="documento">{user.document}</label>
-              ) : (
-                <></>
-              )}
+              <h3>Documento asignado:</h3>
+              {user !== null ? <h3 id="documento">{user.document}</h3> : <></>}
             </div>
-            <div className="device-selection">
-              <div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+                gap: "20px",
+              }}
+            >
+              <div className="selection">
                 <label>Seleccione el dispositivo:</label>
                 <select
                   name="device"
@@ -130,7 +122,7 @@ export default function Index({
                   <option>iPad</option>
                 </select>
               </div>
-              <div>
+              <div className="selection">
                 <label>Ingrese el número del dispositivo</label>
                 <input
                   name="number"
