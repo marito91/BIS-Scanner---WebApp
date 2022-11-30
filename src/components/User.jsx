@@ -3,26 +3,26 @@ import React from "react";
 import back from "../assets/back.png";
 import email from "../assets/email.png";
 
-export default function User({ user, notify, returnDevice }) {
-  const device = user.device + " #" + user.number;
-  const date = user.date + " a las " + user.time;
+export default function User({ notify, returnDevice, active }) {
+  const device = active.device + " #" + active.number;
+  const date = active.date + " a las " + active.time;
   return (
     <div className="list">
       <h3 htmlFor="">Nombre:</h3>
-      <label htmlFor="">{user.name}</label>
+      <label htmlFor="">{active.name}</label>
       <h3 htmlFor="">Sección:</h3>
-      <label htmlFor="">{user.section}</label>
+      <label htmlFor="">{active.section}</label>
       <h3 htmlFor="">Dispositivo:</h3>
-      <label htmlFor="">{user.name === "" ? "" : device}</label>
+      <label htmlFor="">{active.name === "" ? "" : device}</label>
       <h3 htmlFor="">Fecha de alquiler:</h3>
-      <label htmlFor="">{user.name === "" ? "" : date}</label>
+      <label htmlFor="">{active.name === "" ? "" : date}</label>
       <br />
       <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
-        <button onClick={() => returnDevice([user.device, user.number])}>
+        <button onClick={() => returnDevice([active.device, active.number])}>
           Devolver
           <img src={back} alt="" />
         </button>
-        <button onClick={() => notify(user)}>
+        <button onClick={() => notify(active)}>
           Notificar
           <img src={email} alt="" />
         </button>

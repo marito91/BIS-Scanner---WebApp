@@ -1,6 +1,7 @@
 import React from "react";
 
 import User from "./User.jsx";
+import Barcode from "./Barcode.jsx";
 import refresh from "../assets/refresh.png";
 import email from "../assets/email.png";
 import tap from "../assets/tap.png";
@@ -8,9 +9,11 @@ import search from "../assets/search.png";
 import folder from "../assets/folder.png";
 import excel from "../assets/excel.png";
 import scanner from "../assets/scanner.png";
+import testing from "../assets/testing.png";
 
 export default function Index({
   user,
+  rent,
   rented,
   updateRented,
   notify,
@@ -22,20 +25,13 @@ export default function Index({
   history,
   downloadEntries,
   downloadFile,
-  toggleSection,
+  testConnection,
+  handleCode,
+  handleChange,
+  active,
 }) {
   return (
     <div className="index">
-      {/* This menu was removed to make the app look cleaner */}
-      {/* <div className="options">
-        <h2>Por favor seleccione una opción:</h2>
-        <div className="group">
-          <button onClick={() => toggleSection("scanner")}>Alquiler</button>
-          <button onClick={() => toggleSection("back")}>Devolución</button>
-          <button onClick={() => toggleSection("download")}>Registros</button>
-          <button onClick={() => testConnection()}>Probar conexión</button>
-        </div>
-      </div> */}
       <div className="options">
         <h2>
           Bienvenid@ al sistema de manejo de dispositivos del Knowledge Centre!
@@ -43,15 +39,9 @@ export default function Index({
       </div>
       <div className="options">
         <h2>Usuarios Activos</h2>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "20px",
-          }}
-        >
-          <button onClick={() => toggleSection("scanner")}>
-            Alquilar <img src={scanner} alt="" />
+        <div className="btns">
+          <button onClick={() => testConnection("scanner")}>
+            Conexión <img src={testing} alt="" />
           </button>
           <button onClick={() => updateRented()}>
             Actualizar <img src={refresh} alt="" />
@@ -91,10 +81,73 @@ export default function Index({
           </div>
           <User
             user={user}
+            active={active}
             notify={notify}
             returnDevice={returnDevice}
             selectUser={selectUser}
           />
+        </div>
+      </div>
+      <div className="options">
+        <h2>Alquiler de dispositivos</h2>
+        {/* <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "20px",
+          }}
+        >
+          <button onClick={() => toggleSection("scanner")}>
+            Alquilar <img src={scanner} alt="" />
+          </button>
+        </div> */}
+        <div className="updates">
+          <div className="devices-list">
+            <h3>
+              Escanee el código y asígnelo para poder realizar un registro.
+            </h3>
+            {/* <label>Código de barra: {data}</label> */}
+            <Barcode handleCode={handleCode} />
+            <div className="selected">
+              <label>Documento seleccionado:</label>
+              {user !== null ? (
+                <label id="documento">{user.document}</label>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="device-selection">
+              <div>
+                <label>Seleccione el dispositivo:</label>
+                <select
+                  name="device"
+                  onChange={handleChange}
+                  value={user.device}
+                  required
+                >
+                  <option>- Dispositivo -</option>
+                  <option>ChromeBook</option>
+                  <option>iPad</option>
+                </select>
+              </div>
+              <div>
+                <label>Ingrese el número del dispositivo</label>
+                <input
+                  name="number"
+                  value={user.number}
+                  type="text"
+                  placeholder="01, 16, 28, etc..."
+                  onChange={handleChange}
+                  required
+                ></input>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="returnBtn">
+          <button onClick={() => rent()}>
+            Alquilar <img src={scanner} alt="" />
+          </button>
         </div>
       </div>
       <div className="section-2">

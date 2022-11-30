@@ -31,4 +31,3 @@ El servidor backend es privado por ende no se puede compartir en esta aplicació
 ## Dispositivos móviles
 
 Si bien esta aplicación utiliza la cámara para escanear equipos, esta versión no permite el acceso a la cámara en dispositivos móviles, con el fin de evitar inconvenientes con el acceso que puedan tener los estudiantes.
-# BIS-Scanner---WebApp

@@ -1,21 +1,20 @@
-import React from "react";
-import BarcodeScannerComponent from "react-webcam-barcode-scanner";
+import React, { useState } from "react";
 import Header from "./components/Header.jsx";
 import Index from "./components/Index.jsx";
+// import Barcode from "./components/Barcode.jsx";
 import hostbase from "./hostbase.js";
-
 import "./styles.css";
+
+/** Requerimientos
+ * npm install --save react-barcode-reader
+ * Agregar el hostbase.js
+ * Aplicar el open ssl
+ * Remover el Browser especificado de package.json */
 
 function App() {
   // Se inicializan los datos de estados.
-  // Data que muestra los códigos de barra cuando se registran
-  const [data, setData] = React.useState("----------");
-  // Bandera para activar el componente con la cámara
-  const [index, setIndex] = React.useState(true);
-  // Bandera para activar el componente con la cámara
-  const [scanner, setScanner] = React.useState(false);
-  // Objeto con la información del usuario que se enviará al backend
-  const [user, setUser] = React.useState({
+  // Objeto con la información del usuario
+  const [user, setUser] = useState({
     document: "",
     device: "",
     number: "",
@@ -25,8 +24,21 @@ function App() {
     time: "",
     email: "",
   });
+
+  // Objeto con la información del usuario que se muestra en client side
+  const [active, setActive] = useState({
+    document: "",
+    device: "",
+    number: "",
+    name: "",
+    section: "",
+    date: "",
+    time: "",
+    email: "",
+  });
+
   // Objeto con la info de búsqueda para desplegar información
-  const [searchInfo, setSearchInfo] = React.useState({
+  const [searchInfo, setSearchInfo] = useState({
     document: "",
     date: "",
     filter: "",
@@ -54,18 +66,28 @@ function App() {
           time: "",
           email: "",
         });
+    setActive({
+      document: "",
+      device: "",
+      number: "",
+      name: "",
+      section: "",
+      date: "",
+      time: "",
+      email: "",
+    });
   };
 
   // Esta tabla funciona para cargar y descargar los registros que el usuario desee consultar. Se actualiza con el botón/función de downloadEntries()
-  const [history, setHistory] = React.useState([]);
+  const [history, setHistory] = useState([]);
 
   // Array que contiene toda la informacion de los dispositivos alquilados actualmente. Se actualiza con el botón/función de updateRented()
-  const [rented, setRented] = React.useState([]);
+  const [rented, setRented] = useState([]);
 
   // Esta función permite desplegar la información pertinente del usuario seleccionado. Se pasa el objeto seleccionado de la tabla de rented y asigna la información de este al objeto User con el fin de mostrar cada uno de los datos del objeto.
   const selectUser = function (user) {
     const fname = user.firstName.split(" ");
-    setUser({
+    setActive({
       name: fname[0] + " " + user.lastName,
       section: user.grade,
       device: user.device,
@@ -92,8 +114,9 @@ function App() {
   };
 
   // Función que asigna el código de barra leído a la llave (document) del objeto User. Cuando el usuario registra el código de barra leído, esta función se encarga de asignar el código leído dentro a la llave document del objeto User.
-  const handleCode = (event) => {
-    setUser((user) => ({ ...user, document: data }));
+  const handleCode = (code) => {
+    console.log("Function working");
+    setUser((user) => ({ ...user, document: code }));
     // console.log(`Person added: ${data}`);
   };
 
@@ -350,25 +373,6 @@ function App() {
     user === undefined ? notifyAll() : notifyOne(user);
   };
 
-  // Función para determinar la página que se va a encontrar activa.
-  function toggleSection(section) {
-    if (section === "scanner") {
-      setScanner(true);
-      setIndex(false);
-      cleanFields();
-    } else if (section === "index") {
-      setScanner(false);
-      setIndex(true);
-    }
-  }
-
-  // Función para regresar a la página principal
-  function goBack() {
-    setIndex(true);
-    setScanner(false);
-    updateRented();
-  }
-
   // Función para revisar conexión a backend
   const mensaje = {
     txt: "Mensaje de prueba",
@@ -391,95 +395,26 @@ function App() {
   }
   return (
     <>
-      <Header
-        goBack={goBack}
-        toggleSection={toggleSection}
+      <Header />
+      <Index
         testConnection={testConnection}
+        rent={rent}
+        rented={rented}
+        updateRented={updateRented}
+        notify={notify}
+        returnDevice={returnDevice}
+        user={user}
+        selectUser={selectUser}
+        searchDevice={searchDevice}
+        handleSearch={handleSearch}
+        searchInfo={searchInfo}
+        history={history}
+        downloadFile={downloadFile}
+        downloadEntries={downloadEntries}
+        handleCode={handleCode}
+        handleChange={handleChange}
+        active={active}
       />
-      {index === true ? (
-        <Index
-          toggleSection={toggleSection}
-          testConnection={testConnection}
-          rented={rented}
-          updateRented={updateRented}
-          notify={notify}
-          returnDevice={returnDevice}
-          user={user}
-          selectUser={selectUser}
-          searchDevice={searchDevice}
-          handleSearch={handleSearch}
-          searchInfo={searchInfo}
-          history={history}
-          downloadFile={downloadFile}
-          downloadEntries={downloadEntries}
-        />
-      ) : (
-        <></>
-      )}
-      {scanner === true ? (
-        <>
-          <div className="barcode-scanner">
-            <div className="camera">
-              <BarcodeScannerComponent
-                width={600}
-                height={600}
-                onUpdate={(err, result) => {
-                  if (result) setData(result.text);
-                  else setData("----------");
-                }}
-              />
-            </div>
-            <div className="device-info">
-              <div className="code">
-                <label>Código de barra: {data}</label>
-                <button onClick={() => handleCode()}>Asignar</button>
-              </div>
-              <label>Documento seleccionado:</label>
-              {user !== null ? (
-                <label id="documento">{user.document}</label>
-              ) : (
-                <></>
-              )}
-              <div className="device-selection">
-                <div>
-                  <label>Seleccione el dispositivo:</label>
-                  <select
-                    name="device"
-                    onChange={handleChange}
-                    value={user.device}
-                    required
-                  >
-                    <option>- Dispositivo -</option>
-                    <option>ChromeBook</option>
-                    <option>iPad</option>
-                  </select>
-                </div>
-                <div>
-                  <label>Enter device number</label>
-                  <input
-                    name="number"
-                    value={user.number}
-                    type="text"
-                    placeholder="01, 16, 28, etc..."
-                    onChange={handleChange}
-                    required
-                  ></input>
-                </div>
-              </div>
-              <div className="group">
-                <button style={{ width: "30%" }} onClick={() => rent()}>
-                  Alquilar
-                </button>
-                <button style={{ width: "30%" }} onClick={() => goBack()}>
-                  Atrás
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
     </>
   );
 }
