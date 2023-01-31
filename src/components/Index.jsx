@@ -1,230 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
-import User from "./User.jsx";
-import Barcode from "./Barcode.jsx";
-import refresh from "../assets/refresh.png";
-import email from "../assets/email.png";
-import tap from "../assets/tap.png";
-import search from "../assets/search.png";
-import folder from "../assets/folder.png";
-import excel from "../assets/excel.png";
-import scanner from "../assets/scanner.png";
-import testing from "../assets/testing.png";
+import reading from "../assets/reading.svg";
 
-export default function Index({
-  user,
-  rent,
-  rented,
-  updateRented,
-  notify,
-  returnDevice,
-  selectUser,
-  searchDevice,
-  handleSearch,
-  searchInfo,
-  history,
-  downloadEntries,
-  downloadFile,
-  testConnection,
-  handleCode,
-  handleChange,
-  active,
-}) {
+import Login from "./Login.jsx";
+
+export default function Index() {
+  // This component shows the landing page. In here, the user will need to login to be able to access other components.
+  // This modal shows the login form component when the user wants to login. It is set to false by default.
+  const [modal, setModal] = useState(false);
   return (
-    <div className="index">
-      <div className="options">
-        <h2>
-          Bienvenid@ al sistema de manejo de dispositivos del Knowledge Centre!
-        </h2>
-      </div>
-      <div className="options">
-        <h2>Usuarios Activos</h2>
-        <div className="btns">
-          <button onClick={() => testConnection("scanner")}>
-            Conexión <img src={testing} alt="" />
-          </button>
-          <button onClick={() => updateRented()}>
-            Actualizar <img src={refresh} alt="" />
-          </button>
-          <button onClick={() => notify()}>
-            Recordatorio <img src={email} alt="" />
-          </button>
-        </div>
-        <div className="updates">
-          <div className="devices-list">
-            <h3>
-              Haga click <img src={tap} alt="" /> en el usuario:
-            </h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rented.map((entry) => (
-                  <>
-                    <tr>
-                      <td
-                        id="selectedUser"
-                        key={entry.document}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => selectUser(entry)}
-                      >
-                        {`${entry.firstName} ${entry.lastName}`}
-                      </td>
-                    </tr>
-                  </>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <User
-            user={user}
-            active={active}
-            notify={notify}
-            returnDevice={returnDevice}
-            selectUser={selectUser}
-          />
-        </div>
-      </div>
-      <div className="options">
-        <h2>Alquiler de dispositivos</h2>
-        <div className="rent">
-          <div className="">
-            <h3 style={{ textAlign: "center" }}>
-              Escanee el código y asígnelo para poder realizar un registro.
-            </h3>
-            {/* <label>Código de barra: {data}</label> */}
-            <Barcode handleCode={handleCode} />
-            <div className="selected">
-              <h3>Documento asignado:</h3>
-              {user !== null ? <h3 id="documento">{user.document}</h3> : <></>}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                gap: "20px",
-              }}
-            >
-              <div className="selection">
-                <label>Seleccione el dispositivo:</label>
-                <select
-                  name="device"
-                  onChange={handleChange}
-                  value={user.device}
-                  required
-                >
-                  <option>- Dispositivo -</option>
-                  <option>ChromeBook</option>
-                  <option>iPad</option>
-                </select>
-              </div>
-              <div className="selection">
-                <label>Ingrese el número del dispositivo</label>
-                <input
-                  name="number"
-                  value={user.number}
-                  type="text"
-                  placeholder="01, 16, 28, etc..."
-                  onChange={handleChange}
-                  required
-                ></input>
-              </div>
+    <>
+      {modal === true ? (
+        <Login setModal={setModal} />
+      ) : (
+        <div className="index">
+          <div>
+            <h1>Knowledge Centre Resources</h1>
+            <p>
+              In this web application you are going to be able to access the
+              different services that the Knowledge Centre Library offers, such
+              as books and devices renting.
+            </p>
+            <div style={{ textAlign: "center" }}>
+              <button onClick={() => setModal(true)}>Login</button>
             </div>
           </div>
-        </div>
-        <div className="returnBtn">
-          <button onClick={() => rent()}>
-            Alquilar <img src={scanner} alt="" />
-          </button>
-        </div>
-      </div>
-      <div className="section-2">
-        <div className="options mini-sections">
-          <h2>Buscar dispositivo</h2>
-          <div className="returns">
-            <div className="device">
-              <label htmlFor="">Seleccione el tipo de dispositivo:</label>
-              <select
-                name="device"
-                onChange={handleSearch}
-                value={searchInfo.device}
-                required
-              >
-                <option>- Dispositivo -</option>
-                <option>ChromeBook</option>
-                <option>iPad</option>
-              </select>
-            </div>
-            <div className="device">
-              <label htmlFor="">Indique el número del dispositivo:</label>
-              <input
-                name="number"
-                value={searchInfo.number}
-                type="number"
-                placeholder="1, 16, 28, etc..."
-                onChange={handleSearch}
-                required
-              ></input>
-            </div>
-          </div>
-          <div className="returnBtn">
-            <button onClick={() => searchDevice()}>
-              Buscar <img src={search} alt="" />
-            </button>
+          <div>
+            <img src={reading} alt="" />
           </div>
         </div>
-        <div className="options mini-sections">
-          <h2>Descargar Registros</h2>
-          <div className="returns">
-            <div className="device">
-              <label htmlFor="">Seleccione el fitro que desea usar</label>
-              <select
-                name="filter"
-                onChange={handleSearch}
-                value={searchInfo.filter}
-                required
-              >
-                <option>- Filtro -</option>
-                <option>Documento</option>
-                <option>Fecha</option>
-              </select>
-            </div>
-            <div className="device">
-              <label htmlFor="">Indique el documento del usuario:</label>
-              <input
-                name="document"
-                value={searchInfo.document}
-                type="text"
-                placeholder="Documento del usuario"
-                onChange={handleSearch}
-              ></input>
-            </div>
-            <div className="device">
-              <label htmlFor="">Indique la fecha deseada:</label>
-              <input
-                name="date"
-                value={searchInfo.date}
-                maxLength="10"
-                type="date"
-                placeholder="Fecha en formato mm/dd/yyyy"
-                onChange={handleSearch}
-              ></input>
-            </div>
-          </div>
-          <div className="returnBtn">
-            <button onClick={() => downloadEntries()}>
-              Cargar Info. <img src={excel} alt="" />
-            </button>
-            <button onClick={() => downloadFile(history)}>
-              Descargar <img src={folder} alt="" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

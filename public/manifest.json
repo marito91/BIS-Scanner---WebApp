@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "BIS KC WEB APP",
+  "name": "BIS Knowledge Centre Web Application",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,7 +8,7 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "bis_logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },

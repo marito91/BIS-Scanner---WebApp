@@ -1,0 +1,75 @@
+.circulation-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.circulation-sections button {
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  color: #1a2141;
+  padding: 4px 10px 4px 10px;
+}
+
+.circulation-sections button:hover {
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #1a2141;
+  color: #deb865;
+  transition: 0.5s;
+}
+
+.circulation-sections button:focus {
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #1a2141;
+  color: #deb865;
+  transition: 0.5s;
+}
+
+.section-line {
+  display: flex;
+  gap: 20px;
+}
+
+.group {
+  padding: 2rem 1rem 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.classroom {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.group table thead tr {
+  height: 60px;
+  background-color: #1a2141;
+  color: #deb865;
+  border-radius: 10px 10px 0 0;
+  text-align: left;
+}
+
+.classroom tr {
+  font-size: 20px;
+  border-radius: 10px 10px 0 0;
+}
+
+.classroom th {
+  padding: 1rem 2rem 1rem 2rem;
+}
+
+.classroom td {
+  padding: 1rem 2rem 1rem 2rem;
+  font-size: 14px;
+  background-color: #deb865;
+  color: #1a2141;
+}
+
+#email:hover {
+  cursor: pointer;
+  color: white;
+}

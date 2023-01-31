@@ -1,0 +1,53 @@
+.book-services {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-direction: row;
+  padding: 2rem;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #deb865;
+  border-radius: 10px;
+  box-shadow: 0 3px 30px #1a2141;
+  padding: 2rem 5rem 3rem 5rem;
+}
+
+.service label {
+  color: #1a2141;
+  font-size: 20px;
+}
+
+.service h2 {
+  color: #1a2141;
+  font-size: 32px;
+}
+
+.service input,
+select {
+  height: 30px;
+  width: 15rem;
+  padding: 0 10px 0 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  border: 1px solid #1a2141;
+}
+
+.service button {
+  font-size: 18px;
+  border: 1px solid #1a2141;
+  border-radius: 10px;
+  background-color: #1a2141;
+  color: #deb865;
+  padding: 10px 18px 10px 18px;
+}
+
+.service button:hover {
+  cursor: pointer;
+  background-color: white;
+  color: #1a2141;
+  transition: 0.5s;
+}

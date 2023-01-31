@@ -1,12 +1,31 @@
 import React from "react";
 
 import logo from "../assets/logo.png";
+import { auth } from "../authentication/auth";
 
-export default function Header() {
+import { Link } from "react-router-dom";
+
+export default function Header({ logout }) {
   return (
-    <div className="header">
-      <img src={logo} alt="" />
-      <h1 id="title">Knowledge Centre & TICs Devices</h1>
-    </div>
+    <>
+      {auth() ? (
+        <>
+          <div className="header">
+            <img src={logo} alt="" />
+            <div className="header-right">
+              <Link to="/home">Home</Link>
+              <Link to="/devices">Devices</Link>
+              <Link to="/books">Books</Link>
+              <a href="#logout" onClick={logout}>
+                Logout
+              </a>
+            </div>
+          </div>
+          <img className="mobile-img" src={logo} alt="" />
+        </>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }

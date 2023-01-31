@@ -1,0 +1,107 @@
+.book-tools-buttons {
+  display: flex;
+  gap: 30px;
+  padding: 5vh 0 5vh 0;
+  justify-content: center;
+}
+
+.book-tools-buttons button {
+  border: none;
+  border-radius: 10px;
+  background-color: white;
+  padding: 1rem 2rem 1rem 2rem;
+  font-size: 24px;
+  color: #1a2141;
+}
+
+.book-tools-buttons button:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: #deb865;
+  box-shadow: 0 3px 10px #1a2141;
+}
+
+.book-tools-buttons button:focus {
+  cursor: pointer;
+  transition: 0.5s;
+  background-color: #deb865;
+  box-shadow: 0 3px 30px #1a2141;
+}
+
+.selected-book-tool {
+  background-color: #deb865;
+  border-radius: 10px;
+  box-shadow: 0 3px 30px #1a2141;
+}
+
+.selected-book-tool label {
+  color: #1a2141;
+  font-size: 20px;
+}
+
+.selected-book-tool form {
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
+  padding: 2rem 2rem 1rem 2rem;
+  justify-content: center;
+}
+
+.selected-book-tool form select,
+input {
+  height: 30px;
+  width: 15rem;
+  padding: 0 10px 0 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  border: 1px solid #1a2141;
+}
+
+.selected-book-tool form textarea {
+  padding: 0 10px 0 10px;
+}
+
+.col-1,
+.col-2,
+.col-3 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.col-2 img,
+.col-3 img {
+  width: 32px;
+}
+
+.col-2 div,
+.col-3 div {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  max-width: 260px;
+}
+
+.active-tools-btns {
+  text-align: center;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.active-tools-btns button {
+  font-size: 18px;
+  border: 1px solid #1a2141;
+  border-radius: 10px;
+  background-color: #1a2141;
+  color: #deb865;
+  padding: 10px 18px 10px 18px;
+}
+
+.active-tools-btns button:hover {
+  cursor: pointer;
+  background-color: white;
+  color: #1a2141;
+  transition: 0.5s;
+}
