@@ -1,7 +1,7 @@
 .book-tools-buttons {
   display: flex;
   gap: 30px;
-  padding: 5vh 0 5vh 0;
+  padding: 2vh 0 3vh 0;
   justify-content: center;
 }
 
@@ -32,6 +32,19 @@
   background-color: #deb865;
   border-radius: 10px;
   box-shadow: 0 3px 30px #1a2141;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 10px;
+}
+
+.selected-book-tool h1 {
+  text-align: center;
+  color: #1a2141;
+}
+
+.selected-book-tool img {
+  width: 32px;
 }
 
 .selected-book-tool label {
@@ -39,15 +52,15 @@
   font-size: 20px;
 }
 
-.selected-book-tool form {
+.new-book-form {
   display: flex;
   flex-direction: row;
-  gap: 80px;
-  padding: 2rem 2rem 1rem 2rem;
+  gap: 40px;
+  padding: 1rem 1rem 1rem 1rem;
   justify-content: center;
 }
 
-.selected-book-tool form select,
+.new-book-form select,
 input {
   height: 30px;
   width: 15rem;
@@ -57,8 +70,16 @@ input {
   border: 1px solid #1a2141;
 }
 
-.selected-book-tool form textarea {
+.new-book-form textarea {
   padding: 0 10px 0 10px;
+}
+
+.update-book-form {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 1rem 1rem 1rem 1rem;
+  justify-content: center;
 }
 
 .col-1,
@@ -66,12 +87,7 @@ input {
 .col-3 {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-.col-2 img,
-.col-3 img {
-  width: 32px;
+  gap: 10px;
 }
 
 .col-2 div,
@@ -79,12 +95,11 @@ input {
   display: flex;
   gap: 20px;
   align-items: center;
-  max-width: 260px;
 }
 
 .active-tools-btns {
   text-align: center;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   gap: 30px;
@@ -104,4 +119,233 @@ input {
   background-color: white;
   color: #1a2141;
   transition: 0.5s;
+}
+
+/* SEARCH BOOK SECTION */
+
+.book-info {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.book-info-col-1,
+.book-info-col-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 50%;
+  padding: 2rem 1rem 2rem 1rem;
+}
+
+.book-info-col-1 div,
+.book-info-col-2 div {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.filtered-books {
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  font: 16px Arial;
+}
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.table-container {
+  overflow: hidden;
+  overflow-y: scroll;
+  height: 600px;
+}
+#collection {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#collection td {
+  border: 1px solid #1a2141;
+  padding: 8px;
+}
+
+#collection th {
+  padding: 8px;
+}
+
+#collection tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#collection tr:hover {
+  background-color: #ddd;
+}
+
+#collection th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #1a2141;
+  color: #deb865;
+}
+
+#table-book-title {
+  max-width: 360px;
+}
+
+#table-book-title:hover {
+  cursor: pointer;
+  color: blue;
+}
+
+/* LOADING ANIMATION CSS */
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #1a2141;
+  text-align: center;
+  align-items: center;
+  padding: 0 0 30px 0;
+}
+
+.lds-spinner {
+  color: official;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-spinner div {
+  transform-origin: 40px 40px;
+  animation: lds-spinner 1.2s linear infinite;
+}
+.lds-spinner div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 3px;
+  left: 37px;
+  width: 6px;
+  height: 18px;
+  border-radius: 20%;
+  background: #1a2141;
+}
+.lds-spinner div:nth-child(1) {
+  transform: rotate(0deg);
+  animation-delay: -1.1s;
+}
+.lds-spinner div:nth-child(2) {
+  transform: rotate(30deg);
+  animation-delay: -1s;
+}
+.lds-spinner div:nth-child(3) {
+  transform: rotate(60deg);
+  animation-delay: -0.9s;
+}
+.lds-spinner div:nth-child(4) {
+  transform: rotate(90deg);
+  animation-delay: -0.8s;
+}
+.lds-spinner div:nth-child(5) {
+  transform: rotate(120deg);
+  animation-delay: -0.7s;
+}
+.lds-spinner div:nth-child(6) {
+  transform: rotate(150deg);
+  animation-delay: -0.6s;
+}
+.lds-spinner div:nth-child(7) {
+  transform: rotate(180deg);
+  animation-delay: -0.5s;
+}
+.lds-spinner div:nth-child(8) {
+  transform: rotate(210deg);
+  animation-delay: -0.4s;
+}
+.lds-spinner div:nth-child(9) {
+  transform: rotate(240deg);
+  animation-delay: -0.3s;
+}
+.lds-spinner div:nth-child(10) {
+  transform: rotate(270deg);
+  animation-delay: -0.2s;
+}
+.lds-spinner div:nth-child(11) {
+  transform: rotate(300deg);
+  animation-delay: -0.1s;
+}
+.lds-spinner div:nth-child(12) {
+  transform: rotate(330deg);
+  animation-delay: 0s;
+}
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.hovered-book {
+  position: absolute;
+  left: 78vh;
+  top: 35vh;
+  width: 370px;
+  height: 570px;
+  max-height: 570px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #deb865;
+  padding: 1rem;
+  border: 3px solid #1a2141;
+  border-radius: 10px;
+  transition: 0.5s;
+}
+
+.hovered-book div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.hovered-book label {
+  font-size: 14px;
+}
+
+.hovered-book button {
+  color: #deb865;
+  background-color: #1a2141;
+  border-radius: 8px;
+  border: 1px solid #1a2141;
+  padding: 4px 0 4px 0;
+  width: 50%;
+}
+
+.hovered-book button:hover {
+  cursor: pointer;
+  color: #1a2141;
+  background-color: white;
+  border: 1px solid #1a2141;
+  transition: 0.6s;
 }

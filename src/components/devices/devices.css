@@ -17,7 +17,7 @@
 .active-users h1 {
   color: #deb865;
   padding: 35px 0 0 160px;
-  font-size: 60px;
+  font-size: 8vh;
 }
 
 #notification-btn {
@@ -26,11 +26,11 @@
   position: absolute;
   left: 71%;
   top: 200px;
-  font-size: 22px;
+  font-size: 3vh;
   border-color: #deb865;
   border: 1px solid;
   padding: 10px 20px;
-  border-radius: 30px;
+  border-radius: 15px;
 }
 
 #notification-btn:hover {
@@ -53,14 +53,14 @@
   color: #1a2141;
   display: flex;
   flex-direction: column;
-  font-size: 20px;
+  font-size: 2.2vh;
 }
 
 .stats-2 {
   position: absolute;
   background-color: #deb865;
   left: 50px;
-  top: 42vh;
+  top: 43vh;
   border-radius: 30px 0 30px 30px;
   width: 110px;
   height: 110px;
@@ -69,11 +69,11 @@
   color: #1a2141;
   display: flex;
   flex-direction: column;
-  font-size: 18px;
+  font-size: 2.1vh;
 }
 
 #stat {
-  font-size: 50px;
+  font-size: 7vh;
   font-weight: 600;
 }
 
@@ -103,11 +103,11 @@
   flex-direction: column;
   height: 120px;
   width: 100px;
-  border-radius: 30px;
+  border-radius: 15px;
   object-fit: contain;
   padding: 0.5rem;
   color: white;
-  font-size: 18px;
+  font-size: 2.3vh;
 }
 
 .user-entry:hover {
@@ -131,18 +131,18 @@ img:hover {
 
 .user-info {
   background-color: #deb865;
-  border-radius: 30px;
+  border-radius: 15px;
   width: 40%;
   color: #1a2141;
 }
 
 .user-info h2 {
-  font-size: 30px;
+  font-size: 4vh;
   padding: 10px 0 0 25px;
 }
 
 .user-info label {
-  font-size: 18px;
+  font-size: 2.5vh;
 }
 
 .user-info .btn {
@@ -157,10 +157,10 @@ img:hover {
 }
 
 .user-info button {
-  border-radius: 30px;
+  border-radius: 15px;
   color: #1a2141;
   background-color: #deb865;
-  font-size: 18px;
+  font-size: 2.5vh;
   border-color: #1a2141;
   padding: 5px 20px;
 }
@@ -204,7 +204,7 @@ img:hover {
 
   .active-users h1 {
     color: #deb865;
-    font-size: 40px;
+    font-size: 5vh;
     padding: 20px 0 0 0;
     text-align: center;
   }
@@ -213,12 +213,12 @@ img:hover {
     background-color: #1a2141;
     color: #deb865;
     text-align: center;
-    font-size: 22px;
+    font-size: 3vh;
     border-color: #deb865;
     border: 1px solid;
     padding: 10px 20px;
-    border-radius: 30px;
-    visibility: hidden;
+    border-radius: 15px;
+    display: none;
   }
 
   #notification-btn:hover {
@@ -258,11 +258,11 @@ img:hover {
     flex-direction: column;
     height: 80px;
     width: 60px;
-    border-radius: 30px;
+    border-radius: 15px;
     object-fit: contain;
     padding: 0.5rem;
     color: white;
-    font-size: 12px;
+    font-size: 1.6vh;
   }
 
   .user-entry:hover {
@@ -285,20 +285,20 @@ img:hover {
 
   .user-info {
     background-color: #deb865;
-    border-radius: 30px;
+    border-radius: 15px;
     width: 100%;
     margin: 0 20px 20px 20px;
     color: #1a2141;
   }
 
   .user-info h2 {
-    font-size: 24px;
+    font-size: 3vh;
     padding: 0;
     text-align: center;
   }
 
   .user-info label {
-    font-size: 14px;
+    font-size: 2vh;
   }
 
   .btn button {
@@ -351,7 +351,7 @@ select {
   height: 45px;
   padding: 0 20px 0 20px;
   color: #1a2141;
-  font-size: 15px;
+  font-size: 2vh;
 }
 
 .rent-module {
@@ -368,11 +368,11 @@ select {
 .rent-module button {
   background-color: #deb865;
   color: #1a2141;
-  font-size: 22px;
+  font-size: 2.7vh;
   border-color: #1a2141;
   border: 1px solid;
   padding: 5px 20px;
-  border-radius: 30px;
+  border-radius: 15px;
 }
 
 .rent-module button:hover {
@@ -383,13 +383,13 @@ select {
 }
 
 .modules label {
-  font-size: 24px;
+  font-size: 3vh;
 }
 
 .modules h2 {
   text-align: center;
   color: #deb865;
-  font-size: 40px;
+  font-size: 5vh;
 }
 
 .modules-forms {
@@ -430,11 +430,11 @@ select {
 .entries-module button {
   background-color: #1a2141;
   color: #deb865;
-  font-size: 22px;
+  font-size: 2.7vh;
   border-color: #deb865;
   border: 1px solid;
   padding: 5px 20px;
-  border-radius: 30px;
+  border-radius: 15px;
 }
 
 .search-module button:hover,
@@ -471,12 +471,12 @@ button img {
     height: 35px;
     padding: 0 20px 0 20px;
     color: #1a2141;
-    font-size: 12px;
+    font-size: 1vh;
   }
 
   .rent-module img {
     display: block;
-    width: 50px;
+    width: 8vh;
     border: 1px solid #1a2141;
     padding: 4px 16px 4px 16px;
     border-radius: 10px;
@@ -485,7 +485,7 @@ button img {
   .search-module img,
   .entries-module img {
     display: block;
-    width: 50px;
+    width: 8vh;
     border: 1px solid #deb865;
     padding: 4px 16px 4px 16px;
     border-radius: 10px;
@@ -508,11 +508,11 @@ button img {
   .rent-module button {
     background-color: #deb865;
     color: #1a2141;
-    font-size: 22px;
+    font-size: 3vh;
     border-color: #1a2141;
     border: 1px solid;
     padding: 5px 20px;
-    border-radius: 30px;
+    border-radius: 15px;
   }
 
   .rent-module button:hover {
@@ -523,13 +523,13 @@ button img {
   }
 
   .modules label {
-    font-size: 18px;
+    font-size: 2.7vh;
   }
 
   .modules h2 {
     text-align: center;
     color: #deb865;
-    font-size: 30px;
+    font-size: 4vh;
   }
 
   .modules-forms {
@@ -570,11 +570,11 @@ button img {
   .entries-module button {
     background-color: #1a2141;
     color: #deb865;
-    font-size: 22px;
+    font-size: 3vh;
     border-color: #deb865;
     border: 1px solid;
     padding: 5px 20px;
-    border-radius: 30px;
+    border-radius: 15px;
   }
 
   .search-module button:hover,

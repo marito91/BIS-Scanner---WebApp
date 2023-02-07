@@ -16,34 +16,17 @@ export default function UpdateBook() {
    */
   return (
     <>
-      <h2 style={{ textAlign: "center", color: "#1a2141", paddingTop: "2%" }}>
+      <h3 style={{ textAlign: "center", color: "#1a2141", paddingTop: "2%" }}>
         Load the book you want to update by entering the barcode and pressing
         the load button.
-      </h2>
-      <form action="">
+      </h3>
+      <div className="update-book-form">
         <div className="col-1">
           <label htmlFor="">Title</label>
-          <textarea name="" id="" cols="30" rows="7"></textarea>
+          <textarea name="" id="" cols="30" rows="6"></textarea>
           <label htmlFor="" required>
             Author
           </label>
-          <input type="text" name="" id="" />
-          <label htmlFor="" required>
-            Publication Year
-          </label>
-          <input type="text" name="" maxLength={4} id="" />
-        </div>
-        <div className="col-2">
-          <label htmlFor="">Material Type</label>
-          <select name="" id="">
-            <option value="">Book</option>
-            <option value="">Big Book</option>
-            <option value="">Magazine</option>
-            <option value="">Text Book</option>
-          </select>
-          <label htmlFor="">ISBN/ISSN</label>
-          <input type="text" name="" id="" />
-          <label htmlFor="">Price</label>
           <input type="text" name="" id="" />
           <label
             htmlFor=""
@@ -52,9 +35,22 @@ export default function UpdateBook() {
           >
             Barcode
           </label>
+          <input type="text" name="" maxLength={4} id="" />
+          <label htmlFor="">Publication Year</label>
+          <input type="text" name="" id="" />
+          <label htmlFor="">ISBN/ISSN</label>
           <input type="text" name="" id="" />
         </div>
-        <div className="col-3">
+        <div className="col-2">
+          <label htmlFor="">Price</label>
+          <input type="text" name="" id="" />
+          <label htmlFor="">Material Type</label>
+          <select name="" id="">
+            <option value="">Book</option>
+            <option value="">Big Book</option>
+            <option value="">Magazine</option>
+            <option value="">Text Book</option>
+          </select>
           <label htmlFor="">Sublocation</label>
           <input type="text" name="" id="" />
           <label htmlFor="">Vendor</label>
@@ -68,7 +64,7 @@ export default function UpdateBook() {
           <label htmlFor="">Dewey</label>
           <input type="text" name="" id="" />
         </div>
-      </form>
+      </div>
       <div className="active-tools-btns">
         <button>Load</button>
         <button>Update</button>

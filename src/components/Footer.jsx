@@ -22,8 +22,12 @@ export default function Footer({ logout }) {
           <Link to="/home">
             <img src={home} alt="" />
           </Link>
-          <img src={history} alt="" />
-          <img src={signout} alt="" onClick={() => logout()} />
+          <Link to="/books">
+            <img src={history} alt="" />
+          </Link>
+          <Link to="/home">
+            <img src={signout} alt="" onClick={() => logout()} />
+          </Link>
         </div>
       ) : (
         <></>

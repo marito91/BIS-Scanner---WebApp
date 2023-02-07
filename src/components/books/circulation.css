@@ -1,11 +1,13 @@
 .circulation-sections {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 2vh 0 2vh 0;
 }
 
 .circulation-sections button {
-  font-size: 18px;
+  font-size: 2.7vh;
   border: none;
   border-radius: 10px;
   background-color: white;
@@ -29,9 +31,15 @@
   transition: 0.5s;
 }
 
-.section-line {
+.classes {
   display: flex;
-  gap: 20px;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1vh 0 1vh 0;
+}
+
+.grade-line {
+  flex-wrap: wrap;
 }
 
 .group {
@@ -43,9 +51,11 @@
 .classroom {
   border-collapse: collapse;
   width: 100%;
+  table-layout: fixed;
+  word-break: break-all;
 }
 
-.group table thead tr {
+.classroom thead tr {
   height: 60px;
   background-color: #1a2141;
   color: #deb865;
@@ -69,7 +79,42 @@
   color: #1a2141;
 }
 
+#email {
+  width: 48px;
+}
+
 #email:hover {
   cursor: pointer;
-  color: white;
+}
+
+@media (max-width: 932px) {
+  .circulation-sections button {
+    font-size: 2.4vh;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    color: #1a2141;
+    padding: 4px 10px 4px 10px;
+  }
+
+  .section-line {
+    display: flex;
+    gap: 10px;
+  }
+
+  #email {
+    width: 32px;
+  }
+
+  .classroom {
+    word-break: normal;
+  }
+
+  .classroom tr {
+    font-size: 1.5vh;
+  }
+
+  .classroom td {
+    font-size: 1vh;
+  }
 }

@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   gap: 40px;
-  flex-direction: row;
-  padding: 2rem;
+  flex-direction: column;
+  padding: 1rem;
 }
 
 .service {
@@ -13,31 +13,32 @@
   background-color: #deb865;
   border-radius: 10px;
   box-shadow: 0 3px 30px #1a2141;
-  padding: 2rem 5rem 3rem 5rem;
+  padding: 2rem 2rem 3rem 2rem;
 }
 
 .service label {
   color: #1a2141;
-  font-size: 20px;
+  font-size: 2.7vh;
 }
 
 .service h2 {
   color: #1a2141;
-  font-size: 32px;
+  font-size: 4vh;
+  text-align: center;
 }
 
 .service input,
 select {
   height: 30px;
-  width: 15rem;
-  padding: 0 10px 0 10px;
-  font-size: 12px;
+  width: 100%;
+  padding: 10px 10px 10px 10px;
+  font-size: 1.8vh;
   border-radius: 10px;
   border: 1px solid #1a2141;
 }
 
 .service button {
-  font-size: 18px;
+  font-size: 2.5vh;
   border: 1px solid #1a2141;
   border-radius: 10px;
   background-color: #1a2141;
@@ -50,4 +51,28 @@ select {
   background-color: white;
   color: #1a2141;
   transition: 0.5s;
+}
+
+@media (max-width: 932px) {
+  .book-services {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .service {
+    padding: 2rem 2rem 3rem 2rem;
+  }
+
+  .service input,
+  select {
+    height: 3vh;
+    width: 100%;
+    padding: 15px 10px 15px 10px;
+    font-size: 1.8vh;
+    border-radius: 10px;
+    border: 1px solid #1a2141;
+  }
 }

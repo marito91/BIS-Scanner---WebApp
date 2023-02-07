@@ -60,8 +60,8 @@ function App() {
       <BrowserRouter>
         <Header logout={logout} />
         <Routes>
-          {/* This is the landing page. No props needed in the index page. */}
-          <Route path="/" element={<Index />}></Route>
+          {/* This is the landing page. No props needed in the index page. If the user is already signed in, then it leads directly to the dashboard. */}
+          <Route path="/" element={auth() ? <Dashboard /> : <Index />}></Route>
 
           {/* This route leads to the dashboard. The restricted component shows in case somebody tries to head into it and is not logged in. */}
           <Route

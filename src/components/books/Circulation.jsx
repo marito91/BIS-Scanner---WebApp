@@ -6,13 +6,41 @@ import "../books/circulation.css";
 
 export default function Circulation() {
   const sections = [
-    ["3A", "3B", "3C", "4A", "4B", "4C", "5A", "5B", "5C", "6A", "6B", "6C"],
-    ["7A", "7B", "7C", "8A", "8B", "8C", "9A", "9B", "9C", "10A", "10B", "10C"],
-    ["11A", "11B", "11C", "12A", "12B", "12C", "13A", "13B", "13C"],
-    ["PREESCOLAR", "PRIMARIA", "SECUNDARIA", "ADMINISTRATIVA"],
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "PREESCOLAR",
+    "PRIMARIA",
+    "SECUNDARIA",
+    "ADMINISTRATIVA",
+  ];
+  const teacherSections = [
+    0,
+    "PREESCOLAR",
+    "PRIMARIA",
+    "SECUNDARIA",
+    "ADMINISTRATIVA",
   ];
   const [rentedBooks, setRentedBooks] = useState([]);
+  const [section, setSection] = useState(0);
   const [selectedGrade, setSelectedGrade] = useState("");
+
+  function handleSection(selected) {
+    if (teacherSections.includes(selected)) {
+      setSelectedGrade(selected);
+      setSection(0);
+    } else {
+      setSection(selected);
+    }
+  }
 
   const checkRented = async () => {
     const response = await fetch(`${hostbase}/books/rented`, {
@@ -39,18 +67,44 @@ export default function Circulation() {
       });
   }, []);
   return (
-    <div>
+    <>
       <div className="circulation-sections">
-        {sections.map((lineOfGrades) => (
-          <div className="section-line">
+        <div>
+          {sections.map((number) => (
+            <>
+              <button key={number} onClick={() => handleSection(number)}>
+                {number}
+              </button>
+            </>
+          ))}
+        </div>
+        {teacherSections.includes(section) ? (
+          <></>
+        ) : (
+          <div className="classes">
+            <button onClick={() => setSelectedGrade(section + "A")}>
+              {section + "A"}
+            </button>
+            <button onClick={() => setSelectedGrade(section + "B")}>
+              {section + "B"}
+            </button>
+            <button onClick={() => setSelectedGrade(section + "C")}>
+              {section + "C"}
+            </button>
+          </div>
+        )}
+        {/* {sections.map((lineOfGrades) => (
+          <div key={lineOfGrades} className="section-line">
             {lineOfGrades.map((grade) => (
-              <button onClick={() => setSelectedGrade(grade)}>{grade}</button>
+              <button key={grade} onClick={() => setSelectedGrade(grade)}>
+                {grade}
+              </button>
             ))}
           </div>
-        ))}
+        ))} */}
       </div>
 
       <Group rentedBooks={rentedBooks} selectedGrade={selectedGrade} />
-    </div>
+    </>
   );
 }
