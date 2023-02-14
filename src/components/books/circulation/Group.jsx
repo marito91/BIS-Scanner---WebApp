@@ -29,18 +29,20 @@ export default function Group({ rentedBooks, selectedGrade }) {
           <th style={{ borderRadius: "0 10px 0 0" }}>Email</th>
         </tr>
       </thead>
-      {tableToDisplay.map((user) => (
-        <tr>
-          <td>{user.lastName + " " + user.secondLastName}</td>
-          <td>{user.firstName}</td>
-          <td>{user.books[0].title}</td>
-          <td>{user.books[0].dateRented}</td>
-          <td id="email" onClick={() => notifyUser(user.email)}>
-            {/* {user.email}  */}
-            <img id="email" src={mail} alt="" />
-          </td>
-        </tr>
-      ))}
+      <tbody>
+        {tableToDisplay.map((user) => (
+          <tr key={user.email}>
+            <td>{user.lastName + " " + user.secondLastName}</td>
+            <td>{user.firstName}</td>
+            <td>{user.books[0].title}</td>
+            <td>{user.books[0].dateRented}</td>
+            <td id="email" onClick={() => notifyUser(user.email)}>
+              {/* {user.email}  */}
+              <img id="email" src={mail} alt="" />
+            </td>
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 }

@@ -28,12 +28,13 @@ export default function Collection() {
         setBooks(res.books);
       })
       .catch((e) => {
-        console.log(e.message);
-        alert(
-          "A connection to the server could not be established. Please contact ICT support."
+        console.log(
+          e.message +
+            ": " +
+            "A connection to the server could not be established. Please contact ICT support."
         );
       });
-  }, [books]);
+  }, []);
 
   useEffect(() => {
     if (books.length > 0) {
@@ -58,7 +59,7 @@ export default function Collection() {
                 >
                   Title
                 </th>
-                <th>Author</th>
+                <th id="toHide">Author</th>
                 <th
                   style={{
                     borderRadius: "0 10px 0 0",
@@ -70,29 +71,26 @@ export default function Collection() {
             </thead>
             <tbody>
               {books.map((book) => (
-                <>
-                  <tr key={book}>
-                    <td
-                      key={book.title}
-                      id="table-book-title"
-                      style={{ maxWidth: "360px" }}
-                      onClick={() =>
-                        setHoveredBook(
-                          <>
-                            <HoveredBook
-                              book={book}
-                              setHoveredBook={setHoveredBook}
-                            />
-                          </>
-                        )
-                      }
-                    >
-                      {book.title}
-                    </td>
-                    <td key={book.author}>{book.author}</td>
-                    <td key={book.barcode}>{book.barcode}</td>
-                  </tr>
-                </>
+                <tr key={book.barcode}>
+                  <td
+                    id="table-book-title"
+                    style={{ maxWidth: "360px" }}
+                    onClick={() =>
+                      setHoveredBook(
+                        <>
+                          <HoveredBook
+                            book={book}
+                            setHoveredBook={setHoveredBook}
+                          />
+                        </>
+                      )
+                    }
+                  >
+                    {book.title}
+                  </td>
+                  <td id="toHide">{book.author}</td>
+                  <td>{book.barcode}</td>
+                </tr>
               ))}
             </tbody>
           </table>

@@ -71,11 +71,9 @@ export default function Circulation() {
       <div className="circulation-sections">
         <div>
           {sections.map((number) => (
-            <>
-              <button key={number} onClick={() => handleSection(number)}>
-                {number}
-              </button>
-            </>
+            <button key={number} onClick={() => handleSection(number)}>
+              {number}
+            </button>
           ))}
         </div>
         {teacherSections.includes(section) ? (

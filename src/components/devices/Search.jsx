@@ -49,6 +49,7 @@ export default function Search({ handleSearch, searchInfo, setSearchInfo }) {
       }
     }
   }
+
   return (
     <div className="search-module">
       <h2>Search Device</h2>

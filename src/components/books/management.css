@@ -82,9 +82,22 @@ input {
   justify-content: center;
 }
 
-.col-1,
-.col-2,
-.col-3 {
+.update-book-form div {
+  padding: 0 10px 0 10px;
+}
+
+.update-book-form select,
+input {
+  width: 100%;
+  height: 30px;
+  padding: 5px 15px 5px 15px;
+  font-size: 1vw;
+  margin: 5px 0 5px 0;
+  border-radius: 10px;
+}
+
+/* .col-1,
+.col-2 {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -93,9 +106,9 @@ input {
 .col-2 div,
 .col-3 div {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
-}
+} */
 
 .active-tools-btns {
   text-align: center;
@@ -161,7 +174,9 @@ body {
   position: relative;
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 10px;
+  align-items: center;
+  padding: 0 5px 0 5px;
 }
 
 input {
@@ -305,24 +320,53 @@ input {
   }
 }
 
-.hovered-book {
-  position: absolute;
-  left: 78vh;
-  top: 35vh;
-  width: 370px;
-  height: 570px;
-  max-height: 570px;
-  display: flex;
-  flex-direction: column;
+.hovered-item {
+  position: fixed;
+  left: 47%;
+  top: 25%;
+  width: 33vw;
+  height: 52vh;
   gap: 10px;
   background-color: #deb865;
-  padding: 1rem;
+  padding: 1rem 0 1rem 1rem;
   border: 3px solid #1a2141;
   border-radius: 10px;
   transition: 0.5s;
+  display: flex;
+  flex-direction: column;
 }
 
-.hovered-book div {
+.hovered-item button {
+  color: #deb865;
+  background-color: #1a2141;
+  border-radius: 8px;
+  border: 1px solid #1a2141;
+  padding: 6px 0 6px 0;
+  width: 50%;
+}
+
+.hovered-item button:hover {
+  cursor: pointer;
+  color: #1a2141;
+  background-color: white;
+  border: 1px solid #1a2141;
+  transition: 0.6s;
+}
+
+.hovered-book {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.hovered-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 1rem 0 1rem 0;
+}
+
+.hovered-column div {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -333,19 +377,59 @@ input {
   font-size: 14px;
 }
 
-.hovered-book button {
-  color: #deb865;
-  background-color: #1a2141;
-  border-radius: 8px;
-  border: 1px solid #1a2141;
-  padding: 4px 0 4px 0;
-  width: 50%;
-}
+@media (max-width: 932px) {
+  .new-book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 
-.hovered-book button:hover {
-  cursor: pointer;
-  color: #1a2141;
-  background-color: white;
-  border: 1px solid #1a2141;
-  transition: 0.6s;
-}
+  .new-book-form select,
+  input {
+    width: 100%;
+  }
+
+  .update-book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .update-book-form div {
+    padding: 0;
+  }
+
+  .update-book-form select,
+  input {
+    width: 100%;
+    height: 30px;
+    padding: 5px 15px 5px 15px;
+    font-size: 3vw;
+    margin: 5px 0 5px 0;
+    border-radius: 10px;
+  }
+
+  .book-info label {
+    font-size: 3vw;
+  }
+
+  .book-tools-buttons {
+    display: flex;
+    gap: 30px;
+    padding: 2vh 0 3vh 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hovered-item {
+    position: fixed;
+    left: 15%;
+    top: 35%;
+    width: 75vw;
+    height: 54vh;
+  }
+
+  #toHide {
+    display: none;
+  }
+} ;

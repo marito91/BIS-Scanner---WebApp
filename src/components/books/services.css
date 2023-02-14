@@ -18,27 +18,26 @@
 
 .service label {
   color: #1a2141;
-  font-size: 2.7vh;
+  font-size: 1.6vw;
 }
 
 .service h2 {
   color: #1a2141;
-  font-size: 4vh;
+  font-size: 2vw;
   text-align: center;
 }
 
-.service input,
-select {
+.service input {
   height: 30px;
   width: 100%;
-  padding: 10px 10px 10px 10px;
-  font-size: 1.8vh;
+  padding: 20px 10px 20px 10px;
+  font-size: 1.2vw;
   border-radius: 10px;
   border: 1px solid #1a2141;
 }
 
 .service button {
-  font-size: 2.5vh;
+  font-size: 1.5vw;
   border: 1px solid #1a2141;
   border-radius: 10px;
   background-color: #1a2141;
@@ -71,7 +70,7 @@ select {
     height: 3vh;
     width: 100%;
     padding: 15px 10px 15px 10px;
-    font-size: 1.8vh;
+    font-size: 2vw;
     border-radius: 10px;
     border: 1px solid #1a2141;
   }

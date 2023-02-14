@@ -8,9 +8,9 @@
 
 .left-panel {
   width: 25%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
   text-align: left;
   padding: 1rem 0 1rem 0;

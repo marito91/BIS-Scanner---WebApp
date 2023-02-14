@@ -16,54 +16,60 @@ import close from "../../../assets/x.svg";
 
 export default function HoveredBook({ book, setHoveredBook }) {
   return (
-    <div className="hovered-book">
-      <div>
-        <img src={title} alt="" />
-        <label htmlFor="">{book.title}</label>
-      </div>
-      <div>
-        <img src={author} alt="" />
-        <label htmlFor="">{book.author}</label>
-      </div>
-      <div>
-        <img src={barcodeImg} alt="" />
-        <label htmlFor="">{book.barcode}</label>
-      </div>
-      <div>
-        <img src={isbn} alt="" />
-        <label htmlFor="">{book.isbn}</label>
-      </div>
-      <div>
-        <img src={price} alt="" />
-        <label htmlFor="">{`$${book.price} pesos`}</label>
-      </div>
-      <div>
-        <img src={calendar} alt="" />
-        <label htmlFor="">{book.publicationYear}</label>
-      </div>
-      <div>
-        <img src={material} alt="" />
-        <label htmlFor="">{book.materialType}</label>
-      </div>
-      <div>
-        <img src={location} alt="" />
-        <label htmlFor="">{book.sublocation}</label>
-      </div>
-      <div>
-        <img src={vendor} alt="" />
-        <label htmlFor="">{book.vendor}</label>
-      </div>
-      <div>
-        <img src={circulation} alt="" />
-        <label htmlFor="">{book.circulationType}</label>
-      </div>
-      <div>
-        <img src={dewey} alt="" />
-        <label htmlFor="">{book.dewey}</label>
-      </div>
-      <div>
-        <img src={condition} alt="" />
-        <label htmlFor="">{book.condition}</label>
+    <div className="hovered-item">
+      <div className="hovered-book">
+        <div className="hovered-column">
+          <div>
+            <img src={title} alt="" />
+            <label htmlFor="">{book.title}</label>
+          </div>
+          <div>
+            <img src={author} alt="" />
+            <label htmlFor="">{book.author}</label>
+          </div>
+          <div>
+            <img src={barcodeImg} alt="" />
+            <label htmlFor="">{book.barcode}</label>
+          </div>
+          <div>
+            <img src={isbn} alt="" />
+            <label htmlFor="">{book.isbn}</label>
+          </div>
+          <div>
+            <img src={price} alt="" />
+            <label htmlFor="">{`$${book.price} pesos`}</label>
+          </div>
+          <div>
+            <img src={calendar} alt="" />
+            <label htmlFor="">{book.publicationYear}</label>
+          </div>
+        </div>
+        <div className="hovered-column">
+          <div>
+            <img src={material} alt="" />
+            <label htmlFor="">{book.materialType}</label>
+          </div>
+          <div>
+            <img src={location} alt="" />
+            <label htmlFor="">{book.sublocation}</label>
+          </div>
+          <div>
+            <img src={vendor} alt="" />
+            <label htmlFor="">{book.vendor}</label>
+          </div>
+          <div>
+            <img src={circulation} alt="" />
+            <label htmlFor="">{book.circulationType}</label>
+          </div>
+          <div>
+            <img src={dewey} alt="" />
+            <label htmlFor="">{book.dewey}</label>
+          </div>
+          <div>
+            <img src={condition} alt="" />
+            <label htmlFor="">{book.condition}</label>
+          </div>
+        </div>
       </div>
       <div
         style={{

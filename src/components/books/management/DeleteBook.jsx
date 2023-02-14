@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import hostbase from "../../../hostbase.js";
+// import React, { useState, useEffect } from "react";
+// import hostbase from "../../../hostbase.js";
 // import autoComplete from "./autocomplete";
 
 import title from "../../../assets/book-icons/title.png";
