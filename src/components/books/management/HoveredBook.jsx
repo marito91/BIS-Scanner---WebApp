@@ -17,6 +17,12 @@ import close from "../../../assets/x.svg";
 export default function HoveredBook({ book, setHoveredBook }) {
   return (
     <div className="hovered-item">
+      <img
+        src={close}
+        className="close-img"
+        alt=""
+        onClick={() => setHoveredBook(<></>)}
+      />
       <div className="hovered-book">
         <div className="hovered-column">
           <div>
@@ -71,17 +77,11 @@ export default function HoveredBook({ book, setHoveredBook }) {
           </div>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "5px 0 5px 0",
-        }}
-      >
+      {/* <div className="hovered-book-btn">
         <button src={close} onClick={() => setHoveredBook(<></>)}>
           Close
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

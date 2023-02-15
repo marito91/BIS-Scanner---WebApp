@@ -3,12 +3,13 @@ import hostbase from "../hostbase.js";
 
 import x from "../assets/x.svg";
 
+// This function component will contain the login form for users that are trying to log in into the application. It receives the setModal function as props to close the window in case the user wants to go back to the previous component.
+
 export default function Login({ setModal }) {
-  // Este objeto se utiliza para permitir al administrador loguear/utilizar la plataforma.
+  // This object will manage the information submitted in the form. It starts as an empty object with useState but will change depending on the information submitted. It will also serve as info sent to server side to check data.
   const [localUser, setLocalUser] = useState({ username: "", password: "" });
 
-  // SECCION PARA LOGUEAR USUARIO
-  // Funcion togglear modal de login
+  // This toggles the information set in the localUser object. When the user inputs the information in the form, the object will change.
   const handleCredentials = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -17,7 +18,9 @@ export default function Login({ setModal }) {
 
   // Function for logging in. Checks if the data input from the user is correct in the backend server by fetching.
   const login = (event) => {
+    // Prevents that the form refreshes everytime is submitted.
     event.preventDefault();
+    // Fetches information from server side via the POST method.
     fetch(`${hostbase}/users/login`, {
       headers: { "content-type": "application/json" },
       method: "POST",
@@ -25,6 +28,7 @@ export default function Login({ setModal }) {
     })
       .then((res) => res.json())
       .then((res) => {
+        // If the function works on server side, the token will be set in the local storage and the localUser will reset. The function will also automatically send the user to the dashboard page.
         if (res.status === "ok") {
           localStorage.setItem("token", res.token);
           setLocalUser({
@@ -33,6 +37,7 @@ export default function Login({ setModal }) {
           });
           window.location.href = "/home";
         } else {
+          // If the data cannot be validated then it will alert the user that the information submitted is not correct.
           alert(`${res.status}: ${res.msg}`);
           console.log("Your email or password is incorrect");
           setLocalUser({
@@ -43,6 +48,7 @@ export default function Login({ setModal }) {
       });
   };
 
+  // This function will send the localUser information to server and check if the person trying to signup is part of the team.
   function signup() {
     const confirmation = window.confirm(
       "Do you want to register the new admin with the data provided?"

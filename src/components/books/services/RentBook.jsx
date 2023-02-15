@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
 export default function RentBook({ user }) {
-  const [document, setDocument] = useState();
+  const [document, setDocument] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [barcode, setBarcode] = useState("");
   const handleDocument = (event) => {
     const value = event.target.value;
@@ -12,12 +13,16 @@ export default function RentBook({ user }) {
     const value = event.target.value;
     setBarcode(value);
   };
+  const handleDueDate = (event) => {
+    const value = event.target.value;
+    setDueDate(value);
+  };
 
   function rentBook() {
     fetch(`${hostbase}/books/rent`, {
       headers: { "content-type": "application/json" },
       method: "POST",
-      body: JSON.stringify({ document, barcode }),
+      body: JSON.stringify({ document, barcode, dueDate }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -54,6 +59,13 @@ export default function RentBook({ user }) {
         name="barcode"
         value={barcode}
         onChange={handleBarcode}
+      />
+      <label htmlFor="">Due Date</label>
+      <input
+        type="date"
+        name="dueDate"
+        value={dueDate}
+        onChange={handleDueDate}
       />
       <button onClick={() => rentBook()}>Rent Book</button>
     </div>

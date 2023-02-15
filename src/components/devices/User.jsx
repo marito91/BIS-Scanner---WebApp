@@ -5,14 +5,14 @@ import email from "../../assets/email.png";
 import contact from "../../assets/contact-icon.svg";
 import building from "../../assets/building-icon.svg";
 import devices from "../../assets/devices-icon.svg";
-// import calendar from "../../assets/calendar-icon.svg";
+import calendar from "../../assets/calendar-icon.svg";
 
 export default function User({ notify, returnDevice, active }) {
   const device = active.device + " #" + active.number;
-  // const date = "Rented on " + active.date + " at " + active.time;
+  const date = "Rented on " + active.date + " at " + active.time;
   return (
     <div className="user-info">
-      <h2>Student Information</h2>
+      <h2>User Information</h2>
       <div className="entry">
         <img src={contact} alt="" />
         <label>{active.name}</label>
@@ -26,10 +26,10 @@ export default function User({ notify, returnDevice, active }) {
         <label>{active.name === "" ? "" : device}</label>
       </div>
       {/* This is removed because date and time were removed from the user data in backend */}
-      {/* <div className="entry">
+      <div className="entry">
         <img src={calendar} alt="" />
         <label>{active.name === "" ? "" : date}</label>
-      </div> */}
+      </div>
       <div className="btn">
         <button onClick={() => returnDevice([active.device, active.number])}>
           Return

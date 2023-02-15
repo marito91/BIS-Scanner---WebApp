@@ -4,9 +4,10 @@ import reading from "../assets/reading.svg";
 
 import Login from "./Login.jsx";
 
+// This component shows the landing page. In here, the user will need to login to be able to access other components.
+// This modal shows the login form component when the user wants to login. It is set to false by default.
+
 export default function Index() {
-  // This component shows the landing page. In here, the user will need to login to be able to access other components.
-  // This modal shows the login form component when the user wants to login. It is set to false by default.
   const [modal, setModal] = useState(false);
   return (
     <>

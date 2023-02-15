@@ -1,4 +1,5 @@
 import React from "react";
+import hostbase from "../../../hostbase.js";
 
 import "../../books/circulation.css";
 
@@ -9,12 +10,26 @@ export default function Group({ rentedBooks, selectedGrade }) {
     (user) => user.grade === selectedGrade
   );
 
-  function notifyUser(email) {
+  function notifyUser(user) {
     const confirmation = window.confirm(
-      `Do you want to send a notification to ${email}`
+      `Do you want to send a notification to ${user.email}`
     );
     if (confirmation) {
-      console.log(email);
+      fetch(`${hostbase}/devices/notification`, {
+        headers: { "content-type": "application/json" },
+        method: "POST",
+        body: JSON.stringify({ user }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          res.status === "Error" ? alert(res.msg) : alert(res.msg);
+        })
+        // Si hay error de conexión se envía una alerta
+        .catch(function () {
+          alert(
+            "A connection to the server could not be established. Please contact ICT Suppport."
+          );
+        });
     }
   }
 
@@ -36,7 +51,7 @@ export default function Group({ rentedBooks, selectedGrade }) {
             <td>{user.firstName}</td>
             <td>{user.books[0].title}</td>
             <td>{user.books[0].dateRented}</td>
-            <td id="email" onClick={() => notifyUser(user.email)}>
+            <td id="email" onClick={() => notifyUser(user)}>
               {/* {user.email}  */}
               <img id="email" src={mail} alt="" />
             </td>

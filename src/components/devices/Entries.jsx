@@ -12,7 +12,7 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
     if (searchInfo.filter === "" || searchInfo.filter === "- Filter -") {
       alert("Please choose a filter for your search.");
     } else {
-      if (searchInfo.filter === "Documento") {
+      if (searchInfo.filter === "Document") {
         if (searchInfo.document === "") {
           alert("Please enter a valid document.");
         } else {
@@ -44,7 +44,7 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
             number: "",
           });
         }
-      } else if (searchInfo.filter === "Fecha") {
+      } else if (searchInfo.filter === "Date") {
         if (searchInfo.date === "") {
           alert("Please enter a valid date.");
         } else {
@@ -76,6 +76,34 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
             number: "",
           });
         }
+      } else if (searchInfo.filter === "Rented") {
+        fetch(`${hostbase}/devices/rented`, {
+          headers: { "content-type": "application/json" },
+          method: "GET",
+          // body: JSON.stringify({ searchInfo }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            setHistory(res.data);
+            alert(
+              `Entries for rented devices were loaded succesfully. Please proceed to download them.`
+            );
+          })
+          // Si hay error de conexión se envía una alerta
+          .catch(function () {
+            alert(
+              "Connection to the server not available. Please contact ICT support."
+            );
+          });
+        // Se restauran a string en blanco los valores del objeto user
+        setHistory([]);
+        setSearchInfo({
+          document: "",
+          date: "",
+          filter: "",
+          device: "",
+          number: "",
+        });
       }
     }
   }
@@ -120,14 +148,16 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
       <div className="modules-forms">
         <label>Filter</label>
         <select
+          id="modules-select"
           name="filter"
           onChange={handleSearch}
           value={searchInfo.filter}
           required
         >
           <option>- Filter -</option>
-          <option>Documento</option>
-          <option>Fecha</option>
+          <option>Document</option>
+          <option>Date</option>
+          <option>Rented</option>
         </select>
         <label>Document</label>
         <input
@@ -143,7 +173,7 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
           value={searchInfo.date}
           maxLength="10"
           type="date"
-          placeholder="Fecha en formato mm/dd/yyyy"
+          placeholder="Date in mm/dd/yyyy format"
           onChange={handleSearch}
         ></input>
       </div>

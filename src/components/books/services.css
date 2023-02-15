@@ -65,6 +65,18 @@
     padding: 2rem 2rem 3rem 2rem;
   }
 
+  .service h2 {
+    font-size: 4vw;
+  }
+
+  .service label {
+    font-size: 3vw;
+  }
+
+  .service button {
+    font-size: 3vw;
+  }
+
   .service input,
   select {
     height: 3vh;

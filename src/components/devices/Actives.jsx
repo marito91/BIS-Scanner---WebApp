@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import hostbase from "../../hostbase.js";
 
 import User from "../devices/User.jsx";
@@ -104,20 +104,59 @@ export default function Actives({
     return capitalizeName(first + " " + last);
   }
 
+  const [ipads, setIpads] = useState([]);
+  const [chromebooks, setChromebooks] = useState([]);
+  const availableDevicesCount = async () => {
+    const response = await fetch(`${hostbase}/devices/available`, {
+      headers: { "content-type": "application/json" },
+      method: "GET",
+    });
+    if (!response.ok) {
+      throw new Error("Data coud not be fetched!");
+    } else {
+      return response.json();
+    }
+  };
+
+  useEffect(() => {
+    availableDevicesCount()
+      .then((res) => {
+        setIpads(res.availableIpads);
+        setChromebooks(res.availableChromebooks);
+      })
+      .catch((e) => {
+        console.log(e.message);
+        alert(
+          "Connection to the server could not be established. Please contact ICT Support."
+        );
+      });
+  }, []);
+
   return (
     <div className="active-users">
       <h1>Active Users</h1>
       <button id="notification-btn" onClick={() => notify()}>
         Send Notification
       </button>
+      {/* <button id="download-rented" onClick={() => console.log("Hello")}>
+        Download Rented List
+      </button> */}
       <div className="active-users-info">
-        <div className="stats-1">
+        <div className="stats stats-1">
           <label id="stat">{rented.length}</label>
           <label>Devices rented!</label>
         </div>
-        <div className="stats-2">
+        <div className="stats stats-2">
           <label id="stat">{entries.length}</label>
           <label>Rents so far!</label>
+        </div>
+        <div className="stats stats-3">
+          <label id="stat">{ipads.length}</label>
+          <label>iPads Available</label>
+        </div>
+        <div className="stats stats-4">
+          <label id="stat">{chromebooks.length}</label>
+          <label>ChromeBooks Available</label>
         </div>
         <div className="users">
           {rented.map((entry, index) => (

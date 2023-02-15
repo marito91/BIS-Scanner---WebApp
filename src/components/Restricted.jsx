@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import forbid from "../assets/forbid.svg";
+
+// This component only appears when a user is trying to access a section inside the application but doesn't have the right authentication and token stored in the localStorage.
 export default function Restricted() {
   return (
     <div className="restricted">

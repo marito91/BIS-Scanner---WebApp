@@ -56,6 +56,7 @@ export default function Search({ handleSearch, searchInfo, setSearchInfo }) {
       <div className="modules-forms">
         <label>Device</label>
         <select
+          id="modules-select"
           name="device"
           onChange={handleSearch}
           value={searchInfo.device}

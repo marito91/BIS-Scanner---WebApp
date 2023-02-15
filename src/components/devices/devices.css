@@ -24,9 +24,9 @@
   background-color: #1a2141;
   color: #deb865;
   position: absolute;
-  left: 71%;
+  left: 81vw;
   top: 200px;
-  font-size: 3vh;
+  font-size: 1.5vw;
   border-color: #deb865;
   border: 1px solid;
   padding: 10px 20px;
@@ -40,40 +40,74 @@
   transition: 0.5s;
 }
 
-.stats-1 {
+#download-rented {
+  background-color: #1a2141;
+  color: #deb865;
+  position: absolute;
+  left: 62vw;
+  top: 200px;
+  font-size: 1.5vw;
+  border-color: #deb865;
+  border: 1px solid;
+  padding: 10px 20px;
+  border-radius: 15px;
+}
+
+#download-rented:hover {
+  cursor: pointer;
+  background-color: #deb865;
+  color: #1a2141;
+  transition: 0.5s;
+}
+
+.stats {
   position: absolute;
   background-color: #deb865;
+  box-shadow: 0 3px 30px #1a2141;
+  text-align: center;
+  color: #1a2141;
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-1 {
   left: 0;
   top: 30vh;
   border-radius: 0 30px;
   width: 130px;
   height: 130px;
-  box-shadow: 0 3px 30px #1a2141;
-  text-align: center;
-  color: #1a2141;
-  display: flex;
-  flex-direction: column;
-  font-size: 2.2vh;
+  font-size: 1.3vw;
 }
 
 .stats-2 {
-  position: absolute;
-  background-color: #deb865;
   left: 50px;
   top: 43vh;
   border-radius: 30px 0 30px 30px;
   width: 110px;
   height: 110px;
-  box-shadow: 0 3px 30px #1a2141;
-  text-align: center;
-  color: #1a2141;
-  display: flex;
-  flex-direction: column;
-  font-size: 2.1vh;
+  font-size: 1.2vw;
+}
+
+.stats-3 {
+  left: 0;
+  top: 54vh;
+  border-radius: 0 30px;
+  width: 130px;
+  height: 130px;
+  font-size: 1.3vw;
+}
+
+.stats-4 {
+  left: 50px;
+  top: 66vh;
+  border-radius: 30px 0 30px 30px;
+  width: 110px;
+  height: 110px;
+  font-size: 1.1vw;
 }
 
 #stat {
-  font-size: 7vh;
+  font-size: 3.5vw;
   font-weight: 600;
 }
 
@@ -107,7 +141,7 @@
   object-fit: contain;
   padding: 0.5rem;
   color: white;
-  font-size: 2.3vh;
+  font-size: 1.1vw;
 }
 
 .user-entry:hover {
@@ -142,7 +176,7 @@ img:hover {
 }
 
 .user-info label {
-  font-size: 2.5vh;
+  font-size: 1.5vw;
 }
 
 .user-info .btn {
@@ -228,8 +262,29 @@ img:hover {
     transition: 0.5s;
   }
 
+  #download-rented {
+    background-color: #1a2141;
+    color: #deb865;
+    text-align: center;
+    font-size: 3vw;
+    border-color: #deb865;
+    border: 1px solid;
+    padding: 10px 20px;
+    border-radius: 15px;
+    display: none;
+  }
+
+  #download-rented:hover {
+    cursor: pointer;
+    background-color: #deb865;
+    color: #1a2141;
+    transition: 0.5s;
+  }
+
   .stats-1,
-  .stats-2 {
+  .stats-2,
+  .stats-3,
+  .stats-4 {
     display: none;
   }
 
@@ -256,13 +311,13 @@ img:hover {
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 80px;
-    width: 60px;
+    height: 100px;
+    width: 80px;
     border-radius: 15px;
     object-fit: contain;
     padding: 0.5rem;
     color: white;
-    font-size: 1.6vh;
+    font-size: 1.8vw;
   }
 
   .user-entry:hover {
@@ -278,8 +333,8 @@ img:hover {
   }
 
   .user-entry img {
-    width: 42px;
-    height: 42px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
   }
 
@@ -472,7 +527,12 @@ button img {
     height: 35px;
     padding: 0 20px 0 20px;
     color: #1a2141;
-    font-size: 1vh;
+    font-size: 2.5vw;
+  }
+
+  #modules-select {
+    height: 35px;
+    padding: 0 20px 0 20px;
   }
 
   .rent-module img {

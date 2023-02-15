@@ -8,6 +8,8 @@ import book from "../assets/book-icon.svg";
 import devices from "../assets/devices-icon.svg";
 import history from "../assets/history-icon.svg";
 
+// The footer component manages the routes to each one of the sections in the app. The user needs to be authenticated in order to be able to have access. This will only display when in mobile.
+
 export default function Footer({ logout }) {
   return (
     <>

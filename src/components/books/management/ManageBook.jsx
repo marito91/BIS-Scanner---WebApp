@@ -34,6 +34,17 @@ export default function ManageBook() {
     condition: "",
   });
 
+  const handleBarcode = (event) => {
+    const value = event.target.value;
+    setBarcode(value);
+  };
+
+  const handleBook = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setBook((book) => ({ ...book, [name]: value }));
+  };
+
   function getBook(barcode) {
     fetch(`${hostbase}/books/getBook`, {
       headers: { "content-type": "application/json" },
@@ -58,16 +69,96 @@ export default function ManageBook() {
       });
   }
 
-  const handleBarcode = (event) => {
-    const value = event.target.value;
-    setBarcode(value);
-  };
+  function updateBook() {
+    const confirm = window.confirm(
+      "Are you sure you want to update this book?"
+    );
+    if (confirm) {
+      fetch(`${hostbase}/books/update`, {
+        headers: { "content-type": "application/json" },
+        method: "POST",
+        body: JSON.stringify({ book }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === "ok") {
+            alert(res.msg);
+            setBook({
+              barcode: "",
+              author: "",
+              title: "",
+              publicationYear: "",
+              isbn: "",
+              price: "",
+              circulationType: "",
+              materialType: "",
+              sublocation: "",
+              vendor: "",
+              dewey: "",
+              condition: "",
+            });
+          } else {
+            alert(res.msg);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert(
+            "There is currently no access to server. Please contact ICT support."
+          );
+        });
+    }
+  }
 
-  const handleBook = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setBook((book) => ({ ...book, [name]: value }));
-  };
+  function deleteBook(barcode) {
+    if (book.title === "") {
+      alert("Please load a book first!");
+    } else {
+      const confirm = window.confirm(
+        "Are you sure you want to DELETE this book?"
+      );
+      if (confirm) {
+        const secondConfirmation = window.confirm(
+          "Are you really sure you want to DELETE THIS book? This will eliminate it from the database... 😱"
+        );
+        if (secondConfirmation) {
+          fetch(`${hostbase}/books/delete`, {
+            headers: { "content-type": "application/json" },
+            method: "POST",
+            body: JSON.stringify({ barcode }),
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.status === "ok") {
+                alert(res.msg);
+                setBook({
+                  barcode: "",
+                  author: "",
+                  title: "",
+                  publicationYear: "",
+                  isbn: "",
+                  price: "",
+                  circulationType: "",
+                  materialType: "",
+                  sublocation: "",
+                  vendor: "",
+                  dewey: "",
+                  condition: "",
+                });
+              } else {
+                alert(res.msg);
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+              alert(
+                "There is currently no access to server. Please contact ICT support."
+              );
+            });
+        }
+      }
+    }
+  }
 
   return (
     <>
@@ -80,6 +171,7 @@ export default function ManageBook() {
           placeholder="T 1294"
           onChange={handleBarcode}
         />
+        <button onClick={() => getBook(barcode)}>Load</button>
       </div>
       <div className="update-book-form">
         <div>
@@ -174,9 +266,8 @@ export default function ManageBook() {
         </div>
       </div>
       <div className="active-tools-btns">
-        <button onClick={() => getBook(barcode)}>Load</button>
-        <button>Update</button>
-        <button>Delete</button>
+        <button onClick={() => updateBook()}>Update</button>
+        <button onClick={() => deleteBook(barcode)}>Delete</button>
       </div>
     </>
   );

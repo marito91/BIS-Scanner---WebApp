@@ -179,6 +179,22 @@ body {
   padding: 0 5px 0 5px;
 }
 
+.autocomplete button {
+  font-size: 18px;
+  border: 1px solid #1a2141;
+  border-radius: 10px;
+  background-color: #1a2141;
+  color: #deb865;
+  padding: 5px 18px 5px 18px;
+}
+
+.autocomplete button:hover {
+  cursor: pointer;
+  background-color: white;
+  color: #1a2141;
+  transition: 0.5s;
+}
+
 input {
   border: 1px solid transparent;
   background-color: #f1f1f1;
@@ -322,13 +338,12 @@ input {
 
 .hovered-item {
   position: fixed;
-  left: 47%;
-  top: 25%;
+  left: 40vw;
+  top: 20vh;
   width: 33vw;
-  height: 52vh;
-  gap: 10px;
+  height: 42vh;
   background-color: #deb865;
-  padding: 1rem 0 1rem 1rem;
+  padding: 1rem 1rem 1rem 1rem;
   border: 3px solid #1a2141;
   border-radius: 10px;
   transition: 0.5s;
@@ -336,7 +351,7 @@ input {
   flex-direction: column;
 }
 
-.hovered-item button {
+/* .hovered-item button {
   color: #deb865;
   background-color: #1a2141;
   border-radius: 8px;
@@ -351,19 +366,33 @@ input {
   background-color: white;
   border: 1px solid #1a2141;
   transition: 0.6s;
+} */
+
+.hovered-item .close-img {
+  position: fixed;
+  top: 21vh;
+  left: 70vw;
 }
 
 .hovered-book {
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: 20px;
+  max-height: 45vh;
+  max-width: 32vw;
 }
+
+/* .hovered-book-btn {
+  display: flex;
+  justify-content: center;
+} */
 
 .hovered-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 1rem 0 1rem 0;
+  max-width: 16vw;
 }
 
 .hovered-column div {
@@ -374,7 +403,7 @@ input {
 }
 
 .hovered-book label {
-  font-size: 14px;
+  font-size: 1vw;
 }
 
 @media (max-width: 932px) {
@@ -423,10 +452,33 @@ input {
 
   .hovered-item {
     position: fixed;
-    left: 15%;
-    top: 35%;
-    width: 75vw;
+    left: 1vw;
+    top: 20vh;
+    width: 98vw;
     height: 54vh;
+  }
+
+  .hovered-item .close-img {
+    position: fixed;
+    top: 21vh;
+    left: 90vw;
+  }
+
+  .hovered-book {
+    max-width: 90vw;
+  }
+
+  .hovered-book {
+    max-height: 55vh;
+  }
+
+  .hovered-book label {
+    font-size: 2.5vw;
+  }
+
+  .hovered-column {
+    width: 50vw;
+    max-width: 90vw;
   }
 
   #toHide {

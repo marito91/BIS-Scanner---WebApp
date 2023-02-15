@@ -1,7 +1,7 @@
 import React from "react";
 import hostbase from "../../hostbase.js";
 
-import Barcode from "../Barcode.jsx";
+// import Barcode from "../Barcode.jsx";
 
 import scanner from "../../assets/scanner.png";
 
@@ -20,9 +20,9 @@ export default function Rent({
   };
 
   // Función que asigna el código de barra leído a la llave (document) del objeto User. Cuando el usuario registra el código de barra leído, esta función se encarga de asignar el código leído dentro a la llave document del objeto User.
-  const handleCode = (code) => {
-    setUser((user) => ({ ...user, document: code }));
-  };
+  // const handleCode = (code) => {
+  //   setUser((user) => ({ ...user, document: code }));
+  // };
 
   // Esta función se encarga de realizar el envío de la información respectiva a los alquileres al backend con las respectivas validaciones.
   function rent() {
@@ -85,9 +85,19 @@ export default function Rent({
     <div className="rent-module">
       <h2 style={{ color: "#172140" }}>Rent Device</h2>
       <div className="modules-forms">
-        <Barcode handleCode={handleCode} user={user} />
+        {/* <Barcode handleCode={handleCode} user={user} /> */}
+        <label>Document</label>
+        <input
+          name="document"
+          value={user.document}
+          type="text"
+          placeholder="Student or teacher document"
+          onChange={handleChange}
+          required
+        ></input>
         <label>Device</label>
         <select
+          id="modules-select"
           name="device"
           onChange={handleChange}
           value={user.device}
