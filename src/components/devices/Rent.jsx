@@ -1,39 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import hostbase from "../../hostbase.js";
 
 // import Barcode from "../Barcode.jsx";
 
 import scanner from "../../assets/scanner.png";
 
-export default function Rent({
-  user,
-  setUser,
-  setActive,
-  updateRented,
-  entryCount,
-}) {
-  // Función que determina los valores que se asignan dentro del objeto User. Dispositivo y número. Se utiliza cuando se va a alquilar un dispositivo.
+export default function Rent({ updateRented, entryCount }) {
+  // This user object, which is managed by states, will contain the information that's sent to server regarding the renting of devices.
+  const [user, setUser] = useState({
+    document: "",
+    device: "",
+    number: "",
+    comments: "",
+  });
+  // The function handlechange() determines the values that will be assigned under the user object when a device is going to be rented.
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setUser((user) => ({ ...user, [name]: value }));
   };
 
-  // Función que asigna el código de barra leído a la llave (document) del objeto User. Cuando el usuario registra el código de barra leído, esta función se encarga de asignar el código leído dentro a la llave document del objeto User.
+  // The function handleCode() is meant to work only when the barcode scanner component is implemented. Since the function is not implemented right now, the code is commented. It will assign the scanned barcode to the user.document key.
   // const handleCode = (code) => {
   //   setUser((user) => ({ ...user, document: code }));
   // };
 
-  // Esta función se encarga de realizar el envío de la información respectiva a los alquileres al backend con las respectivas validaciones.
+  // The rent() function will be in charge of sending the user object information to the server after validating that everything is ok to request a device rental
   function rent() {
-    // Si la llave (document) del objeto user es diferente a un documento válido entonces alerta que se asigne un documento correcto.
+    // If user.document is different from a valid document number, then an alert will be sent asking for a correct number.
     if (user.document === "----------" || user.document === "") {
       alert("Please enter a valid Barcode");
     } else {
-      // No acepta el número del dispositivo si es mayor a 30 o si es menor o igual a 0 dado que no se cuenta con esos dispositivos en biblioteca.
+      // It doesn't accept the device number if is not in the 0-30 range, since this is the actual number of available devices. If the number changes physically in the library or IT department, then this part needs to be adjusted.
       if (user.number > 30 || user.number <= 0) {
         alert("Please enter a valid number between 1 and 30.");
-        // Si todas las validaciones se hacen entonces se comunica con el servidor back y envía la información correspondiente, es decir, el objeto User.
+        // If all validations are ok, then the user object will be sent to the server side.
       } else {
         fetch(`${hostbase}/devices/rent`, {
           headers: { "content-type": "application/json" },
@@ -42,40 +43,25 @@ export default function Rent({
         })
           .then((res) => res.json())
           .then((res) => {
-            // Indica si se pudo o no realizar el alquiler. Existen otras validaciones en backend
+            // Client will receive an alert telling if rental was successful or not.
             alert(res.msg);
-            // Se refresca la lista de rentados
+            // Lists of active rented devices and entries will be updated, and the window will reload after that.
             updateRented();
             entryCount();
             window.location.href = "/devices";
           })
-          // Si hay error de conexión se envía una alerta
+          // If there's an error, an alert asking for IT support will be sent.
           .catch(function () {
             alert(
-              "En este momento no hay conexion al servidor. Por favor solicite soporte a SISTEMAS."
+              "A connection with the server could not be established when trying to rent a device. Please contact ICT support."
             );
           });
-        // Se restauran a string en blanco los valores del objeto user
+        // Values are set to default in the user object again.
         setUser({
           document: "",
           device: "",
           number: "",
-          name: "",
-          section: "",
-          date: "",
-          time: "",
-          email: "",
           comments: "",
-        });
-        setActive({
-          document: "",
-          device: "",
-          number: "",
-          name: "",
-          section: "",
-          date: "",
-          time: "",
-          email: "",
         });
       }
     }

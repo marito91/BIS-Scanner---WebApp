@@ -11,30 +11,17 @@ import "./books/books.css";
 // import library from "../assets/library.png";
 // import list from "../assets/list.png";
 
-export default function Books({ user, setUser }) {
+export default function Books() {
+  // A state is declared which will hold the active component for the books section.
   const [section, setSection] = useState(<></>);
   return (
     <div className="books-section">
       <div className="left-panel">
-        <button
-          onClick={() =>
-            setSection(<Management user={user} setUser={setUser} />)
-          }
-        >
+        <button onClick={() => setSection(<Management />)}>
           Library Management
         </button>
-        <button
-          onClick={() => setSection(<Services user={user} setUser={setUser} />)}
-        >
-          Services
-        </button>
-        <button
-          onClick={() =>
-            setSection(<Circulation user={user} setUser={setUser} />)
-          }
-        >
-          Circulation
-        </button>
+        <button onClick={() => setSection(<Services />)}>Services</button>
+        <button onClick={() => setSection(<Circulation />)}>Circulation</button>
       </div>
       <div className="active-tool">{section}</div>
     </div>

@@ -2,23 +2,10 @@ import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
 export default function ManageBook() {
-  /**
-   * title: 
-  author: 
-  barcode: 
-  circulationType: 
-  isbn
-  materialType: 
-  publicationYear: 
-  price: 
-  sublocation: 
-  vendor: 
-  dewey: 
-  condition:
-   */
-
+  // First, a state is set for the barcode string, which will help for searching in server.
   const [barcode, setBarcode] = useState("");
 
+  // Then, an object which will contain the book information is created. All values are set to null in the initial state.
   const [book, setBook] = useState({
     barcode: "",
     author: "",
@@ -34,17 +21,20 @@ export default function ManageBook() {
     condition: "",
   });
 
+  // The function handleBarcode() will manage the input field for the barcode value.
   const handleBarcode = (event) => {
     const value = event.target.value;
     setBarcode(value);
   };
 
+  // The function handleBook() will manage all of the inputs and select fields in the form regarding the book that is searched.
   const handleBook = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setBook((book) => ({ ...book, [name]: value }));
   };
 
+  // The getBook() function will receive a barcode as params and will use it to search in the database on the server for the book requested.
   function getBook(barcode) {
     fetch(`${hostbase}/books/getBook`, {
       headers: { "content-type": "application/json" },
@@ -53,10 +43,11 @@ export default function ManageBook() {
     })
       .then((res) => res.json())
       .then((res) => {
+        // If the book is found and response from server is ok, an alert will be displayed and the book object will be updated with the information fetched.
         if (res.status === "ok") {
           alert(res.msg);
-          // console.log(res.bookExists);
           setBook(res.bookExists);
+          // If the information is not found, then an alert will be displayed.
         } else {
           alert(res.msg);
         }
@@ -64,11 +55,12 @@ export default function ManageBook() {
       .catch(function (error) {
         console.log(error);
         alert(
-          "There is currently no access to server. Please contact ICT support."
+          "A connection with the server could not be established when trying to search for a book. Please contact ICT support."
         );
       });
   }
 
+  // The updateBook() function will send to the server all of the information to be updated in a book that's part of the collection and that's been already loaded in the fields. The book object's information is sent to the server which then validates with the database and updates based on the new data.
   function updateBook() {
     const confirm = window.confirm(
       "Are you sure you want to update this book?"
@@ -81,6 +73,7 @@ export default function ManageBook() {
       })
         .then((res) => res.json())
         .then((res) => {
+          // If the book is updated in the database and the response from the server is ok, an alert will be displayed and the book object will be set to default again.
           if (res.status === "ok") {
             alert(res.msg);
             setBook({
@@ -97,20 +90,24 @@ export default function ManageBook() {
               dewey: "",
               condition: "",
             });
+            // If the above doesn't work, and the status is Error, then an alert is displayed.
           } else {
             alert(res.msg);
           }
         })
+        // If the connection with the server doesn't work then a message is displayed.
         .catch(function (error) {
           console.log(error);
           alert(
-            "There is currently no access to server. Please contact ICT support."
+            "A connection with the server could not be established when trying to update a book. Please contact ICT support."
           );
         });
     }
   }
 
+  // The deleteBook() function will send to the server the requested book's barcode that's part of the collection and that's been already loaded in the fields. The book object's information is sent to the server which then validates with the database and deletes it.
   function deleteBook(barcode) {
+    // Many validations and confirmations are done first since deleting a book is a big deal.
     if (book.title === "") {
       alert("Please load a book first!");
     } else {
@@ -129,6 +126,7 @@ export default function ManageBook() {
           })
             .then((res) => res.json())
             .then((res) => {
+              // If the book is deleted in the database and the response from the server is ok, an alert will be displayed and the book object will be set to default again.
               if (res.status === "ok") {
                 alert(res.msg);
                 setBook({
@@ -145,14 +143,16 @@ export default function ManageBook() {
                   dewey: "",
                   condition: "",
                 });
+                // If the above doesn't work, and the status is Error, then an alert is displayed.
               } else {
                 alert(res.msg);
               }
             })
+            // If the connection with the server doesn't work then a message is displayed.
             .catch(function (error) {
               console.log(error);
               alert(
-                "There is currently no access to server. Please contact ICT support."
+                "A connection with the server could not be established when trying to delete a book. Please contact ICT support."
               );
             });
         }

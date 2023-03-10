@@ -1,5 +1,6 @@
 import React from "react";
 
+// All of the corresponding media to make the details easier to read is imported.
 import title from "../../../assets/book-icons/title.png";
 import author from "../../../assets/book-icons/author.png";
 import barcodeImg from "../../../assets/book-icons/barcode.png";
@@ -14,6 +15,7 @@ import dewey from "../../../assets/book-icons/dewey.png";
 import condition from "../../../assets/book-icons/condition.png";
 import close from "../../../assets/x.svg";
 
+// Since the component needs information that's passed from the parent, the props for book and setHoveredBook are passed. The details will be extracted from the book's keys, and the setHoveredBook will be used to being set to null when closing the window.
 export default function HoveredBook({ book, setHoveredBook }) {
   return (
     <div className="hovered-item">

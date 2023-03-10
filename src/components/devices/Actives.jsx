@@ -9,14 +9,13 @@ import chromebook from "../../assets/chromebook.png";
 export default function Actives({
   setUser,
   rented,
-  notify,
   active,
   setActive,
   entries,
   updateRented,
 }) {
-  // Esta función permite desplegar la información pertinente del usuario seleccionado. Se pasa el objeto seleccionado de la tabla de rented y asigna la información de este al objeto User con el fin de mostrar cada uno de los datos del objeto.
-  const selectUser = function (user) {
+  // The function selectUser displays the information from a selected user in the User component. It receives an object, splits the name to show only the first one, adds it to the last name and assigns the active state with the object information so that the component shows the information.
+  function selectUser(user) {
     const fname = user.firstName.split(" ");
     setActive({
       name: fname[0] + " " + user.lastName,
@@ -27,42 +26,45 @@ export default function Actives({
       time: user.time,
       email: user.email,
     });
-  };
+  }
 
-  // Esta función se encarga de la devolución de dispositivos. Esta recibe una String que indica el dispositivo que se va a devolver. Realiza el envío de la información al backend con las respectivas validaciones.
+  // The function returnDevice will be in charge of managing the return of a device by sending the device information to the server which then notifies the user and updates the information for client side. The function receives a string that contains the device information.
   function returnDevice(deviceNumber) {
-    // Se separa el String para obtener el tipo de dispositivo y el número.
-    const device = deviceNumber[0];
-    const number = deviceNumber[1];
-    const confirm = window.confirm(
-      `Are you sure the ${device} #${number} is being returned?`
-    );
-    // Se comunica con backend y envía la información
-    if (confirm) {
-      fetch(`${hostbase}/devices/return`, {
-        headers: { "content-type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ device, number }),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          // Indica si se pudo realizar la devolución o no
-          alert(
-            `The device was rented with the following observations: ${res.conditions}`
-          );
-          alert(res.msg);
-          // Se refresca la lista de rentados
-          updateRented();
-          window.location.href = "/devices";
+    console.log(deviceNumber);
+    // The string is split
+    const [device, number] = [deviceNumber[0], deviceNumber[1]];
+    if (device === "") {
+      alert("Please make sure you select a student first.");
+    } else {
+      const confirm = window.confirm(
+        `Are you sure the ${device} #${number} is being returned?`
+      );
+      if (confirm) {
+        fetch(`${hostbase}/devices/return`, {
+          headers: { "content-type": "application/json" },
+          method: "POST",
+          body: JSON.stringify({ device, number }),
         })
-        // Si hay error de conexión se envía una alerta
-        .catch(function () {
-          alert(
-            "En este momento no hay conexion al servidor. Por favor solicite soporte a SISTEMAS."
-          );
-        });
+          .then((res) => res.json())
+          .then((res) => {
+            // Alerts a message that shows what comes from server side including in which conditions the device was rented so that the client can validate if it is being returned in the same conditions.
+            alert(
+              res.msg +
+                `Reminder: This device was rented with the following observations: ${res.conditions}`
+            );
+            // The rented list is updated to refresh the page
+            updateRented();
+            window.location.href = "/devices";
+          })
+          // If there is an error establishing a connection, an alert is sent.
+          .catch(function () {
+            alert(
+              "A connection to the server could not be established when trying to return a device. Please contact ICT Support."
+            );
+          });
+      }
 
-      // Se restauran a string en blanco los valores del objeto user
+      // The objects' keys are returned to their initial values.
       setUser({
         document: "",
         device: "",
@@ -83,29 +85,30 @@ export default function Actives({
         time: "",
         email: "",
       });
-      // Se refresca la lista de rentados
+      // The rented list is updated just in case.
       updateRented();
     }
   }
 
-  function capitalizeName(name) {
-    const names = name.split(" ");
+  // The function arrangeName takes the data coming from server side (first and last names) and capitalizes the first letter of each string so that it can be displayed in the actives list.
+  function arrangeName(strFirst, strLast) {
+    // Strings first values are taken and lowered cased.
+    const first = strFirst.toLowerCase().split(" ")[0];
+    const last = strLast.toLowerCase().split(" ")[0];
+    // The first letters in each string are capitalized after that.
     const namesUpper = [];
-
-    for (const n of names) {
+    for (const n of [first, last]) {
       namesUpper.push(n.replace(n[0], n[0].toUpperCase()));
     }
+    // Finally, both strings are joined and returned by the function to be shown under the devices icons.
     return namesUpper.join(" ");
   }
 
-  function arrangeName(strFirst, strLast) {
-    const first = strFirst.toLowerCase().split(" ")[0];
-    const last = strLast.toLowerCase().split(" ")[0];
-    return capitalizeName(first + " " + last);
-  }
-
+  // Two states are created to show the number of devices contained for each type (iPads, Chromebooks)
   const [ipads, setIpads] = useState([]);
   const [chromebooks, setChromebooks] = useState([]);
+
+  // The information is fetched from the server so that the count can be updated.
   const availableDevicesCount = async () => {
     const response = await fetch(`${hostbase}/devices/available`, {
       headers: { "content-type": "application/json" },
@@ -118,6 +121,7 @@ export default function Actives({
     }
   };
 
+  // When the component mounts, it will show the count of available devices for each type. If not, then it sends an alert asking for support.
   useEffect(() => {
     availableDevicesCount()
       .then((res) => {
@@ -127,24 +131,47 @@ export default function Actives({
       .catch((e) => {
         console.log(e.message);
         alert(
-          "Connection to the server could not be established. Please contact ICT Support."
+          "Connection to the server could not be established when loading available devices. Please contact ICT Support."
         );
       });
   }, []);
 
+  // This function notifies all users via email. A message is sent from the server side to all users.
+  const notifyAll = function () {
+    const sendMsg = window.confirm("Notify every user by email?");
+    if (sendMsg) {
+      if (rented.length === 0) {
+        alert("There are currently no active users.");
+      } else {
+        fetch(`${hostbase}/devices/notification_all`, {
+          headers: { "content-type": "application/json" },
+          method: "POST",
+          body: JSON.stringify({ rented }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            res.status === "Error" ? alert(res.msg) : alert(res.msg); // This is redundant and needs to be changed.
+          })
+          // If there is a connection error, an alert is shown to contact support.
+          .catch(function () {
+            alert(
+              "A connection to the server could not be established while trying to send an email to all users.  Please contact ICT Support."
+            );
+          });
+      }
+    }
+  };
+
   return (
     <div className="active-users">
       <h1>Active Users</h1>
-      <button id="notification-btn" onClick={() => notify()}>
+      <button id="notification-btn" onClick={() => notifyAll()}>
         Send Notification
       </button>
-      {/* <button id="download-rented" onClick={() => console.log("Hello")}>
-        Download Rented List
-      </button> */}
       <div className="active-users-info">
         <div className="stats stats-1">
           <label id="stat">{rented.length}</label>
-          <label>Devices rented!</label>
+          <label>Device{rented.length > 1 ? "s" : ""} rented!</label>
         </div>
         <div className="stats stats-2">
           <label id="stat">{entries.length}</label>
@@ -179,7 +206,7 @@ export default function Actives({
             </div>
           ))}
         </div>
-        <User active={active} notify={notify} returnDevice={returnDevice} />
+        <User active={active} returnDevice={returnDevice} />
       </div>
     </div>
   );

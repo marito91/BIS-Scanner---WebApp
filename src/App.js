@@ -59,7 +59,7 @@ import Books from "./components/Books.jsx";
  *    Spinner: Component that shows while data is being fetched from server side.
  */
 
-// This component (App()) will manage the rest of the application with react router.
+// This component ( -- App() -- ) will manage the rest of the application with react router.
 
 function App() {
   // An object for the user data is created via useState. It will be used across each section accordingly.
@@ -114,11 +114,10 @@ function App() {
           {/* This route leads to the books section, where the user can rent/return books, add/edit/search/delete books from the school database and check the circulation live. The user needs to be logged in to be able to use these tools.  */}
           <Route
             path="/books"
-            element={
-              auth() ? <Books user={user} setUser={setUser} /> : <Restricted />
-            }
+            element={auth() ? <Books /> : <Restricted />}
           ></Route>
         </Routes>
+
         {/* The footer section will be displayed when the client is in mobile. The client will be able to access each section in the app via the icons in this section. */}
         <Footer logout={logout} />
       </BrowserRouter>

@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import hostbase from "../../../hostbase.js";
 
+// Two components are added to this one, Spinner to manage loading times while fetching the collection, and HoveredBook to show details of a selected book from the collection.
 import HoveredBook from "./HoveredBook";
 import Spinner from "./Spinner";
 
 export default function Collection() {
+  // The loading variable state is declared as a flag for the spinner component, which will show while data is fetching.
   const [loading, setLoading] = useState(true);
+
+  // The following state is declared to be used when the user selects a book and wants to display more details about it.
   const [hoveredBook, setHoveredBook] = useState(<></>);
 
+  // A state is declared to manage the array of books which will hold the entire collection.
   const [books, setBooks] = useState([]);
 
+  // The function loadBooks() will fetch the collection from the server's database.
   const loadBooks = async () => {
     const response = await fetch(`${hostbase}/books/search`, {
       headers: { "content-type": "application/json" },
@@ -22,6 +28,7 @@ export default function Collection() {
     }
   };
 
+  // When the component loads, the collection will be loaded from the information that was fetched in the async function loadBooks()
   useEffect(() => {
     loadBooks()
       .then((res) => {
@@ -36,6 +43,7 @@ export default function Collection() {
       });
   }, []);
 
+  // While the information is being fetched from the server, the Spinner will be active and as soon the length of the array is greater than 0, the Spinner will deactivate and the collection will be displayed.
   useEffect(() => {
     if (books.length > 0) {
       setLoading(false);

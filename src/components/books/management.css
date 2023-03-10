@@ -18,20 +18,18 @@
   cursor: pointer;
   transition: 0.5s;
   background-color: #deb865;
-  box-shadow: 0 3px 10px #1a2141;
 }
 
 .book-tools-buttons button:focus {
   cursor: pointer;
   transition: 0.5s;
   background-color: #deb865;
-  box-shadow: 0 3px 30px #1a2141;
 }
 
 .selected-book-tool {
   background-color: #deb865;
   border-radius: 10px;
-  box-shadow: 0 3px 30px #1a2141;
+  box-shadow: #deb865d8 0px 20px 30px -15px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -94,6 +92,7 @@ input {
   font-size: 1vw;
   margin: 5px 0 5px 0;
   border-radius: 10px;
+  border: 1px solid #1a2141;
 }
 
 /* .col-1,
@@ -163,12 +162,6 @@ input {
   flex-direction: column;
 }
 
-* {
-  box-sizing: border-box;
-}
-body {
-  font: 16px Arial;
-}
 .autocomplete {
   /*the container must be positioned relative:*/
   position: relative;
@@ -200,6 +193,7 @@ input {
   background-color: #f1f1f1;
   padding: 10px;
   font-size: 16px;
+  border: 1px solid #1a2141;
 }
 
 .table-container {

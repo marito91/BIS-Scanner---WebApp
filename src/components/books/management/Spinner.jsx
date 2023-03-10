@@ -1,5 +1,6 @@
 import React from "react";
 
+// This component has the only purpose of being displayed while information is being fetched from the server.
 export default function Spinner() {
   return (
     <div className="loading">

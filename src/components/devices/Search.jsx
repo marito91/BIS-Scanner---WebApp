@@ -4,13 +4,13 @@ import hostbase from "../../hostbase.js";
 import search from "../../assets/search.png";
 
 export default function Search({ handleSearch, searchInfo, setSearchInfo }) {
-  // Esta función se encarga de la búsqueda de dispositivos con el fin de encontrar si un dispositivo se encuentra en uso y por quién.
+  // The function searchDevice() is in charge of searching devices to check if they are currently rented and by who.
   function searchDevice() {
-    // Si no se especifica el tipo de dispositivo entonces arroja un mensaje para que ingrese uno válido
+    // If the type of device is not specified, then an alert will be sent prompting for a valid filter.
     if (searchInfo.device === "" || searchInfo.device === "- Device -") {
       alert("Por favor ingrese un tipo de dispositivo.");
     } else {
-      // No acepta el número del dispositivo si es mayor a 30 o si es menor o igual a 0.
+      // It doesn't accept the device number if is not in the 0-30 range, since this is the actual number of available devices. If the number changes physically in the library or IT department, then this part needs to be adjusted.
       if (searchInfo.number > 30 || searchInfo.number <= 0) {
         alert("Please enter a valid number between 1 and 30.");
         setSearchInfo({
@@ -29,16 +29,14 @@ export default function Search({ handleSearch, searchInfo, setSearchInfo }) {
           .then((res) => res.json())
           .then((res) => {
             alert(res.msg);
-            // Se refresca la lista de rentados
-            // updateRented();
           })
-          // Si hay error de conexión se envía una alerta
+          // If there's an error, it will be alerted.
           .catch(function () {
             alert(
-              "En este momento no hay conexion al servidor. Por favor solicite soporte a SISTEMAS."
+              "A connection to server could not be established while trying to search for a device. Please contact ICT Support."
             );
           });
-        // Se restauran a string en blanco los valores del objeto user
+        // The values on the searchInfo object are set to default.
         setSearchInfo({
           document: "",
           date: "",

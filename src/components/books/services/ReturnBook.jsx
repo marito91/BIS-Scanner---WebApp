@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
 export default function ReturnBook() {
+  // To return a book, only the barcode is needed so that's why in this component, the only state to declare is the barcode.
   const [barcode, setBarcode] = useState("");
 
+  // There will be a function that handles the barcode state.
   const handleBarcode = (event) => {
     const value = event.target.value;
     setBarcode(value);
   };
 
+  // The function return book will send the barcode to the server and after the validations it will set the book to available and unassign it from the previous user.
   function returnBook() {
     fetch(`${hostbase}/books/return`, {
       headers: { "content-type": "application/json" },
@@ -17,15 +20,15 @@ export default function ReturnBook() {
     })
       .then((res) => res.json())
       .then((res) => {
-        // Indica si se pudo o no realizar el alquiler. Existen otras validaciones en backend
+        // A message will be displayed regarding if the return could be done or not.
         alert(res.msg);
         setBarcode("");
         // window.location.href = "/books";
       })
-      // Si hay error de conexión se envía una alerta
+      // If there's a connection error, an alert is displayed.
       .catch(function () {
         alert(
-          "En este momento no hay conexion al servidor. Por favor solicite soporte a SISTEMAS."
+          "A connection with the server could not be established while trying to return a book. Please contact ICT Support."
         );
       });
   }
