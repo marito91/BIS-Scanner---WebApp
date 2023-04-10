@@ -3,22 +3,14 @@ import hostbase from "../hostbase.js";
 
 import Actives from "./devices/Actives.jsx";
 import Rent from "./devices/Rent.jsx";
-import Search from "./devices/Search.jsx";
+// import Search from "./devices/Search.jsx";
 import Entries from "./devices/Entries.jsx";
 import "../components/devices/devices.css";
 
-export default function Devices({ user, setUser }) {
+export default function Devices({ setUser, showNotification }) {
   /** Objects used under the devices section
-   * searchInfo : Mananged through states, this object is necessary to search and show information from the server side related to history of rented devices and active devices.
    * active : similar to searchInfo but this object, that also works through state management, shows the information regarding an active device. This will prevent the information to change in different modules.
    */
-  const [searchInfo, setSearchInfo] = useState({
-    document: "",
-    date: "",
-    filter: "",
-    device: "",
-    number: "",
-  });
 
   // Object to show on client side
   const [active, setActive] = useState({
@@ -30,14 +22,8 @@ export default function Devices({ user, setUser }) {
     date: "",
     time: "",
     email: "",
+    conditions: "",
   });
-
-  // The function handleSearch determines the values that are assigned inside the object searchInfo: Device and number. It is used when a device search is done or when entries/history is going to be downloaded.
-  const handleSearch = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setSearchInfo((searchInfo) => ({ ...searchInfo, [name]: value }));
-  };
 
   // This array will contain all of the information of the devices currently rented. It will update with the function updatedRented()
   const [rented, setRented] = useState([]);
@@ -62,6 +48,7 @@ export default function Devices({ user, setUser }) {
   useEffect(() => {
     entryCount()
       .then((res) => {
+        // res.data === undefined ? setEntries([]) : setEntries(res.data);
         setEntries(res.data);
       })
       .catch((e) => {
@@ -89,7 +76,9 @@ export default function Devices({ user, setUser }) {
   useEffect(() => {
     updateRented()
       .then((res) => {
-        setRented(res.data);
+        // res.data === undefined ? setRented([]) : setRented(res.data);
+        // console.log(res.listOfRentedDevices);
+        setRented(res.listOfRentedDevices);
       })
       .catch((e) => {
         console.log(e.message);
@@ -108,23 +97,15 @@ export default function Devices({ user, setUser }) {
         setActive={setActive}
         entries={entries}
         updateRented={updateRented}
+        showNotification={showNotification}
       />
       <div className="modules">
         <Rent
-          setActive={setActive}
           updateRented={updateRented}
           entryCount={entryCount}
+          showNotification={showNotification}
         />
-        <Search
-          searchInfo={searchInfo}
-          setSearchInfo={setSearchInfo}
-          handleSearch={handleSearch}
-        />
-        <Entries
-          searchInfo={searchInfo}
-          setSearchInfo={setSearchInfo}
-          handleSearch={handleSearch}
-        />
+        <Entries showNotification={showNotification} />
       </div>
     </div>
   );

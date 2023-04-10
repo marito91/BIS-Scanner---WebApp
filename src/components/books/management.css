@@ -45,10 +45,10 @@
   width: 32px;
 }
 
-.selected-book-tool label {
+/* .selected-book-tool label {
   color: #1a2141;
   font-size: 20px;
-}
+} */
 
 .new-book-form {
   display: flex;
@@ -394,6 +394,14 @@ input {
   flex-direction: row;
   align-items: center;
   gap: 10px;
+}
+
+.hovered-column div:hover {
+  background-color: white;
+  border-radius: 10px;
+  gap: 20px;
+  font-size: 1.1vw;
+  padding: 5px;
 }
 
 .hovered-book label {

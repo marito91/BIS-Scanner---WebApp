@@ -7,12 +7,11 @@ export default function Dashboard() {
   const name = loggedUser.first;
   return (
     <div style={{ padding: "3rem" }}>
-      <h1>Welcome {name}</h1>
-      <h2>This section is not available yet.</h2>
+      <h1>Welcome, {name}</h1>
       <h2>
-        Please click on either the{" "}
-        <strong style={{ color: "blue" }}>Devices</strong> or the{" "}
-        <strong style={{ color: "blue" }}>Books</strong> tab above.
+        Please head on to either the{" "}
+        <strong style={{ color: "red" }}>Devices</strong> or the{" "}
+        <strong style={{ color: "red" }}>Books</strong> section.
       </h2>
     </div>
   );

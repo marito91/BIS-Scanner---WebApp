@@ -2,20 +2,21 @@ import React from "react";
 import hostbase from "../../hostbase.js";
 
 import back from "../../assets/back.png";
-import email from "../../assets/email.png";
+import send from "../../assets/send.png";
 import contact from "../../assets/contact-icon.svg";
 import building from "../../assets/building-icon.svg";
 import devices from "../../assets/devices-icon.svg";
 import calendar from "../../assets/calendar-icon.svg";
+import condition from "../../assets/condition-icon.svg";
 
-export default function User({ returnDevice, active }) {
+export default function User({ returnDevice, active, showNotification }) {
   const device = active.device + " #" + active.number;
   const date = "Rented on " + active.date + " at " + active.time;
 
   // This function notifies a selected student via email. First it checks if the user object contains the actual information needed to connect to server side. After confirming everything is okay and the client also confirms, a message is sent from the server side to the selected user.
   function notifyOne(user) {
     if (user.email === "") {
-      alert("Please select a user first!");
+      showNotification("Error", "Please select a user first!");
     } else {
       const sendMsg = window.confirm(
         `Do you want to send an email notification to ${user.name}?`
@@ -28,11 +29,18 @@ export default function User({ returnDevice, active }) {
         })
           .then((res) => res.json())
           .then((res) => {
-            res.status === "Error" ? alert(res.msg) : alert(res.msg); // This is redundant and needs to be changed.
+            res.status === "Error"
+              ? showNotification(
+                  "Error",
+                  "There was a problem trying to send the email. Please try again and if the problem persists, call ICT Support."
+                )
+              : showNotification("Notification", res.msg);
           })
           // If there is a connection error, an alert is shown to contact support.
-          .catch(function () {
-            alert(
+          .catch(function (e) {
+            console.log(e.message);
+            showNotification(
+              "Error",
               "A connection to the server could not be established while trying to send an email. Please contact ICT Support."
             );
           });
@@ -58,6 +66,10 @@ export default function User({ returnDevice, active }) {
         <img src={calendar} alt="" />
         <label>{active.name === "" ? "" : date}</label>
       </div>
+      <div className="entry">
+        <img src={condition} alt="" />
+        <label>{active.conditions === "" ? "" : active.conditions}</label>
+      </div>
       <div className="btn">
         <button onClick={() => returnDevice([active.device, active.number])}>
           Return
@@ -70,7 +82,7 @@ export default function User({ returnDevice, active }) {
           alt=""
           onClick={() => returnDevice([active.device, active.number])}
         />
-        <img src={email} alt="" onClick={() => notifyOne(active)} />
+        <img src={send} alt="" onClick={() => notifyOne(active)} />
       </div>
     </div>
   );

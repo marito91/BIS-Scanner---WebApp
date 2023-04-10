@@ -1,139 +1,132 @@
 import React, { useState } from "react";
 import hostbase from "../../hostbase.js";
 
-import folder from "../../assets/folder.png";
-import excel from "../../assets/excel.png";
+import load from "../../assets/load.png";
+import download from "../../assets/download.png";
 
-export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
+export default function Entries({ showNotification }) {
   // A state showing what will be the table of entries the user wants to consult is created. It will update with the button/function downloadEntries()
   const [history, setHistory] = useState([]);
+  const [searchInfo, setSearchInfo] = useState({
+    document: null,
+    date: null,
+    device: null,
+    number: 0,
+  });
+  // const [document, setDocument] = useState("");
+  // const [date, setDate] = useState(null);
+  // const [device, setDevice] = useState({ device: "", number: 0 });
 
-  // Functions that download entries are separated by filter so that it can be easier to modify each one of them separately. The main downloadEntries() will decide which one of these functions will be called when the button is pressed.
-  function downloadDocumentEntries() {
-    if (searchInfo.document === "") {
-      alert("Please enter a valid document.");
-    } else {
-      // If document was selected and all validations are ok, the information will be brought from the server.
-      fetch(`${hostbase}/devices/entries/document`, {
+  const [desiredFilter, setDesiredFilter] = useState(<></>);
+
+  // The function handleSearch determines the values that are assigned inside the object searchInfo: Device and number. It is used when a device search is done or when entries/history is going to be downloaded.
+  const handleSearch = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setSearchInfo((searchInfo) => ({ ...searchInfo, [name]: value }));
+  };
+
+  const handleFilter = (event) => {
+    setDesiredFilter(event.target.value);
+  };
+
+  // This chain of if-else sets the state for the inputs that are going to be displayed for the user based on what they select.
+  let fields;
+  if (desiredFilter === "document") {
+    fields = (
+      <>
+        <label>Document</label>
+        <input
+          name="document"
+          value={searchInfo.document || ""}
+          type="text"
+          placeholder="User document"
+          onChange={handleSearch}
+        ></input>
+      </>
+    );
+  } else if (desiredFilter === "date") {
+    fields = (
+      <>
+        <label>Date</label>
+        <label htmlFor="">
+          Not available at this time! Please choose another filter.
+        </label>
+        {/* <input
+          name="date"
+          value={searchInfo.date}
+          maxLength="10"
+          type="date"
+          placeholder="Date in mm/dd/yyyy format"
+          onChange={handleSearch}
+        ></input> */}
+      </>
+    );
+  } else if (desiredFilter === "device") {
+    fields = (
+      <>
+        <label>Device</label>
+        <select
+          id="modules-select"
+          name="device"
+          onChange={handleSearch}
+          value={searchInfo.device || ""}
+          required
+        >
+          <option>- Device -</option>
+          <option>ChromeBook</option>
+          <option>iPad</option>
+        </select>
+        <label>Number</label>
+        <input
+          name="number"
+          value={searchInfo.number || ""}
+          type="number"
+          placeholder="1, 16, 28, etc..."
+          onChange={handleSearch}
+          required
+        ></input>
+      </>
+    );
+  }
+
+  // This function will send the searchInfo data to server so that the desired information can be fetched.
+  async function loadData() {
+    try {
+      const response = await fetch(`${hostbase}/devices/entries`, {
         headers: { "content-type": "application/json" },
         method: "POST",
         body: JSON.stringify({ searchInfo }),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          // The table is updated with the data brought from the server. User will no be able to download it.
-          setHistory(res.data);
-          alert(
-            `Entries for ${searchInfo.document} were loaded succesfully. Please proceed to download them.`
-          );
-        })
-        // If there is an error establishing connection, then an alert asking for help will be sent.
-        .catch(function () {
-          alert(
-            "Connection to the server could not be established when trying to search by document. Please contact ICT support."
-          );
-        });
-      // The states are updated to their initial values.
-      setHistory([]);
-      setSearchInfo({
-        document: "",
-        date: "",
-        filter: "",
-        device: "",
-        number: "",
       });
-    }
-  }
-
-  function downloadDateEntries() {
-    if (searchInfo.date === "") {
-      alert("Please enter a valid date.");
-    } else {
-      // If date was selected and all validations are ok, the information will be brought from the server.
-      fetch(`${hostbase}/devices/entries/date`, {
-        headers: { "content-type": "application/json" },
-        method: "POST",
-        body: JSON.stringify({ searchInfo }),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          // The table is updated with the data brought from the server. User will no be able to download it.
-          setHistory(res.data);
-          alert(
-            `Entries for ${searchInfo.date} were loaded succesfully. Please proceed to download them.`
-          );
-        })
-        // If there is an error establishing connection, then an alert asking for help will be sent.
-        .catch(function () {
-          alert(
-            "Connection to the server could not be established when trying to search by date. Please contact ICT support."
-          );
-        });
-      // The states are updated to their initial values.
-      setHistory([]);
-      setSearchInfo({
-        document: "",
-        date: "",
-        filter: "",
-        device: "",
-        number: "",
-      });
-    }
-  }
-
-  function downloadRentedEntries() {
-    // If rented was selected and all validations are ok, the information will be brought from the server.
-    // This type of consultation doesn't need a search params so in this case the method will be a GET.
-    fetch(`${hostbase}/devices/rented`, {
-      headers: { "content-type": "application/json" },
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        // The table is updated with the data brought from the server. User will no be able to download it.
-        setHistory(res.data);
-        alert(
-          `Entries for rented devices were loaded succesfully. Please proceed to download them.`
-        );
-      })
-      // If there is an error establishing connection, then an alert asking for help will be sent.
-      .catch(function () {
-        alert(
-          "Connection to the server could not be established when trying to search by rented. Please contact ICT support."
-        );
-      });
-    // The states are updated to their initial values.
-    setHistory([]);
-    setSearchInfo({
-      document: "",
-      date: "",
-      filter: "",
-      device: "",
-      number: "",
-    });
-  }
-
-  // The function downloadEntries brings the information from the server by sending a filter chosen by the user, and the corresponding information to that filter (document or date).
-  function downloadEntries() {
-    // First, it validates that a filter was selected for the search of information.
-    if (searchInfo.filter === "" || searchInfo.filter === "- Filter -") {
-      alert("Please choose a filter for your search.");
-    } else {
-      // Then it validates after choosing the filter, that the corresponding information is also being input by the user.
-      if (searchInfo.filter === "Document") {
-        downloadDocumentEntries();
-      } else if (searchInfo.filter === "Date") {
-        downloadDateEntries();
-      } else if (searchInfo.filter === "Rented") {
-        downloadRentedEntries();
+      if (!response.ok) {
+        throw new Error(`Failed to load data: ${response.status}`);
       }
+      const result = await response.json();
+      if (result.data.length === 0) {
+        showNotification("Error", "No data found.");
+        return;
+      }
+      setHistory(result.data);
+      showNotification(
+        "Entries loaded",
+        `Entries were loaded succesfully. Please proceed to download them.`
+      );
+      setSearchInfo({
+        document: null,
+        date: null,
+        device: null,
+        number: 0,
+      });
+    } catch (error) {
+      showNotification("Error", `Failed to load data: ${error.message}`);
     }
   }
 
   // When the information is fetched from server side and is loaded and ready to download, a button will be available to call the downloadFile() function, which will ask for confirmation after validation and create a table organizing all of the information that was previously fetched.
-  const downloadFile = function (arr) {
+  const downloadFile = function (arr, fileName) {
     if (arr.length === 0) {
-      alert(
+      showNotification(
+        "Error",
         "No available information to download. Please choose a filter and load the information."
       );
     } else {
@@ -141,26 +134,22 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
         "Do you want to download the selected entries?"
       );
       if (confirmation) {
-        const newArr = arr.map((entry) => [
-          entry.grade,
-          entry.firstName,
-          entry.lastName,
-          entry.code,
-          entry.date,
-          entry.time,
-          entry.device,
-          entry.number,
-          entry.type,
-        ]);
+        const header = Object.keys(arr[0]);
+        const newArr = arr.map((entry) => header.map((key) => entry[key]));
 
         let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += header.join(",") + "\r\n";
         newArr.forEach(function (entry) {
           let row = entry.join(",");
           csvContent += row + "\r\n";
         });
 
         let encodedURI = encodeURI(csvContent);
-        window.open(encodedURI);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedURI);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
       }
     }
   };
@@ -173,40 +162,30 @@ export default function Entries({ handleSearch, searchInfo, setSearchInfo }) {
         <select
           id="modules-select"
           name="filter"
-          onChange={handleSearch}
-          value={searchInfo.filter}
+          onChange={handleFilter}
+          value={desiredFilter}
           required
         >
           <option>- Filter -</option>
-          <option>Document</option>
-          <option>Date</option>
-          <option>Rented</option>
+          <option value="document">Document</option>
+          <option value="date">Date</option>
+          <option value="device">Device</option>
         </select>
-        <label>Document</label>
-        <input
-          name="document"
-          value={searchInfo.document}
-          type="text"
-          placeholder="User document"
-          onChange={handleSearch}
-        ></input>
-        <label>Date</label>
-        <input
-          name="date"
-          value={searchInfo.date}
-          maxLength="10"
-          type="date"
-          placeholder="Date in mm/dd/yyyy format"
-          onChange={handleSearch}
-        ></input>
+        {fields}
       </div>
       <div className="modules-btns">
-        <button onClick={() => downloadEntries()}>Load Data</button>
-        <img src={folder} alt="" onClick={() => downloadEntries()} />
+        <button onClick={() => loadData()}>Load Data</button>
+        <img src={load} alt="" onClick={() => loadData()} />
         {history.length !== 0 ? (
           <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
-            <button onClick={() => downloadFile(history)}>Download</button>
-            <img src={excel} alt="" onClick={() => downloadFile(history)} />
+            <button onClick={() => downloadFile(history, "KC Report")}>
+              Download
+            </button>
+            <img
+              src={download}
+              alt=""
+              onClick={() => downloadFile(history, "KC Report")}
+            />
           </div>
         ) : (
           <></>

@@ -75,6 +75,39 @@ function App() {
     comments: "",
   });
 
+  // This functions is meant to be used across the app so that when the client needs to be notified about something, a pop up modal shows up showing the message. The function will receive 2 strings: a Title and the Message to show.
+  function showNotification(title, message) {
+    const modalContainer = document.createElement("div");
+    modalContainer.classList.add("modal-container");
+
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+
+    const modalTitle = document.createElement("div");
+    modalTitle.classList.add("modal-title");
+    modalTitle.innerText = title;
+
+    const modalMessage = document.createElement("div");
+    modalMessage.classList.add("modal-message");
+    modalMessage.innerText = message;
+
+    const modalButton = document.createElement("button");
+    modalButton.classList.add("modal-button");
+    modalButton.innerText = "OK";
+
+    modalButton.addEventListener("click", () => {
+      modalContainer.remove();
+    });
+
+    modal.appendChild(modalTitle);
+    modal.appendChild(modalMessage);
+    modal.appendChild(modalButton);
+
+    modalContainer.appendChild(modal);
+
+    document.body.appendChild(modalContainer);
+  }
+
   // This function works based on the information stored in localstorage. It removes the token from the localstorage and reloads the page so that the user logs out.
   function logout() {
     const confirmation = window.confirm("Do you want to log out?");
@@ -104,7 +137,11 @@ function App() {
             path="/devices"
             element={
               auth() ? (
-                <Devices user={user} setUser={setUser} />
+                <Devices
+                  user={user}
+                  setUser={setUser}
+                  showNotification={showNotification}
+                />
               ) : (
                 <Restricted />
               )

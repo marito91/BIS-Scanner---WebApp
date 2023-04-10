@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import hostbase from "../../hostbase.js";
 
-// import Barcode from "../Barcode.jsx";
+import assign from "../../assets/assign.png";
 
-import scanner from "../../assets/scanner.png";
-
-export default function Rent({ updateRented, entryCount }) {
+export default function Rent({ updateRented, entryCount, showNotification }) {
   // This user object, which is managed by states, will contain the information that's sent to server regarding the renting of devices.
   const [user, setUser] = useState({
     document: "",
     device: "",
-    number: "",
-    comments: "",
+    number: 0,
+    conditions: "",
   });
   // The function handlechange() determines the values that will be assigned under the user object when a device is going to be rented.
   const handleChange = (event) => {
@@ -29,11 +27,14 @@ export default function Rent({ updateRented, entryCount }) {
   function rent() {
     // If user.document is different from a valid document number, then an alert will be sent asking for a correct number.
     if (user.document === "----------" || user.document === "") {
-      alert("Please enter a valid Barcode");
+      showNotification("Error", "Please enter a valid Barcode");
     } else {
       // It doesn't accept the device number if is not in the 0-30 range, since this is the actual number of available devices. If the number changes physically in the library or IT department, then this part needs to be adjusted.
       if (user.number > 30 || user.number <= 0) {
-        alert("Please enter a valid number between 1 and 30.");
+        showNotification(
+          "Error",
+          "Please enter a valid number between 1 and 30."
+        );
         // If all validations are ok, then the user object will be sent to the server side.
       } else {
         fetch(`${hostbase}/devices/rent`, {
@@ -44,15 +45,19 @@ export default function Rent({ updateRented, entryCount }) {
           .then((res) => res.json())
           .then((res) => {
             // Client will receive an alert telling if rental was successful or not.
-            alert(res.msg);
+            showNotification("Alert", res.msg);
             // Lists of active rented devices and entries will be updated, and the window will reload after that.
             updateRented();
             entryCount();
-            window.location.href = "/devices";
+            setTimeout(() => {
+              window.location.href = "/devices";
+            }, 4000); // delay the navigation for 3 seconds (adjust the delay time as needed)
           })
           // If there's an error, an alert asking for IT support will be sent.
-          .catch(function () {
-            alert(
+          .catch(function (e) {
+            console.log(e.message);
+            showNotification(
+              "Error",
               "A connection with the server could not be established when trying to rent a device. Please contact ICT support."
             );
           });
@@ -60,8 +65,8 @@ export default function Rent({ updateRented, entryCount }) {
         setUser({
           document: "",
           device: "",
-          number: "",
-          comments: "",
+          number: 0,
+          conditions: "",
         });
       }
     }
@@ -69,7 +74,7 @@ export default function Rent({ updateRented, entryCount }) {
 
   return (
     <div className="rent-module">
-      <h2 style={{ color: "#172140" }}>Rent Device</h2>
+      <h2>Rent</h2>
       <div className="modules-forms">
         {/* <Barcode handleCode={handleCode} user={user} /> */}
         <label>Document</label>
@@ -97,15 +102,15 @@ export default function Rent({ updateRented, entryCount }) {
         <input
           name="number"
           value={user.number}
-          type="text"
+          type="number"
           placeholder="1, 16, 28, etc..."
           onChange={handleChange}
           required
         ></input>
         <label>Observations</label>
         <textarea
-          name="comments"
-          value={user.comments}
+          name="conditions"
+          value={user.conditions}
           type="text"
           rows={9}
           placeholder="Good conditions or broken screen, small damage, etc."
@@ -115,7 +120,7 @@ export default function Rent({ updateRented, entryCount }) {
       </div>
       <div className="modules-btns">
         <button onClick={() => rent()}>Rent</button>
-        <img src={scanner} alt="" onClick={() => rent()} />
+        <img src={assign} alt="" onClick={() => rent()} />
       </div>
     </div>
   );
