@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Management from "./books/Management.jsx";
 import Services from "./books/Services.jsx";
 import Circulation from "./books/Circulation.jsx";
+import Collection from "./books/Collection.jsx";
 
 import "./books/books.css";
 
@@ -11,17 +12,40 @@ import "./books/books.css";
 // import library from "../assets/library.png";
 // import list from "../assets/list.png";
 
-export default function Books() {
+export default function Books({ showNotification }) {
   // A state is declared which will hold the active component for the books section.
   const [section, setSection] = useState(<></>);
   return (
     <div className="books-section">
       <div className="left-panel">
-        <button onClick={() => setSection(<Management />)}>
+        <button
+          onClick={() =>
+            setSection(<Management showNotification={showNotification} />)
+          }
+        >
           Library Management
         </button>
-        <button onClick={() => setSection(<Services />)}>Services</button>
-        <button onClick={() => setSection(<Circulation />)}>Circulation</button>
+        <button
+          onClick={() =>
+            setSection(<Collection showNotification={showNotification} />)
+          }
+        >
+          Collection
+        </button>
+        <button
+          onClick={() =>
+            setSection(<Services showNotification={showNotification} />)
+          }
+        >
+          Services
+        </button>
+        <button
+          onClick={() =>
+            setSection(<Circulation showNotification={showNotification} />)
+          }
+        >
+          Circulation
+        </button>
       </div>
       <div className="active-tool">{section}</div>
     </div>

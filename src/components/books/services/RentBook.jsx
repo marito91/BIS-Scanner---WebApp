@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
-export default function RentBook({ user }) {
+export default function RentBook({ showNotification }) {
   /** The initial states are declared.
    * Document = Which will manage the client's document number.
    * DueDate = Which will assign the date in which the book has to be returned.
@@ -39,14 +39,15 @@ export default function RentBook({ user }) {
       .then((res) => res.json())
       .then((res) => {
         // Despite if the book could or couldn't be rented, the app sends an alert and sets the previous states to default, except the dueDate, which will probably be the same when renting in big groups.
-        alert(res.msg);
+        showNotification("Alert", res.msg);
         setBarcode("");
         setDocument("");
         // window.location.href = "/books";
       })
       // If there's an error connecting to server, an alert is displayed.
       .catch(function () {
-        alert(
+        showNotification(
+          "Error",
           "A connnection with the server could not be established while trying to rent a book. Please contact ICT Support."
         );
         setBarcode("");
@@ -79,7 +80,9 @@ export default function RentBook({ user }) {
         value={dueDate}
         onChange={handleDueDate}
       />
-      <button onClick={() => rentBook()}>Rent Book</button>
+      <div style={{ margin: "auto", paddingTop: "15px" }}>
+        <button onClick={() => rentBook()}>Rent Book</button>
+      </div>
     </div>
   );
 }

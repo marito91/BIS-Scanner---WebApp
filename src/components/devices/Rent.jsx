@@ -26,7 +26,11 @@ export default function Rent({ updateRented, entryCount, showNotification }) {
   // The rent() function will be in charge of sending the user object information to the server after validating that everything is ok to request a device rental
   function rent() {
     // If user.document is different from a valid document number, then an alert will be sent asking for a correct number.
-    if (user.document === "----------" || user.document === "") {
+    if (
+      user.document === "----------" ||
+      user.document === "" ||
+      isNaN(user.document)
+    ) {
       showNotification("Error", "Please enter a valid Barcode");
     } else {
       // It doesn't accept the device number if is not in the 0-30 range, since this is the actual number of available devices. If the number changes physically in the library or IT department, then this part needs to be adjusted.

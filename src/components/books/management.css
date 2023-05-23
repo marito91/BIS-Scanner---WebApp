@@ -17,38 +17,33 @@
 .book-tools-buttons button:hover {
   cursor: pointer;
   transition: 0.5s;
-  background-color: #deb865;
+  background-color: var(--main-color);
+  color: var(--secondary-color);
 }
 
 .book-tools-buttons button:focus {
-  cursor: pointer;
-  transition: 0.5s;
-  background-color: #deb865;
+  background-color: var(--main-color);
+  color: var(--secondary-color);
 }
 
 .selected-book-tool {
-  background-color: #deb865;
+  background-color: var(--main-color);
   border-radius: 10px;
-  box-shadow: #deb865d8 0px 20px 30px -15px;
+  box-shadow: var(--main-color) 0px 20px 30px -10px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 10px;
 }
 
-.selected-book-tool h1 {
+.selected-book-tool h3 {
   text-align: center;
-  color: #1a2141;
+  color: var(--secondary-color);
 }
 
 .selected-book-tool img {
   width: 32px;
 }
-
-/* .selected-book-tool label {
-  color: #1a2141;
-  font-size: 20px;
-} */
 
 .new-book-form {
   display: flex;
@@ -78,6 +73,7 @@ input {
   gap: 20px;
   padding: 1rem 1rem 1rem 1rem;
   justify-content: center;
+  color: white;
 }
 
 .update-book-form div {
@@ -95,20 +91,6 @@ input {
   border: 1px solid #1a2141;
 }
 
-/* .col-1,
-.col-2 {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.col-2 div,
-.col-3 div {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-} */
-
 .active-tools-btns {
   text-align: center;
   padding: 1rem;
@@ -119,7 +101,7 @@ input {
 
 .active-tools-btns button {
   font-size: 18px;
-  border: 1px solid #1a2141;
+  border: 1px solid var(--secondary-color);
   border-radius: 10px;
   background-color: #1a2141;
   color: #deb865;
@@ -128,7 +110,7 @@ input {
 
 .active-tools-btns button:hover {
   cursor: pointer;
-  background-color: white;
+  background-color: var(--secondary-color);
   color: #1a2141;
   transition: 0.5s;
 }
@@ -170,11 +152,12 @@ input {
   gap: 10px;
   align-items: center;
   padding: 0 5px 0 5px;
+  color: white;
 }
 
 .autocomplete button {
   font-size: 18px;
-  border: 1px solid #1a2141;
+  border: 1px solid var(--secondary-color);
   border-radius: 10px;
   background-color: #1a2141;
   color: #deb865;
@@ -183,7 +166,7 @@ input {
 
 .autocomplete button:hover {
   cursor: pointer;
-  background-color: white;
+  background-color: var(--secondary-color);
   color: #1a2141;
   transition: 0.5s;
 }
@@ -201,13 +184,14 @@ input {
   overflow-y: scroll;
   height: 600px;
 }
+
 #collection {
   border-collapse: collapse;
   width: 100%;
 }
 
 #collection td {
-  border: 1px solid #1a2141;
+  border: 1px solid var(--main-color);
   padding: 8px;
 }
 
@@ -216,7 +200,11 @@ input {
 }
 
 #collection tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: var(--secondary-color);
+}
+
+#collection tr:nth-child(odd) {
+  background-color: white;
 }
 
 #collection tr:hover {
@@ -239,13 +227,13 @@ input {
   cursor: pointer;
   color: blue;
 }
-
-/* LOADING ANIMATION CSS */
+/*
+LOADING ANIMATION CSS
 .loading {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  color: #1a2141;
+  color: var(--secondary-color);
   text-align: center;
   align-items: center;
   padding: 0 0 30px 0;
@@ -271,7 +259,7 @@ input {
   width: 6px;
   height: 18px;
   border-radius: 20%;
-  background: #1a2141;
+  background: var(--secondary-color);
 }
 .lds-spinner div:nth-child(1) {
   transform: rotate(0deg);
@@ -329,83 +317,26 @@ input {
     opacity: 0;
   }
 }
+*/
 
-.hovered-item {
-  position: fixed;
-  left: 40vw;
-  top: 20vh;
-  width: 33vw;
-  height: 42vh;
-  background-color: #deb865;
-  padding: 1rem 1rem 1rem 1rem;
-  border: 3px solid #1a2141;
+.download {
+  text-align: center;
+  margin: 10px 0 20px 0;
+}
+.download button {
+  font-size: 1.5vw;
+  border: 1px solid var(--secondary-color);
   border-radius: 10px;
-  transition: 0.5s;
-  display: flex;
-  flex-direction: column;
+  background-color: var(--main-color);
+  color: var(--secondary-color);
+  padding: 10px 18px 10px 18px;
 }
 
-/* .hovered-item button {
-  color: #deb865;
-  background-color: #1a2141;
-  border-radius: 8px;
-  border: 1px solid #1a2141;
-  padding: 6px 0 6px 0;
-  width: 50%;
-}
-
-.hovered-item button:hover {
+.download button:hover {
   cursor: pointer;
-  color: #1a2141;
-  background-color: white;
-  border: 1px solid #1a2141;
-  transition: 0.6s;
-} */
-
-.hovered-item .close-img {
-  position: fixed;
-  top: 21vh;
-  left: 70vw;
-}
-
-.hovered-book {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  max-height: 45vh;
-  max-width: 32vw;
-}
-
-/* .hovered-book-btn {
-  display: flex;
-  justify-content: center;
-} */
-
-.hovered-column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 1rem 0 1rem 0;
-  max-width: 16vw;
-}
-
-.hovered-column div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-.hovered-column div:hover {
-  background-color: white;
-  border-radius: 10px;
-  gap: 20px;
-  font-size: 1.1vw;
-  padding: 5px;
-}
-
-.hovered-book label {
-  font-size: 1vw;
+  background-color: var(--secondary-color);
+  color: var(--main-color);
+  transition: 0.5s;
 }
 
 @media (max-width: 932px) {
@@ -424,6 +355,7 @@ input {
     display: flex;
     flex-direction: column;
     gap: 0;
+    color: white;
   }
 
   .update-book-form div {
@@ -446,44 +378,22 @@ input {
 
   .book-tools-buttons {
     display: flex;
-    gap: 30px;
+    gap: 5px;
     padding: 2vh 0 3vh 0;
-    justify-content: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    /* flex-wrap: wrap; */
   }
 
-  .hovered-item {
-    position: fixed;
-    left: 1vw;
-    top: 20vh;
-    width: 98vw;
-    height: 54vh;
+  .book-tools-buttons button {
+    padding: 0.5em;
+    font-size: 5vw;
   }
 
-  .hovered-item .close-img {
-    position: fixed;
-    top: 21vh;
-    left: 90vw;
-  }
-
-  .hovered-book {
-    max-width: 90vw;
-  }
-
-  .hovered-book {
-    max-height: 55vh;
-  }
-
-  .hovered-book label {
-    font-size: 2.5vw;
-  }
-
-  .hovered-column {
-    width: 50vw;
-    max-width: 90vw;
+  .download button {
+    font-size: 3vw;
   }
 
   #toHide {
     display: none;
   }
-} ;
+}

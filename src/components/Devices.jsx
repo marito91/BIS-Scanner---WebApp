@@ -29,7 +29,7 @@ export default function Devices({ setUser, showNotification }) {
   const [rented, setRented] = useState([]);
 
   // This table will be used to count the number of all time rented devices in the application.
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState(0);
 
   // The async function entryCount() will bring the information of rented devices from the server side.
   const entryCount = async () => {
@@ -76,9 +76,10 @@ export default function Devices({ setUser, showNotification }) {
   useEffect(() => {
     updateRented()
       .then((res) => {
-        // res.data === undefined ? setRented([]) : setRented(res.data);
         // console.log(res.listOfRentedDevices);
-        setRented(res.listOfRentedDevices);
+        res.listOfRentedDevices === undefined
+          ? setRented([])
+          : setRented(res.listOfRentedDevices);
       })
       .catch((e) => {
         console.log(e.message);

@@ -151,7 +151,13 @@ function App() {
           {/* This route leads to the books section, where the user can rent/return books, add/edit/search/delete books from the school database and check the circulation live. The user needs to be logged in to be able to use these tools.  */}
           <Route
             path="/books"
-            element={auth() ? <Books /> : <Restricted />}
+            element={
+              auth() ? (
+                <Books showNotification={showNotification} />
+              ) : (
+                <Restricted />
+              )
+            }
           ></Route>
         </Routes>
 

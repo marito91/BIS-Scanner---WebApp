@@ -4,7 +4,7 @@ import hostbase from "../../hostbase.js";
 import Group from "./circulation/Group.jsx";
 import "../books/circulation.css";
 
-export default function Circulation() {
+export default function Circulation({ showNotification }) {
   // First, all of the sections available in the school are declared inside an array called sections.
   const sections = [
     "3",
@@ -61,6 +61,10 @@ export default function Circulation() {
       method: "GET",
     });
     if (!response.ok) {
+      showNotification(
+        "Error",
+        "Rented Books data could not be fetched. Please contact ICT support."
+      );
       throw new Error("Data coud not be fetched!");
     } else {
       return response.json();
@@ -74,9 +78,13 @@ export default function Circulation() {
       })
       .catch((e) => {
         console.log(e.message);
-        alert(
-          "En este momento no hay conexión al servidor. Por favor solicitar soporte a SISTEMAS."
-        );
+        // alert(
+        //   "Rented Books data could not be fetched. Please contact ICT support."
+        // );
+        // showNotification(
+        //   "Error",
+        //   "Rented Books data could not be fetched. Please contact ICT support."
+        // );
       });
   }, []);
   return (
@@ -108,7 +116,11 @@ export default function Circulation() {
         )}
       </div>
       {/* The Group component holds the table which displays the active users from the selected section. */}
-      <Group rentedBooks={rentedBooks} selectedGrade={selectedGrade} />
+      <Group
+        rentedBooks={rentedBooks}
+        showNotification={showNotification}
+        selectedGrade={selectedGrade}
+      />
     </>
   );
 }

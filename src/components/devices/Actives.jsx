@@ -192,8 +192,8 @@ export default function Actives({
           <label>Device{rented.length !== 1 ? "s" : ""} rented!</label>
         </div>
         <div className="stats stats-2">
-          <label id="stat">{entries.length}</label>
-          <label>Rents so far!</label>
+          <label id="stat">{entries}</label>
+          <label>Entries so far!</label>
         </div>
         <div className="stats stats-3">
           <label id="stat">{ipads.length}</label>

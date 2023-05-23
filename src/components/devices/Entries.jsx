@@ -123,7 +123,7 @@ export default function Entries({ showNotification }) {
   }
 
   // When the information is fetched from server side and is loaded and ready to download, a button will be available to call the downloadFile() function, which will ask for confirmation after validation and create a table organizing all of the information that was previously fetched.
-  const downloadFile = function (arr, fileName) {
+  const downloadFile = async function (arr, fileName) {
     if (arr.length === 0) {
       showNotification(
         "Error",
@@ -135,7 +135,13 @@ export default function Entries({ showNotification }) {
       );
       if (confirmation) {
         const header = Object.keys(arr[0]);
-        const newArr = arr.map((entry) => header.map((key) => entry[key]));
+        // const newArr = arr.map((entry) => header.map((key) => entry[key]));
+        const newArr = await arr.map((entry) =>
+          header.map((key) => {
+            const value = entry[key];
+            return typeof value === "string" ? `"${value}"` : value;
+          })
+        );
 
         let csvContent = "data:text/csv;charset=utf-8,";
         csvContent += header.join(",") + "\r\n";
@@ -158,7 +164,7 @@ export default function Entries({ showNotification }) {
     <div className="entries-module">
       <h2>Entries</h2>
       <div className="modules-forms">
-        <label>Filter</label>
+        <label>Filter by:</label>
         <select
           id="modules-select"
           name="filter"

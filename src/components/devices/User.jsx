@@ -11,7 +11,8 @@ import condition from "../../assets/condition-icon.svg";
 
 export default function User({ returnDevice, active, showNotification }) {
   const device = active.device + " #" + active.number;
-  const date = "Rented on " + active.date + " at " + active.time;
+  // const date = "Rented on " + active.date + " at " + active.time;
+  const date = "Rented on " + active.date;
 
   // This function notifies a selected student via email. First it checks if the user object contains the actual information needed to connect to server side. After confirming everything is okay and the client also confirms, a message is sent from the server side to the selected user.
   function notifyOne(user) {
