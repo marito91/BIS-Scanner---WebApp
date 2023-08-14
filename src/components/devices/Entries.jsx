@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import hostbase from "../../hostbase.js";
 
-import load from "../../assets/load.png";
-import download from "../../assets/download.png";
-
 export default function Entries({ showNotification }) {
   // A state showing what will be the table of entries the user wants to consult is created. It will update with the button/function downloadEntries()
   const [history, setHistory] = useState([]);
@@ -131,31 +128,46 @@ export default function Entries({ showNotification }) {
       );
     } else {
       const confirmation = window.confirm(
-        "Do you want to download the selected entries?"
+        "Do you want to download the entries currently loaded?"
       );
       if (confirmation) {
         const header = Object.keys(arr[0]);
-        // const newArr = arr.map((entry) => header.map((key) => entry[key]));
-        const newArr = await arr.map((entry) =>
+        const newArr = arr.map((entry) =>
           header.map((key) => {
             const value = entry[key];
-            return typeof value === "string" ? `"${value}"` : value;
+            if (Array.isArray(value)) {
+              return JSON.stringify(value);
+            } else if (
+              typeof value === "boolean" ||
+              typeof value === "number"
+            ) {
+              return value;
+            } else if (typeof value === "string") {
+              return `"${value.replace(/"/g, '""')}"`;
+            } else {
+              return value || ""; // Replace empty values with a placeholder
+            }
           })
         );
 
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += header.join(",") + "\r\n";
-        newArr.forEach(function (entry) {
-          let row = entry.join(",");
-          csvContent += row + "\r\n";
-        });
+        const rows = newArr.map((entry) => entry.join(","));
+        const csvContent = header.join(",") + "\r\n" + rows.join("\r\n");
 
-        let encodedURI = encodeURI(csvContent);
-        let link = document.createElement("a");
-        link.setAttribute("href", encodedURI);
-        link.setAttribute("download", fileName);
+        const blob = new Blob([csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", encodeURIComponent(fileName));
         document.body.appendChild(link);
         link.click();
+
+        // Clean up the URL object after the download starts
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+        }, 100);
       }
     }
   };
@@ -181,17 +193,11 @@ export default function Entries({ showNotification }) {
       </div>
       <div className="modules-btns">
         <button onClick={() => loadData()}>Load Data</button>
-        <img src={load} alt="" onClick={() => loadData()} />
         {history.length !== 0 ? (
           <div style={{ display: "flex", flexDirection: "row", gap: "20px" }}>
             <button onClick={() => downloadFile(history, "KC Report")}>
               Download
             </button>
-            <img
-              src={download}
-              alt=""
-              onClick={() => downloadFile(history, "KC Report")}
-            />
           </div>
         ) : (
           <></>

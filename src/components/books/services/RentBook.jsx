@@ -81,7 +81,7 @@ export default function RentBook({ showNotification }) {
         onChange={handleDueDate}
       />
       <div style={{ margin: "auto", paddingTop: "15px" }}>
-        <button onClick={() => rentBook()}>Rent Book</button>
+        <button onClick={() => rentBook()}>Rent</button>
       </div>
     </div>
   );

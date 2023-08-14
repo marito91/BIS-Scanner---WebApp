@@ -1,10 +1,19 @@
+.search-bar {
+  margin: 15px 25px 0 25px;
+}
+
+.search-bar input {
+  padding: 1.2em;
+}
+
 .collection {
-  margin: 25px 0 15px 0;
-  border-radius: 20px;
+  margin: 20px 0 15px 0;
+  border: 1px solid black;
+  border-radius: 10px;
   background-color: var(--main-color);
   box-shadow: var(--main-color) 0px 20px 30px -10px;
   padding: 0 0 0 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   overflow-y: scroll;
   height: 640px;
 }
@@ -70,6 +79,7 @@ label:hover {
   display: flex;
   flex-direction: row;
   margin: 30px 0 10px 0;
+  padding: 0 35px 0 35px;
 }
 
 #info {
@@ -88,7 +98,7 @@ label:hover {
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 0 8em 0 9em;
+  margin: 0 1em 0 1em;
 }
 
 .summary {
@@ -110,21 +120,100 @@ label:hover {
   color: white;
 }
 
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  margin: 20px 10px;
+}
+
+.pagination button {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  color: var(--main-color);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 1.9vh;
+}
+
+.pagination button:disabled {
+  color: gray;
+  cursor: auto;
+  text-decoration: none;
+}
+
 @media (max-width: 932px) {
-  /* .hovered-item {
-    position: fixed;
-    left: 1vw;
-    top: 20vh;
-    width: 98vw;
-    height: 54vh;
-  } */
+  .search-bar {
+    padding: 0;
+    margin: 5px 20px;
+  }
+
+  .book {
+    padding: 0 20px;
+  }
+
+  .book img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .book label {
+    font-size: 0.8em;
+  }
+
+  #title {
+    font-size: 1.2em;
+    font-weight: bolder;
+  }
+
+  .book-main {
+    padding: 0;
+  }
 
   .book-main div {
-    margin: 0 1rem 0 1rem;
+    margin: 0 0.5rem;
+    font-size: small;
+    justify-content: center;
+  }
+
+  .summary {
+    font-size: small;
   }
 
   .hovered-column {
     width: 50vw;
     max-width: 90vw;
+  }
+
+  .collection {
+    height: 370px;
+    margin: 7px 0;
+  }
+
+  .hovered-item {
+    height: auto;
+  }
+
+  .book-info {
+    margin: 0;
+    padding: 0;
+  }
+
+  .book-main {
+    margin: 0;
+    padding: 0;
+  }
+
+  .hovered-item p {
+    font-size: 12px;
+  }
+
+  .download {
+    margin: 0;
+    padding: 0;
   }
 }

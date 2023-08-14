@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import hostbase from "../../hostbase.js";
 
-import assign from "../../assets/assign.png";
-
 export default function Rent({ updateRented, entryCount, showNotification }) {
   // This user object, which is managed by states, will contain the information that's sent to server regarding the renting of devices.
   const [user, setUser] = useState({
@@ -113,6 +111,7 @@ export default function Rent({ updateRented, entryCount, showNotification }) {
         ></input>
         <label>Observations</label>
         <textarea
+          style={{ fontSize: "16px" }} // This is done because when using mobile it zooms.
           name="conditions"
           value={user.conditions}
           type="text"
@@ -124,7 +123,6 @@ export default function Rent({ updateRented, entryCount, showNotification }) {
       </div>
       <div className="modules-btns">
         <button onClick={() => rent()}>Rent</button>
-        <img src={assign} alt="" onClick={() => rent()} />
       </div>
     </div>
   );

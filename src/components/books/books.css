@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: row;
   border-top: 1px solid gray;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
   width: 100%;
+  height: auto;
 }
 
 .left-panel {
-  width: 25%;
+  width: 20%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -15,15 +16,22 @@
   text-align: left;
   padding: 1rem 0 1rem 0;
   border-right: 1px solid gray;
-  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  /* box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); */
+  height: auto;
+}
+
+.books-section h1 {
+  padding: 0 20px;
+  color: var(--main-color);
 }
 
 .left-panel button {
   border: none;
   background-color: white;
+  border: 1px solid var(--main-color);
   text-align: left;
   padding: 15px 12px 15px 12px;
-  font-size: 3.2vh;
+  font-size: 1.5vw;
   color: #1a2141;
   margin: 10px 20px 10px 20px;
 }
@@ -33,13 +41,20 @@
   background-color: #1a2141;
   color: #deb865;
   transition: 0.5s;
-  border-radius: 10px;
+  box-shadow: 0 3px 10px #1a2141;
+}
+
+.left-panel .active {
+  background-color: #1a2141;
+  color: #deb865;
   box-shadow: 0 3px 10px #1a2141;
 }
 
 .active-tool {
-  width: 75%;
+  width: 80%;
+  height: auto;
   padding: 2rem;
+  /* overflow: scroll; */
 }
 
 /* Media query for phones/tablets */
@@ -48,18 +63,25 @@
     display: flex;
     flex-direction: column;
     border-top: 1px solid gray;
+    box-shadow: none;
+    border-bottom: none;
   }
 
   .left-panel {
     display: flex;
-    flex-direction: row;
-    gap: 2px;
+    flex-direction: column;
+    gap: 0;
     /* justify-content: center; */
     border: none;
-    width: 100%;
+    margin: auto;
+    width: 60%;
     /* height: 100%; */
     box-shadow: none;
     justify-content: center;
+  }
+
+  .left-panel h1 {
+    display: none;
   }
 
   .left-panel button {
@@ -69,20 +91,25 @@
     padding: 6px 8px 6px 8px;
     margin: 10px 0 10px 0;
     font-size: 1.8vh;
-    color: #1a2141;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
   }
 
   .left-panel button:hover {
     cursor: pointer;
     background-color: #1a2141;
     color: #deb865;
-    /* transition: 0.5s; */
-    border-radius: 10px;
+    box-shadow: 0 3px 10px #1a2141;
+  }
+
+  .left-panel .active {
+    background-color: #1a2141;
+    color: #deb865;
     box-shadow: 0 3px 10px #1a2141;
   }
 
   .active-tool {
     width: 100%;
-    padding: 1rem 1rem 5rem 1rem;
+    padding: 0.2rem 1rem 3rem 1rem;
   }
 }

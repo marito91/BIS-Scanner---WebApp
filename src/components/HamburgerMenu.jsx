@@ -4,32 +4,41 @@ import { Link } from "react-router-dom";
 export default function HamburgerMenu({ logout }) {
   const [showLinks, setShowLinks] = useState(false);
 
-  return (
-    <div className="hamburger-menu">
-      {/* Hamburger icon */}
-      <div className="hamburger-icon" onClick={() => setShowLinks(!showLinks)}>
-        <div className="line"></div>
-        <div className="line"></div>
-        <div className="line"></div>
-      </div>
+  const closeMenuAndLogout = () => {
+    setShowLinks(false);
+    logout();
+  };
 
-      {/* Links */}
+  return (
+    <>
+      <input id="toggle" type="checkbox" checked={showLinks}></input>
+
+      <label
+        htmlFor="toggle"
+        className={`hamburger ${showLinks ? "active" : ""}`}
+        onClick={() => setShowLinks(!showLinks)}
+      >
+        <div className="top-bun"></div>
+        <div className="meat"></div>
+        <div className="bottom-bun"></div>
+      </label>
+
       {showLinks && (
         <div className="links">
-          <Link to="/Home" onClick={() => setShowLinks(!showLinks)}>
+          <Link to="/Home" onClick={() => setShowLinks(false)}>
             Home
           </Link>
-          <Link to="/books" onClick={() => setShowLinks(!showLinks)}>
+          <Link to="/books" onClick={() => setShowLinks(false)}>
             Books
           </Link>
-          <Link to="/devices" onClick={() => setShowLinks(!showLinks)}>
+          <Link to="/devices" onClick={() => setShowLinks(false)}>
             Devices
           </Link>
-          <a href="#logout" onClick={() => logout()}>
+          <a href="#logout" onClick={closeMenuAndLogout}>
             Logout
           </a>
         </div>
       )}
-    </div>
+    </>
   );
 }

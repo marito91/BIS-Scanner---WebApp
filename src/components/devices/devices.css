@@ -9,8 +9,6 @@
   margin: 35px 30px 15px 30px;
   border-radius: 20px;
   background-color: var(--main-color);
-  /* border: 1px solid var(--main-color); */
-  /* box-shadow: 10px 13px 10px var(--main-color); */
   box-shadow: var(--main-color) 0px 20px 30px -10px;
   padding: 0 0 0 0;
 }
@@ -31,7 +29,6 @@
   border-color: var(--secondary-color);
   border: 1px solid;
   padding: 10px 20px;
-  border-radius: 15px;
 }
 
 #notification-btn:hover {
@@ -51,7 +48,6 @@
   border-color: var(--secondary-color);
   border: 1px solid;
   padding: 10px 20px;
-  border-radius: 15px;
 }
 
 #download-rented:hover {
@@ -143,7 +139,7 @@
   align-items: center;
   text-align: center;
   gap: 10px;
-  width: 100px;
+  width: 110px;
   border-radius: 15px;
   object-fit: contain;
   padding: 0.5rem;
@@ -195,12 +191,7 @@ img:hover {
   padding: 15px 0 15px 0;
 }
 
-.btn-icons img {
-  display: none;
-}
-
 .user-info button {
-  border-radius: 15px;
   color: var(--main-color);
   background-color: var(--secondary-color);
   font-size: 2.5vh;
@@ -248,7 +239,7 @@ img:hover {
   .active-users h1 {
     color: var(--secondary-color);
     font-size: 5vh;
-    padding: 20px 0 0 0;
+    padding: 2px 0 0 0;
     text-align: center;
   }
 
@@ -260,7 +251,6 @@ img:hover {
     border-color: var(--secondary-color);
     border: 1px solid;
     padding: 10px 20px;
-    border-radius: 15px;
     display: none;
   }
 
@@ -279,7 +269,6 @@ img:hover {
     border-color: var(--secondary-color);
     border: 1px solid;
     padding: 10px 20px;
-    border-radius: 15px;
     display: none;
   }
 
@@ -312,7 +301,7 @@ img:hover {
     gap: 5px;
     text-align: center;
     flex-wrap: wrap;
-    height: 280px;
+    height: 200px;
     overflow: auto;
     margin: 0 0 20px 20px;
   }
@@ -331,7 +320,7 @@ img:hover {
     padding: 0.2rem;
     margin: 0;
     color: white;
-    font-size: 0.8em;
+    font-size: 0.7em;
     word-wrap: break-all;
   }
 
@@ -371,10 +360,6 @@ img:hover {
     font-size: 2vh;
   }
 
-  .btn button {
-    display: none;
-  }
-
   .btn-icons {
     display: flex;
     justify-content: center;
@@ -396,11 +381,6 @@ img:hover {
     gap: 10px;
     margin: 20px 0 5px 0;
   }
-}
-.devices-section input,
-textarea,
-select {
-  border-radius: 10px;
 }
 
 .devices-section textarea {
@@ -431,7 +411,6 @@ select {
   border-color: var(--secondary-color);
   border: 1px solid;
   padding: 5px 20px;
-  border-radius: 15px;
 }
 
 .modules button:hover {
@@ -528,24 +507,18 @@ button img {
     width: auto;
   }
 
-  .modules button {
-    display: none;
-  }
-
   .rent-module button {
-    background-color: var(--secondary-color);
-    color: var(--main-color);
+    background-color: var(--main-color);
+    color: var(--secondary-color);
     font-size: 3vh;
-    border-color: var(--main-color);
-    border: 1px solid;
+    border: 1px solid var(--secondary-color);
     padding: 5px 20px;
-    border-radius: 15px;
   }
 
   .rent-module button:hover {
     cursor: pointer;
-    background-color: var(--main-color);
-    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    color: var(--main-color);
     transition: 0.5s;
   }
 

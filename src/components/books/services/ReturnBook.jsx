@@ -50,7 +50,7 @@ export default function ReturnBook({ showNotification }) {
         onChange={handleBarcode}
       />
       <div style={{ margin: "auto", paddingTop: "15px" }}>
-        <button onClick={() => returnBook()}>Return Book</button>
+        <button onClick={() => returnBook()}>Return</button>
       </div>
     </div>
   );

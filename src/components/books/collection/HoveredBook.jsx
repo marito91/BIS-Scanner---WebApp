@@ -6,14 +6,22 @@ import cover from "../../../assets/cover.png";
 import "../../books/collection.css";
 
 // Since the component needs information that's passed from the parent, the props for book and setHoveredBook are passed. The details will be extracted from the book's keys, and the setHoveredBook will be used to being set to null when closing the window.
-export default function HoveredBook({ book, setHoveredBook }) {
+export default function HoveredBook({
+  book,
+  setHoveredBook,
+  setShowCollection,
+}) {
   // const dueDate = book.rentalHistory[book.rentalHistory.length - 1].dueDate;
   const dueDate =
     book.rentalHistory && book.rentalHistory.length > 0
       ? book.rentalHistory[book.rentalHistory.length - 1].dueDate
       : undefined;
 
-  console.log(book);
+  function closeBookSummary() {
+    setHoveredBook(<></>);
+    setShowCollection(true);
+  }
+
   return (
     <>
       <div className="selected-book" style={{ textAlign: "center" }}>
@@ -78,8 +86,9 @@ export default function HoveredBook({ book, setHoveredBook }) {
             {!book.available ? (dueDate ? " " + dueDate : "N/A") : " Yes"}
           </h4>
         </div>
-        <div className="download" style={{ margin: "20px 0 20px 0" }}>
-          <button onClick={() => setHoveredBook(<></>)}>Close</button>
+        <div className="download">
+          {/* <button onClick={() => setHoveredBook(<></>)}>Close</button> */}
+          <button onClick={() => closeBookSummary()}>Close</button>
         </div>
       </div>
     </>

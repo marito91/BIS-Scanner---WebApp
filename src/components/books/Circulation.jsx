@@ -7,26 +7,27 @@ import "../books/circulation.css";
 export default function Circulation({ showNotification }) {
   // First, all of the sections available in the school are declared inside an array called sections.
   const sections = [
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-    "13",
-    "PREESCOLAR",
-    "PRIMARIA",
-    "SECUNDARIA",
-    "ADMINISTRATIVA",
+    { value: "", text: "--Choose a grade or section--" },
+    { value: "3", text: "3" },
+    { value: "4", text: "4" },
+    { value: "5", text: "5" },
+    { value: "6", text: "6" },
+    { value: "7", text: "7" },
+    { value: "8", text: "8" },
+    { value: "9", text: "9" },
+    { value: "10", text: "10" },
+    { value: "11", text: "11" },
+    { value: "12", text: "12" },
+    { value: "13", text: "13" },
+    { value: "PREESCOLAR", text: "PREESCOLAR" },
+    { value: "PRIMARIA", text: "PRIMARIA" },
+    { value: "SECUNDARIA", text: "SECUNDARIA" },
+    { value: "ADMINISTRATIVA", text: "ADMINISTRATIVA" },
   ];
 
   // Then the staff sections are declared inside another array to make a comparison later on.
   const staffSections = [
-    0,
+    "",
     "PREESCOLAR",
     "PRIMARIA",
     "SECUNDARIA",
@@ -40,20 +41,21 @@ export default function Circulation({ showNotification }) {
    * selectedGrade = Which will manage the selected grade for the students sections.
    */
   const [rentedBooks, setRentedBooks] = useState([]);
-  const [section, setSection] = useState(0);
+  const [section, setSection] = useState(sections[0].value);
   const [selectedGrade, setSelectedGrade] = useState("");
 
   // The following function handles which section will be displayed.
-  function handleSection(selected) {
+  const handleSection = (event) => {
+    // console.log(event.target.value);
     // It checks if the staffSections includes the params that's passed through the function. If it does then the selectedGrade to be displayed will only be the section, since they don't contain grades.
-    if (staffSections.includes(selected)) {
-      setSelectedGrade(selected);
-      setSection(0);
+    if (staffSections.includes(event.target.value)) {
+      setSelectedGrade(event.target.value);
+      setSection(sections[0].value);
       // If by the other hand, the params is not included in the staffSections, it means it is a student grade and a class needs to be selected.
     } else {
-      setSection(selected);
+      setSection(event.target.value);
     }
-  }
+  };
 
   const checkRented = async () => {
     const response = await fetch(`${hostbase}/books/rented`, {
@@ -86,17 +88,19 @@ export default function Circulation({ showNotification }) {
         //   "Rented Books data could not be fetched. Please contact ICT support."
         // );
       });
-  }, []);
+  });
   return (
     <>
       <div className="circulation-sections">
         {/* The sections array is mapped in buttons, so that the user can choose which section it wants to see. */}
         <div>
-          {sections.map((number) => (
-            <button key={number} onClick={() => handleSection(number)}>
-              {number}
-            </button>
-          ))}
+          <select name="" id="section-handler" onChange={handleSection}>
+            {sections.map((number) => (
+              <option key={number.value} value={number.value}>
+                {number.text}
+              </option>
+            ))}
+          </select>
         </div>
         {/* If the selected section is not a staff section, then 3 new buttons will appear to select a class (A,B,C)*/}
         {staffSections.includes(section) ? (

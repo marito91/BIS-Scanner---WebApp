@@ -75,6 +75,24 @@ export default function Login({ setModal }) {
         });
     }
   }
+
+  // function requestPassword() {
+  //   // Fetches information from server side via the POST method.
+  //   fetch(`${hostbase}/users/request_password`, {
+  //     headers: { "content-type": "application/json" },
+  //     method: "POST",
+  //     body: JSON.stringify({ localUser }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       // If the function works on server side, the token will be set in the local storage and the localUser will reset. The function will also automatically send the user to the dashboard page.
+  //       if (res.status === "ok") {
+  //         console.log("Password sent");
+  //       } else {
+  //         console.log("Password not found!");
+  //       }
+  //     });
+  // }
   return (
     <div className="container">
       <div className="center">
@@ -105,8 +123,9 @@ export default function Login({ setModal }) {
           </div>
           <div
             className="pass"
-            onClick={() =>
-              alert("If you forgot your password please contact support!")
+            onClick={
+              () => alert("If you forgot your password please contact support!")
+              // requestPassword()
             }
           >
             Forgot Password?

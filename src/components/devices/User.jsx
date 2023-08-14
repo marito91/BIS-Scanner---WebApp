@@ -1,8 +1,6 @@
 import React from "react";
 import hostbase from "../../hostbase.js";
 
-import back from "../../assets/back.png";
-import send from "../../assets/send.png";
 import contact from "../../assets/contact-icon.svg";
 import building from "../../assets/building-icon.svg";
 import devices from "../../assets/devices-icon.svg";
@@ -76,14 +74,6 @@ export default function User({ returnDevice, active, showNotification }) {
           Return
         </button>
         <button onClick={() => notifyOne(active)}>Remind</button>
-      </div>
-      <div className="btn-icons">
-        <img
-          src={back}
-          alt=""
-          onClick={() => returnDevice([active.device, active.number])}
-        />
-        <img src={send} alt="" onClick={() => notifyOne(active)} />
       </div>
     </div>
   );

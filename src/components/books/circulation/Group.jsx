@@ -3,8 +3,6 @@ import hostbase from "../../../hostbase.js";
 
 import "../../books/circulation.css";
 
-import mail from "../../../assets/email.png";
-
 // This component receives 2 props: rentedBooks which contains all the active rentedBooks, and selecteGrade which is the string that decides what section/grade/class is going to be displayed.
 export default function Group({
   rentedBooks,
@@ -42,12 +40,12 @@ export default function Group({
   }
 
   return (
-    <table className="classroom">
+    <table className="">
       <thead>
         <tr>
           <th style={{ borderRadius: "10px 0 0 0" }}>Name</th>
           <th>Rented Book</th>
-          <th>Date Rented</th>
+          <th>Due Date</th>
           <th style={{ borderRadius: "0 10px 0 0" }}>Email</th>
         </tr>
       </thead>
@@ -55,12 +53,21 @@ export default function Group({
         {/* The table array with the selected grade is mapped so that the user can see all active rented books from the selected section. */}
         {tableToDisplay.map((user) => (
           <tr key={user.email}>
-            <td>{user.name + " " + user.lastName}</td>
-            <td>{user.title}</td>
-            <td>{user.dateRented}</td>
+            <td>
+              <span>Name</span>
+              {user.name + " " + user.lastName}
+            </td>
+            <td>
+              <span>Rented Book</span>
+              {user.title}
+            </td>
+            <td>
+              <span>Due Date</span>
+              {user.bookHistory[user.bookHistory.length - 1].dueDate}
+            </td>
             <td id="email" onClick={() => notifyUser(user)}>
-              {/* {user.email}  */}
-              <img id="email" src={mail} alt="" />
+              <span>Email</span>
+              {user.email}
             </td>
           </tr>
         ))}
