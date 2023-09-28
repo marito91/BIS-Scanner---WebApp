@@ -32,7 +32,7 @@ export default function Actives({
 
   // The function returnDevice will be in charge of managing the return of a device by sending the device information to the server which then notifies the user and updates the information for client side. The function receives a string that contains the device information.
   function returnDevice(rentedDevice) {
-    console.log(rentedDevice);
+    // console.log(rentedDevice);
     // The string is split
     const [device, number] = [...rentedDevice];
     if (device === "") {
@@ -165,7 +165,6 @@ export default function Actives({
         })
           .then((res) => res.json())
           .then((res) => {
-            // res.status === "Error" ? alert(res.msg) : alert(res.msg); // This is redundant and needs to be changed.
             showNotification("Alert", res.msg);
           })
           // If there is a connection error, an alert is shown to contact support.

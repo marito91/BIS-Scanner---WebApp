@@ -210,19 +210,11 @@ export default function Collection({ showNotification, userType }) {
     //
     <div>
       {loading ? (
-        <Spinner />
+        <Spinner message={"Loading collection"} />
       ) : (
         <>
           {showCollection ? (
             <>
-              {/* <div style={{ textAlign: "center" }}>
-                <input
-                  style={{ fontSize: "16px" }}
-                  type="text"
-                  placeholder="Looking for something specific?"
-                  onChange={handleInput}
-                ></input>
-              </div> */}
               <div className="collection">
                 <div className="search-bar">
                   <input

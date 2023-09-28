@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
-export default function RentBook({ showNotification }) {
+export default function RentBook({ showNotification, admin }) {
   /** The initial states are declared.
    * Document = Which will manage the client's document number.
    * DueDate = Which will assign the date in which the book has to be returned.
@@ -34,12 +34,16 @@ export default function RentBook({ showNotification }) {
     fetch(`${hostbase}/books/rent`, {
       headers: { "content-type": "application/json" },
       method: "POST",
-      body: JSON.stringify({ document, barcode, dueDate }),
+      body: JSON.stringify({ document, barcode, dueDate, admin }),
     })
       .then((res) => res.json())
       .then((res) => {
         // Despite if the book could or couldn't be rented, the app sends an alert and sets the previous states to default, except the dueDate, which will probably be the same when renting in big groups.
-        showNotification("Alert", res.msg);
+        if (res.status.toLowerCase() === "error") {
+          showNotification("Error", res.msg);
+        } else {
+          showNotification("Alert", res.msg);
+        }
         setBarcode("");
         setDocument("");
         // window.location.href = "/books";

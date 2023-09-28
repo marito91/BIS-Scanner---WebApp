@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
-export default function ReturnBook({ showNotification }) {
+export default function ReturnBook({ showNotification, admin }) {
   // To return a book, only the barcode is needed so that's why in this component, the only state to declare is the barcode.
   const [barcode, setBarcode] = useState("");
 
@@ -20,7 +20,7 @@ export default function ReturnBook({ showNotification }) {
       fetch(`${hostbase}/books/return`, {
         headers: { "content-type": "application/json" },
         method: "POST",
-        body: JSON.stringify({ barcode }),
+        body: JSON.stringify({ barcode, admin }),
       })
         .then((res) => res.json())
         .then((res) => {

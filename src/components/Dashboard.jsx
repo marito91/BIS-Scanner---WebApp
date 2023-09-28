@@ -6,7 +6,6 @@ export default function Dashboard() {
   const token = localStorage.getItem("token");
   const loggedUser = jwtDecode(token);
   const name = loggedUser.first;
-  console.log(loggedUser);
 
   const [blockedUsers, setBlockedUsers] = useState([]);
 

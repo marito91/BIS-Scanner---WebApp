@@ -61,6 +61,20 @@ table td span {
   left: 0;
 }
 
+table td:hover {
+  cursor: default;
+}
+
+.title-modal {
+  position: fixed;
+  top: 40%;
+  left: 60%;
+  background-color: var(--main-color);
+  color: white;
+  padding: 10px 35px;
+  border-radius: 10px;
+}
+
 /* Simple CSS for flexbox table on mobile */
 @media (max-width: 800px) {
   table thead {

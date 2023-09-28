@@ -7,6 +7,7 @@ import Services from "./books/Services.jsx";
 import TextBooks from "./books/TextBooks.jsx";
 import Circulation from "./books/Circulation.jsx";
 import Collection from "./books/Collection.jsx";
+import TextBookCirculation from "./books/circulation/TextBookCirculation.jsx";
 
 import "./books/books.css";
 
@@ -15,6 +16,7 @@ export default function Books({ showNotification }) {
   const token = localStorage.getItem("token");
   const loggedUser = jwtDecode(token);
   const userType = loggedUser.userType;
+  const admin = loggedUser.first + " " + loggedUser.last;
 
   // A state is declared which will hold the active component for the books section. It is set to the collection by default.
   const [activeTool, setActiveTool] = useState("collection");
@@ -42,16 +44,22 @@ export default function Books({ showNotification }) {
           Services
         </button>
         <button
-          className={activeTool === "textbooks" ? "active" : ""}
-          onClick={() => setActiveTool("textbooks")}
-        >
-          Text Books
-        </button>
-        <button
           className={activeTool === "circulation" ? "active" : ""}
           onClick={() => setActiveTool("circulation")}
         >
-          Circulation
+          Books Circulation
+        </button>
+        <button
+          className={activeTool === "textbooks" ? "active" : ""}
+          onClick={() => setActiveTool("textbooks")}
+        >
+          Textbooks
+        </button>
+        <button
+          className={activeTool === "textbookcirculation" ? "active" : ""}
+          onClick={() => setActiveTool("textbookcirculation")}
+        >
+          Textbook Circulation
         </button>
       </div>
       {/* <div className="active-tool">{section}</div> */}
@@ -66,10 +74,16 @@ export default function Books({ showNotification }) {
           <Services showNotification={showNotification} />
         ) : null}
         {activeTool === "textbooks" ? (
-          <TextBooks showNotification={showNotification} />
+          <TextBooks showNotification={showNotification} admin={admin} />
         ) : null}
         {activeTool === "circulation" ? (
           <Circulation showNotification={showNotification} />
+        ) : null}
+        {activeTool === "textbookcirculation" ? (
+          <TextBookCirculation
+            showNotification={showNotification}
+            admin={admin}
+          />
         ) : null}
       </div>
     </div>

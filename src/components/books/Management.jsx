@@ -46,7 +46,7 @@ export default function Management({ showNotification }) {
     fetch(`${hostbase}/books/getBook`, {
       headers: { "content-type": "application/json" },
       method: "POST",
-      body: JSON.stringify({ barcode }),
+      body: JSON.stringify({ barcode, name }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -61,7 +61,8 @@ export default function Management({ showNotification }) {
       })
       .catch(function (error) {
         console.log(error);
-        alert(
+        showNotification(
+          "ERROR",
           "A connection with the server could not be established when trying to search for a book. Please contact ICT support."
         );
       });
@@ -82,7 +83,7 @@ export default function Management({ showNotification }) {
         .then((res) => {
           // If the book is updated in the database and the response from the server is ok, an alert will be displayed and the book object will be set to default again.
           if (res.status === "ok") {
-            alert(res.msg);
+            showNotification("Alert", res.msg);
             setBook({
               barcode: "",
               author: "",
@@ -117,7 +118,7 @@ export default function Management({ showNotification }) {
   function deleteBook(barcode) {
     // Many validations and confirmations are done first since deleting a book is a big deal.
     if (book.title === "") {
-      alert("Please load a book first!");
+      showNotification("Alert", "Please load a book first!");
     } else {
       const confirm = window.confirm(
         "Are you sure you want to DELETE this book?"
@@ -178,9 +179,11 @@ export default function Management({ showNotification }) {
     if (confirm) {
       // After confirming, then the select fields will be validated.
       if (book.materialType === "- Choose one -") {
-        alert("Please enter the Material Type ");
+        showNotification("Alert", "Please enter the Material Type ");
       } else if (book.circulationType === "- Choose one") {
-        alert("Please enter the Circulation Type ");
+        showNotification("Alert", "Please enter the Circulation Type ");
+      } else if (isNaN(book.price)) {
+        showNotification("Error", "Please enter a valid price. If N/A enter 0");
       } else {
         // If everything is ok, then the information will be sent to the server.
         fetch(`${hostbase}/books/new-book`, {
@@ -338,7 +341,7 @@ export default function Management({ showNotification }) {
                 value={book.circulationType || ""}
                 onChange={handleBook}
               ></input>
-              <label htmlFor="">Dewey</label>
+              <label htmlFor="">BISAC</label>
               <input
                 type="text"
                 name="dewey"

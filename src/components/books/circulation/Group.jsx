@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import hostbase from "../../../hostbase.js";
 
 import "../../books/circulation.css";
@@ -11,7 +11,7 @@ export default function Group({
 }) {
   // A new array is created by filtering the rentedBooks array with the grade that was selected by the user. This new array, is the table that's going to be displayed.
   const tableToDisplay = rentedBooks.filter(
-    (user) => user.section === selectedGrade
+    (user) => user.grade === selectedGrade
   );
 
   // The notifyUser funtcion will receive the user object as params and after confirmation it will grab the email and send the notification to the selected user via the server.
@@ -39,39 +39,79 @@ export default function Group({
     }
   }
 
+  const [hoveredBookTitle, setHoveredBookTitle] = useState(null);
+
+  const [modalCoordinates, setModalCoordinates] = useState({ x: 0, y: 0 });
+
+  const handleMouseOver = (barcode, event) => {
+    const user = tableToDisplay.find((user) => user.barcode === barcode);
+    if (user) {
+      setModalCoordinates({ x: event.clientX, y: event.clientY });
+      setHoveredBookTitle(user.barcode); // Update the hovered book title
+    }
+  };
+
+  const handleMouseOut = () => {
+    setModalCoordinates({ x: 0, y: 0 }); // Clear the modal coordinates
+    setHoveredBookTitle(null);
+  };
+
+  const modalStyles = {
+    display: hoveredBookTitle ? "block" : "none",
+    position: "fixed",
+    top: `${modalCoordinates.y - 20}px`,
+    left: `${modalCoordinates.x + 20}px`,
+    background: "white",
+    border: "1px solid #ccc",
+    padding: "10px",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  };
+
   return (
-    <table className="">
-      <thead>
-        <tr>
-          <th style={{ borderRadius: "10px 0 0 0" }}>Name</th>
-          <th>Rented Book</th>
-          <th>Due Date</th>
-          <th style={{ borderRadius: "0 10px 0 0" }}>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        {/* The table array with the selected grade is mapped so that the user can see all active rented books from the selected section. */}
-        {tableToDisplay.map((user) => (
-          <tr key={user.email}>
-            <td>
-              <span>Name</span>
-              {user.name + " " + user.lastName}
-            </td>
-            <td>
-              <span>Rented Book</span>
-              {user.title}
-            </td>
-            <td>
-              <span>Due Date</span>
-              {user.bookHistory[user.bookHistory.length - 1].dueDate}
-            </td>
-            <td id="email" onClick={() => notifyUser(user)}>
-              <span>Email</span>
-              {user.email}
-            </td>
+    <>
+      <table className="">
+        <thead>
+          <tr>
+            <th style={{ borderRadius: "10px 0 0 0" }}>Name</th>
+            <th>Rented Book</th>
+            <th>Due Date</th>
+            <th style={{ borderRadius: "0 10px 0 0" }}>Email</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {/* The table array with the selected grade is mapped so that the user can see all active rented books from the selected section. */}
+          {tableToDisplay.map((user) => (
+            <tr key={user.email}>
+              <td>
+                <span>Name</span>
+                {user.name + " " + user.lastName}
+              </td>
+              <td
+                onClick={() => console.log(user)}
+                onMouseOver={(event) => handleMouseOver(user.barcode, event)}
+                onMouseOut={handleMouseOut}
+              >
+                <span>Rented Book</span>
+                {user.title}
+              </td>
+              <td>
+                <span>Due Date</span>
+                {user.bookHistory[user.bookHistory.length - 1].dueDate}
+              </td>
+              <td id="email" onClick={() => notifyUser(user)}>
+                <span>Email</span>
+                {user.email}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {/* <button onClick={() => console.log(rentedBooks)}>Check rented</button> */}
+      {hoveredBookTitle && (
+        <div style={modalStyles}>
+          <p>{hoveredBookTitle}</p>
+        </div>
+      )}
+    </>
   );
 }
