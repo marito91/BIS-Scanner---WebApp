@@ -105,9 +105,10 @@ export default function Entries({ showNotification }) {
       }
       setHistory(result.data);
       showNotification(
-        "Entries loaded",
+        "Success",
         `Entries were loaded succesfully. Please proceed to download them.`
       );
+      downloadFile(result.data, "KC Report");
       setSearchInfo({
         document: null,
         date: null,

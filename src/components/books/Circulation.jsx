@@ -85,17 +85,15 @@ export default function Circulation({ showNotification }) {
 
   return (
     <>
-      <div className="circulation-sections">
+      <div className="circulation-search">
         {/* The sections array is mapped in buttons, so that the user can choose which section it wants to see. */}
-        <div>
-          <select name="" id="section-handler" onChange={handleSection}>
-            {sections.map((number) => (
-              <option key={number.value} value={number.value}>
-                {number.text}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select name="" id="" onChange={handleSection}>
+          {sections.map((number) => (
+            <option key={number.value} value={number.value}>
+              {number.text}
+            </option>
+          ))}
+        </select>
       </div>
       {/* The Group component holds the table which displays the active users from the selected section. */}
       <Group

@@ -69,49 +69,51 @@ export default function Group({
 
   return (
     <>
-      <table className="">
-        <thead>
-          <tr>
-            <th style={{ borderRadius: "10px 0 0 0" }}>Name</th>
-            <th>Rented Book</th>
-            <th>Due Date</th>
-            <th style={{ borderRadius: "0 10px 0 0" }}>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* The table array with the selected grade is mapped so that the user can see all active rented books from the selected section. */}
-          {tableToDisplay.map((user) => (
-            <tr key={user.email}>
-              <td>
-                <span>Name</span>
-                {user.name + " " + user.lastName}
-              </td>
-              <td
-                onClick={() => console.log(user)}
-                onMouseOver={(event) => handleMouseOver(user.barcode, event)}
-                onMouseOut={handleMouseOut}
-              >
-                <span>Rented Book</span>
-                {user.title}
-              </td>
-              <td>
-                <span>Due Date</span>
-                {user.bookHistory[user.bookHistory.length - 1].dueDate}
-              </td>
-              <td id="email" onClick={() => notifyUser(user)}>
-                <span>Email</span>
-                {user.email}
-              </td>
+      <div className="circulation-table-container">
+        <table className="">
+          <thead>
+            <tr>
+              <th style={{ borderRadius: "10px 0 0 0" }}>Name</th>
+              <th>Rented Book</th>
+              <th>Due Date</th>
+              <th style={{ borderRadius: "0 10px 0 0" }}>Email</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      {/* <button onClick={() => console.log(rentedBooks)}>Check rented</button> */}
-      {hoveredBookTitle && (
-        <div style={modalStyles}>
-          <p>{hoveredBookTitle}</p>
-        </div>
-      )}
+          </thead>
+          <tbody>
+            {/* The table array with the selected grade is mapped so that the user can see all active rented books from the selected section. */}
+            {tableToDisplay.map((user) => (
+              <tr key={user.email}>
+                <td>
+                  <span>Name</span>
+                  {user.name + " " + user.lastName}
+                </td>
+                <td
+                  onClick={() => console.log(user)}
+                  onMouseOver={(event) => handleMouseOver(user.barcode, event)}
+                  onMouseOut={handleMouseOut}
+                >
+                  <span>Rented Book</span>
+                  {user.title}
+                </td>
+                <td>
+                  <span>Due Date</span>
+                  {user.bookHistory[user.bookHistory.length - 1].dueDate}
+                </td>
+                <td id="email" onClick={() => notifyUser(user)}>
+                  <span>Email</span>
+                  {user.email}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {/* <button onClick={() => console.log(rentedBooks)}>Check rented</button> */}
+        {hoveredBookTitle && (
+          <div style={modalStyles}>
+            <p>{hoveredBookTitle}</p>
+          </div>
+        )}
+      </div>
     </>
   );
 }

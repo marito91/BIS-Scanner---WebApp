@@ -2,24 +2,21 @@ import React, { useState, useEffect } from "react";
 import hostbase from "../../hostbase.js";
 
 import cover from "../../assets/cover.png";
+import download from "../../assets/download.svg";
+import dots from "../../assets/dots.svg";
+import star from "../../assets/star.svg";
+import starFilled from "../../assets/star-filled.svg";
 
-import "../books/collection.css";
-
-// Two components are added to this one, Spinner to manage loading times while fetching the collection, and HoveredBook to show details of a selected book from the collection.
-import HoveredBook from "../books/collection/HoveredBook.jsx";
+// One componentis added, Spinner to manage loading times while fetching the collection.
 import Spinner from "../Spinner";
 
 export default function Collection({ showNotification, userType }) {
   // The loading variable state is declared as a flag for the spinner component, which will show while data is fetching.
   const [loading, setLoading] = useState(true);
-  const [showCollection, setShowCollection] = useState(true);
   const [inputText, setInputText] = useState("");
 
   // A state is declared to manage the array of books which will hold the entire collection.
   const [books, setBooks] = useState([]);
-
-  // The following state is declared to be used when the user selects a book and wants to display more details about it.
-  const [hoveredBook, setHoveredBook] = useState(<></>);
 
   let handleInput = (e) => {
     let lowerCase = e.target.value.toLowerCase();
@@ -60,20 +57,6 @@ export default function Collection({ showNotification, userType }) {
       setLoading(false);
     }
   }, [books]);
-
-  // The following function will display the book summary for the one selected by the user. When the user clicks on one from the list, important info from the book will be shown and the collection state will be switched to false .
-  function openBookSummary(book) {
-    setHoveredBook(
-      <>
-        <HoveredBook
-          book={book}
-          setHoveredBook={setHoveredBook}
-          setShowCollection={setShowCollection}
-        />
-      </>
-    );
-    setShowCollection(false);
-  }
 
   // The currentPage state the user in the first page by default. It can later be modified.
   const [currentPage, setCurrentPage] = useState(1);
@@ -206,93 +189,169 @@ export default function Collection({ showNotification, userType }) {
     }
   };
 
+  // State to manage the favorite status for each book
+  const [favorites, setFavorites] = useState(() => {
+    const initialFavorites = {};
+    books.forEach((book) => {
+      initialFavorites[book.barcode] = false;
+    });
+    return initialFavorites;
+  });
+
+  // Function to toggle favorite for a specific book
+  const toggleFavorite = (barcode) => {
+    setFavorites((prevFavorites) => {
+      const newFavorites = { ...prevFavorites };
+      newFavorites[barcode] = !newFavorites[barcode];
+      return newFavorites;
+    });
+  };
+
   return (
     //
     <div>
       {loading ? (
-        <Spinner message={"Loading collection"} />
+        <Spinner message={"Loading collection. This may take some time."} />
       ) : (
         <>
-          {showCollection ? (
-            <>
-              <div className="collection">
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    placeholder="Looking for something specific?"
-                    onChange={handleInput}
-                  ></input>
-                </div>
-                {booksForCurrentPage.map((book) => (
-                  <React.Fragment key={book.barcode}>
-                    <div className="book" onClick={() => openBookSummary(book)}>
-                      <img src={cover} alt="" />
-                      <div>
-                        <label htmlFor="">{book.barcode}</label>
-                        <label htmlFor="" id="title">
-                          {book.title}
-                        </label>
-                        <label htmlFor="">{book.author}</label>
-                      </div>
+          {/* {showCollection ? ( */}
+          <div className="search-input">
+            <input
+              type="text"
+              placeholder="Looking for something specific?"
+              onChange={handleInput}
+            ></input>
+          </div>
+          <div className="headers-row">
+            <div className="book">
+              <h4>Book</h4>
+            </div>
+            <div className="barcode">
+              <h4>Barcode</h4>
+            </div>
+            <div className="location">
+              <h4>Location</h4>
+            </div>
+            <div className="available">
+              <h4>Available</h4>
+            </div>
+            <div className="icons">
+              <h4>Quick actions</h4>
+            </div>
+          </div>
+          <div className="collection-container">
+            {booksForCurrentPage.map((book) => (
+              <React.Fragment key={book.barcode}>
+                <div
+                  className="book-row"
+                  // onClick={() => openBookSummary(book)}
+                >
+                  <div
+                    className="book-main-info"
+                    // onClick={() => console.log(book)}
+                  >
+                    <img src={cover} alt="" />
+                    <div>
+                      <label htmlFor="" id="book-title">
+                        {book.title}
+                      </label>
+                      <label htmlFor="">{book.author}</label>
+                      <label htmlFor="" id="book-date">
+                        {book.publicationYear}
+                      </label>
                     </div>
-                  </React.Fragment>
-                ))}
-              </div>
-              <div className="pagination">
-                {/* Render pagination controls */}
-                <button disabled={currentPage === 1} onClick={goToFirstPage}>
-                  {"<<"}
-                </button>
-
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => goToPage(currentPage - 1)}
-                >
-                  {"<"}Previous
-                </button>
-
-                {visiblePages.map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => goToPage(page)}
-                    disabled={currentPage === page}
-                  >
-                    {page}
-                  </button>
-                ))}
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => goToPage(currentPage + 1)}
-                >
-                  Next{">"}
-                </button>
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={goToLastPage}
-                >
-                  {">>"}
-                </button>
-              </div>
-              {userType === "admin" ? (
-                <div className="download">
-                  <button
-                    onClick={() =>
-                      downloadFile(books, "Knowledge Centre Books Collection")
-                    }
-                  >
-                    Download Collection
-                  </button>
+                  </div>
+                  <div className="book-barcode">
+                    <label htmlFor="">{book.barcode}</label>
+                  </div>
+                  <div className="book-location">{book.sublocation}</div>
+                  <div className="book-available">
+                    {!book.available ? "No" : " Yes"}
+                  </div>
+                  <div className="book-icons">
+                    {favorites[book.barcode] ? (
+                      <img
+                        src={starFilled}
+                        alt=""
+                        id="star"
+                        onClick={() => {
+                          toggleFavorite(book.barcode);
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={star}
+                        alt=""
+                        id="star"
+                        onClick={() => {
+                          toggleFavorite(book.barcode);
+                        }}
+                      />
+                    )}
+                    <img src={dots} alt="" id="dots" />
+                  </div>
                 </div>
-              ) : (
-                <></>
-              )}
-            </>
-          ) : (
-            hoveredBook
-          )}
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="collection-tools">
+            {userType === "admin" ? (
+              <div className="collection-btn">
+                <button
+                  className="btn-container"
+                  onClick={() => downloadFile()}
+                >
+                  <div className="button-content">
+                    <img src={download} alt="" className="button-icon" />
+                    <span className="button-text">Download Collection</span>
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
+            {/* Render pagination controls */}
+            <div className="pagination">
+              <button disabled={currentPage === 1} onClick={goToFirstPage}>
+                {"<<"}
+              </button>
+
+              <button
+                disabled={currentPage === 1}
+                onClick={() => goToPage(currentPage - 1)}
+              >
+                {"<"}Previous
+              </button>
+
+              {visiblePages.map((page) => (
+                <button
+                  key={page}
+                  onClick={() => goToPage(page)}
+                  disabled={currentPage === page}
+                >
+                  {page}
+                </button>
+              ))}
+
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => goToPage(currentPage + 1)}
+              >
+                Next{">"}
+              </button>
+
+              <button
+                disabled={currentPage === totalPages}
+                onClick={goToLastPage}
+              >
+                {">>"}
+              </button>
+            </div>
+          </div>
         </>
+        // ) : (
+        //   hoveredBook
+        // )}
       )}
     </div>
   );

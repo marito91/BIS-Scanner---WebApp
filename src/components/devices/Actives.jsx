@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from "react";
 import hostbase from "../../hostbase.js";
 
-import User from "../devices/User.jsx";
-
 import ipad from "../../assets/ipad.png";
 import chromebook from "../../assets/chromebook.png";
+import Calculator from "../../assets/calculator.png";
+import inactive from "../../assets/inactive.svg";
 
 export default function Actives({
-  setUser,
   rented,
-  active,
-  setActive,
   entries,
-  updateRented,
-  showNotification,
+  setActive,
+  setIsUserVisible,
+  setCalcModalIsVisible,
+  closeRentModal,
+  rentedCalcs,
+  socket,
 }) {
   // The function selectUser displays the information from a selected user in the User component. It receives an object, splits the name to show only the first one, adds it to the last name and assigns the active state with the object information so that the component shows the information.
-  function selectUser(user) {
+  function selectUser(user, calc) {
     // const fname = user.firstName.split(" ");
-    setActive({
+    console.log(calc);
+    const activeUser = {
       name: user.name + " " + user.lastName,
       section: user.grade + " - " + user.section,
       device: user.device,
@@ -27,80 +29,15 @@ export default function Actives({
       time: user.time,
       email: user.email,
       conditions: "Conditions: " + user.conditions,
-    });
-  }
+    };
 
-  // The function returnDevice will be in charge of managing the return of a device by sending the device information to the server which then notifies the user and updates the information for client side. The function receives a string that contains the device information.
-  function returnDevice(rentedDevice) {
-    // console.log(rentedDevice);
-    // The string is split
-    const [device, number] = [...rentedDevice];
-    if (device === "") {
-      showNotification("Error", "Please make sure you select a student first.");
-    } else {
-      if (
-        window.confirm(
-          `Are you sure the ${device} #${number} is being returned?`
-        )
-      ) {
-        fetch(`${hostbase}/devices/return`, {
-          headers: { "content-type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({ device, number }),
-        })
-          .then((res) => {
-            if (!res.ok) {
-              throw new Error(res.statusText);
-            }
-            return res.json();
-          })
-          .then((res) => {
-            // Alerts a message that shows what comes from server side including in which conditions the device was rented so that the client can validate if it is being returned in the same conditions.
-            showNotification(
-              "Alert",
-              // res.msg +
-              //   ` Reminder: This device was rented with the following observations: ${res.conditions}`
-              res.msg
-            );
-            // The rented list is updated to refresh the page
-            updateRented();
-            setTimeout(() => {
-              window.location.href = "/devices";
-            }, 4000); // delay the navigation for 3 seconds (adjust the delay time as needed)
-          })
-          // If there is an error establishing a connection, an alert is sent.
-          .catch(function (e) {
-            console.log(e.message);
-            showNotification(
-              "Error",
-              "A connection to the server could not be established when trying to return a device. Please contact ICT Support."
-            );
-          });
-      }
-      // The objects' keys are returned to their initial values.
-      setUser({
-        document: "",
-        device: "",
-        number: 0,
-        name: "",
-        section: "",
-        date: "",
-        time: "",
-        email: "",
-      });
-      setActive({
-        document: "",
-        device: "",
-        number: "",
-        name: "",
-        section: "",
-        date: "",
-        time: "",
-        email: "",
-      });
-      // The rented list is updated just in case.
-      updateRented();
+    if (calc) {
+      activeUser.calculator = calc.number;
+      activeUser.calcDate = calc.date;
+      activeUser.calcConditions = calc.conditions;
     }
+
+    setActive(activeUser);
   }
 
   // fetchData() is called whenever data is updated.
@@ -121,6 +58,7 @@ export default function Actives({
   // Two states are created to show the number of devices contained for each type (iPads, Chromebooks)
   const [ipads, setIpads] = useState([]);
   const [chromebooks, setChromebooks] = useState([]);
+  const [calculators, setCalculators] = useState([]);
 
   // The information is fetched from the server so that the count can be updated.
   const availableDevicesCount = async () => {
@@ -137,96 +75,145 @@ export default function Actives({
 
   // When the component mounts, it will show the count of available devices for each type. If not, then it sends an alert asking for support.
   useEffect(() => {
-    availableDevicesCount()
-      .then((res) => {
-        setIpads(res.availableIpads);
-        setChromebooks(res.availableChromebooks);
-      })
-      .catch((e) => {
-        console.log(e.message);
-        // showNotification(
-        //   "Alert",
-        //   "Connection to the server could not be established when loading available devices. Please contact ICT Support."
-        // );
+    if (socket) {
+      availableDevicesCount()
+        .then((res) => {
+          res.availableIpads === undefined
+            ? setIpads([])
+            : setIpads(res.availableIpads);
+          res.availableChromebooks === undefined
+            ? setChromebooks([])
+            : setChromebooks(res.availableChromebooks);
+          res.availableCalculators === undefined
+            ? setCalculators([])
+            : setCalculators(res.availableCalculators);
+        })
+        .catch((e) => {
+          console.log(e.message);
+        });
+      socket.on("devicesCount", (data) => {
+        console.log(data.iPads);
+        setIpads(data.iPads);
+        setChromebooks(data.chromeBooks);
+        setCalculators(data.calculators);
       });
-  }, []);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("devicesCount");
+      }
+    };
+  }, [socket]);
 
   // This function notifies all users via email. A message is sent from the server side to all users.
-  const notifyAll = function () {
-    if (rented.length === 0) {
-      showNotification("Error", "There are currently no active users.");
-    } else {
-      const sendMsg = window.confirm("Notify every user by email?");
-      if (sendMsg) {
-        fetch(`${hostbase}/devices/notification_all`, {
-          headers: { "content-type": "application/json" },
-          method: "POST",
-          body: JSON.stringify({ rented }),
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            showNotification("Alert", res.msg);
-          })
-          // If there is a connection error, an alert is shown to contact support.
-          .catch(function (e) {
-            console.log(e.message);
-            showNotification(
-              "Alert",
-              "A connection to the server could not be established while trying to send an email to all users.  Please contact ICT Support."
-            );
-          });
-      }
-    }
-  };
+  // const notifyAll = function () {
+  //   if (rented.length === 0) {
+  //     showNotification("Error", "There are currently no active users.");
+  //   } else {
+  //     const sendMsg = window.confirm("Notify every user by email?");
+  //     if (sendMsg) {
+  //       fetch(`${hostbase}/devices/notification_all`, {
+  //         headers: { "content-type": "application/json" },
+  //         method: "POST",
+  //         body: JSON.stringify({ rented }),
+  //       })
+  //         .then((res) => res.json())
+  //         .then((res) => {
+  //           showNotification("Alert", res.msg);
+  //         })
+  //         // If there is a connection error, an alert is shown to contact support.
+  //         .catch(function (e) {
+  //           console.log(e.message);
+  //           showNotification(
+  //             "Alert",
+  //             "A connection to the server could not be established while trying to send an email to all users.  Please contact ICT Support."
+  //           );
+  //         });
+  //     }
+  //   }
+  // };
 
   return (
-    <div className="active-users">
-      <h1>Active Users</h1>
-      <button id="notification-btn" onClick={() => notifyAll()}>
-        Send Notification
-      </button>
-      <div className="active-users-info">
-        <div className="stats stats-1">
+    <>
+      <div className="stats-container">
+        <div className="stats-1" id="active-devices">
           <label id="stat">{rented.length}</label>
-          <label>Device{rented.length !== 1 ? "s" : ""} rented!</label>
+          <label id="data">Active User{rented.length !== 1 ? "s" : ""}!</label>
         </div>
-        <div className="stats stats-2">
-          <label id="stat">{entries}</label>
-          <label>Entries so far!</label>
-        </div>
-        <div className="stats stats-3">
-          <label id="stat">{ipads.length}</label>
-          <label>iPads Available</label>
-        </div>
-        <div className="stats stats-4">
+        <div className="stats-2" id="active-chromes">
           <label id="stat">{chromebooks.length}</label>
-          <label>ChromeBooks Available</label>
+          <label id="data">ChromeBooks Available</label>
         </div>
-        <div className="users">
-          {rented.map((entry, index) => (
-            <div
-              className="user-entry"
-              onClick={() => selectUser(entry)}
-              key={index}
-            >
-              <img
-                src={
-                  entry.device.toLowerCase() === "chromebook"
-                    ? chromebook
-                    : ipad
-                }
-                alt=""
-              />
-              <label>{arrangeName(entry.name, entry.lastName)}</label>
-            </div>
-          ))}
+        <div className="stats-3" id="active-ipads">
+          <label id="stat">{ipads.length}</label>
+          <label id="data">iPads Available</label>
         </div>
-        <User
-          active={active}
-          returnDevice={returnDevice}
-          showNotification={showNotification}
-        />
+        <div
+          className="stats-4"
+          id="active-calcs"
+          onClick={() => {
+            setCalcModalIsVisible(true);
+            closeRentModal();
+          }}
+        >
+          <label id="stat">{calculators.length}</label>
+          <label id="data">Calculators Available</label>
+        </div>
+        <div className="stats-5" id="active-entries">
+          <label id="stat">{entries}</label>
+          <label id="data">Entries so far!</label>
+        </div>
       </div>
-    </div>
+      {rented.length > 0 ? (
+        <>
+          <div className="actives-container">
+            {rented.map((entry, index) => {
+              // Check if entry.document is in rentedCalcs array
+              const calc = rentedCalcs.find(
+                (calc) => calc.document === entry.document
+              );
+
+              return (
+                <div
+                  className="actives-entry"
+                  onClick={() => {
+                    selectUser(entry, calc);
+                    setIsUserVisible(true);
+                    closeRentModal();
+                  }}
+                  key={index}
+                >
+                  <img
+                    src={
+                      entry.device.toLowerCase() === "chromebook"
+                        ? chromebook
+                        : ipad
+                    }
+                    alt=""
+                  />
+                  <div className="actives-entry-info">
+                    <label id="name">
+                      {arrangeName(entry.name, entry.lastName)}
+                    </label>
+                    <label id="grade">{entry.grade}</label>
+                    <label id="dev">{entry.device + " #" + entry.number}</label>
+                  </div>
+                  {calc && <img src={Calculator} id="calculator" alt="" />}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <div
+          className="no-active"
+          style={{ textAlign: "center", color: "#1a2141" }}
+        >
+          <img src={inactive} alt="" />
+          <h1>There are no active devices in circulation right now.</h1>
+        </div>
+      )}
+    </>
   );
 }

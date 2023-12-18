@@ -3,28 +3,39 @@ import React, { useState } from "react";
 import "./styles.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { auth } from "./authentication/auth";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import hostbase from "./hostbase.js";
 // This application needs various dependencies installed in order to work properly. The requirements will be mentioned below:
 
 /** App Requirements
  * npm install --save react-barcode-reader
  * npm install react-router-dom
  * npm install --save jwt-decode
- * Agregar el hostbase.js
- * Aplicar el open ssl
- * Remover el Browser especificado de package.json
+ * npm install --save react-toastify
+ * npm install socket.io-client
+ * Add hostbase.js
+ * Apply open ssl
+ * Remove el Browser especificado de package.json
  */
 
 // Main Components
-import Header from "./components/Header.jsx";
+// import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import Index from "./components/Index.jsx";
 import Restricted from "./components/Restricted.jsx";
+import Menu from "./components/Menu.jsx";
+import useSocket from "./components/useSocket.jsx";
+
+// Library Components
+// import Notification from "./components/Notification.jsx";
 
 // App Components
 import Devices from "./components/Devices.jsx";
 import Dashboard from "./components/Dashboard.jsx";
-import Books from "./components/Books.jsx";
+import Books from "./components/NewBooks.jsx";
+import Textbooks from "./components/Textbooks.jsx";
+import Settings from "./components/Settings.jsx";
 
 // This application will let users manage all of the services regarding the management of books and devices lent by the library. Admin users will be able to manage everything and check all of the data traffic and movements the app does. The app is divided into 2 main sections: Devices & Books. Both of them work in a similar way but have many differences in their components based on the needs each service requires. For the time being, this app only works for admins who have access, so that students don't have any access.
 
@@ -75,92 +86,33 @@ function App() {
     comments: "",
   });
 
-  // This functions is meant to be used across the app so that when the client needs to be notified about something, a pop up modal shows up showing the message. The function will receive 2 strings: a Title and the Message to show.
-  // function showNotification(title, message) {
-  //   const modalContainer = document.createElement("div");
-  //   modalContainer.classList.add("modal-container");
-
-  //   const modal = document.createElement("div");
-  //   modal.classList.add("modal");
-
-  //   const modalTitle = document.createElement("div");
-  //   modalTitle.classList.add("modal-title");
-  //   modalTitle.innerText = title;
-
-  //   const modalMessage = document.createElement("div");
-  //   modalMessage.classList.add("modal-message");
-  //   modalMessage.innerText = message;
-
-  //   const modalButton = document.createElement("button");
-  //   modalButton.classList.add("modal-button");
-  //   modalButton.innerText = "OK";
-
-  //   modalButton.addEventListener("click", () => {
-  //     modalContainer.remove();
-  //   });
-
-  //   modal.appendChild(modalTitle);
-  //   modal.appendChild(modalMessage);
-  //   modal.appendChild(modalButton);
-
-  //   modalContainer.appendChild(modal);
-
-  //   document.body.appendChild(modalContainer);
-  // }
+  const socket = useSocket(hostbase);
 
   function showNotification(title, message) {
-    const modalContainer = document.createElement("div");
-    modalContainer.classList.add("modal-container");
-
-    const modal = document.createElement("div");
-    modal.classList.add("modal");
-
-    const modalTitle = document.createElement("div");
-    modalTitle.classList.add("modal-title");
-    modalTitle.innerText = title;
-
-    const modalMessage = document.createElement("div");
-    modalMessage.classList.add("modal-message");
-    modalMessage.innerText = message;
-
-    if (title.toLowerCase() === "error") {
-      modal.style.backgroundColor = "red"; // Apply a different color for error
-      modal.style.borderColor = "white";
-      modalTitle.style.color = "white";
-      modalMessage.style.color = "white";
+    if (title === "Alert" || title === "Warning") {
+      toast(title + ": " + message, { type: toast.TYPE.WARNING });
+    } else if (title === "Success" || title === "Ok" || title === "OK") {
+      toast(title + ": " + message, { type: toast.TYPE.SUCCESS });
+    } else {
+      toast(title + ": " + message, { type: toast.TYPE.ERROR });
     }
-
-    const modalButton = document.createElement("button");
-    modalButton.classList.add("modal-button");
-    modalButton.innerText = "OK";
-
-    modalButton.addEventListener("click", () => {
-      modalContainer.remove();
-    });
-
-    modal.appendChild(modalTitle);
-    modal.appendChild(modalMessage);
-    modal.appendChild(modalButton);
-
-    modalContainer.appendChild(modal);
-
-    document.body.appendChild(modalContainer);
   }
 
   // This function works based on the information stored in localstorage. It removes the token from the localstorage and reloads the page so that the user logs out.
   function logout() {
-    const confirmation = window.confirm("Do you want to log out?");
-    if (confirmation) {
-      localStorage.removeItem("token");
-      window.location.href = "/";
-    }
+    // const confirmation = window.confirm("Do you want to log out?");
+    // if (confirmation) {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+    // }
   }
 
   return (
     <>
       <BrowserRouter>
         {/* The header will always stay on top. On mobile, section management will be passed to the footer.  */}
-        <Header logout={logout} />
+        {/* <Header logout={logout} /> */}
+        {auth() ? <Menu logout={logout} /> : <></>}
         <Routes>
           {/* This is the landing page. No props needed in the index page. If the user is already signed in, then it leads directly to the dashboard. */}
           <Route path="/" element={auth() ? <Dashboard /> : <Index />}></Route>
@@ -168,7 +120,7 @@ function App() {
           {/* This route leads to the dashboard. The restricted component shows in case somebody tries to head into it and is not logged in. */}
           <Route
             path="/home"
-            element={auth() ? <Dashboard /> : <Restricted />}
+            element={auth() ? <Menu /> : <Restricted />}
           ></Route>
 
           {/* This route leads to the devices section, where the user can rent/return devices, check and notify active users and download records for device usage. The user needs to be logged in to be able to use these tools. */}
@@ -180,6 +132,7 @@ function App() {
                   user={user}
                   setUser={setUser}
                   showNotification={showNotification}
+                  socket={socket}
                 />
               ) : (
                 <Restricted />
@@ -198,10 +151,47 @@ function App() {
               )
             }
           ></Route>
+          {/* This route leads to the textbooks section, where the user can rent/return texbooks, add/edit/search/delete books from the school database and check the circulation live. The user needs to be logged in to be able to use these tools.  */}
+          <Route
+            path="/textbooks"
+            element={
+              auth() ? (
+                <Textbooks showNotification={showNotification} />
+              ) : (
+                <Restricted />
+              )
+            }
+          ></Route>
+          {/* This route leads to the settings section, where the user can manage notification settings. */}
+          <Route
+            path="/settings"
+            element={
+              auth() ? (
+                <Settings showNotification={showNotification} socket={socket} />
+              ) : (
+                <Restricted />
+              )
+            }
+          ></Route>
         </Routes>
 
         {/* The footer section will be displayed when the client is in mobile. The client will be able to access each section in the app via the icons in this section. */}
         <Footer logout={logout} />
+
+        {auth() ? (
+          // <div className="notifications-container">
+          //   {notifications.map((notification, index) => (
+          //     <Notification
+          //       key={index}
+          //       notification={notification}
+          //       onClose={() => closeNotification(index)}
+          //     />
+          //   ))}
+          // </div>
+          <ToastContainer position="top-right" autoClose={4000} pauseOnHover />
+        ) : (
+          <></>
+        )}
       </BrowserRouter>
     </>
   );

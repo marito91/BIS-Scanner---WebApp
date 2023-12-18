@@ -26,13 +26,19 @@ export default function HamburgerMenu({ logout }) {
       {showLinks && (
         <div className="links">
           <Link to="/Home" onClick={() => setShowLinks(false)}>
-            Home
+            Dashboard
+          </Link>
+          <Link to="/devices" onClick={() => setShowLinks(false)}>
+            Devices
           </Link>
           <Link to="/books" onClick={() => setShowLinks(false)}>
             Books
           </Link>
-          <Link to="/devices" onClick={() => setShowLinks(false)}>
-            Devices
+          <Link to="/textbooks" onClick={() => setShowLinks(false)}>
+            Textbooks
+          </Link>
+          <Link to="/Home" onClick={() => setShowLinks(false)}>
+            Settings
           </Link>
           <a href="#logout" onClick={closeMenuAndLogout}>
             Logout
