@@ -38,6 +38,12 @@ export default function Rent({
           "Error",
           "Please enter a valid number between 1 and 30."
         );
+      } else if (
+        user.device !== "iPad" &&
+        user.device !== "ChromeBook" &&
+        user.device !== "Calculator"
+      ) {
+        showNotification("Error", "Please make sure to enter a device.");
         // If all validations are ok, then the user object will be sent to the server side.
       } else {
         fetch(`${hostbase}/devices/rent`, {

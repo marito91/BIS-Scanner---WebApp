@@ -265,7 +265,7 @@ export default function ManageBooks({
 
   return (
     <>
-      <div className="rent-form">
+      <div className="manage-form">
         <h3>Manage Books</h3>
         <div className="book-loader">
           <label htmlFor="">Barcode:</label>

@@ -10,6 +10,7 @@ export default function RentTextbooks({
   observations,
   handleObservations,
   assignTextBooks,
+  unassignTextBooks,
   showNotification,
 }) {
   return (
@@ -47,25 +48,22 @@ export default function RentTextbooks({
               </div>
             ))}
         </div>
-        <input
-          id="observations-input"
-          type="text"
-          value={observations}
-          onChange={handleObservations}
-          placeholder="Observations?"
-        />
-        <div className="action-btns">
-          <button className="action-btn" onClick={() => assignTextBooks()}>
-            Assign
-          </button>
-          <button
-            className="action-btn"
-            onClick={() =>
-              showNotification("Alert", "This feature will be available soon!")
-            }
-          >
-            Return
-          </button>
+        <div className="tb-actions">
+          <input
+            id="observations-input"
+            type="text"
+            value={observations}
+            onChange={handleObservations}
+            placeholder="Observations?"
+          />
+          <div className="action-btns">
+            <button className="action-btn" onClick={() => assignTextBooks()}>
+              Assign
+            </button>
+            <button className="action-btn" onClick={() => unassignTextBooks()}>
+              Return
+            </button>
+          </div>
         </div>
       </div>
     </>

@@ -230,6 +230,100 @@ export default function Textbooks({ showNotification, socket }) {
     setIsLoaded(false);
   };
 
+  // Function to handle assigning selected textbooks
+  const unassignTextBooks = () => {
+    // Send selectedTexts to the backend or perform any desired action
+    const information = [student, sampleValues, observations];
+    console.log(information);
+
+    // Create an array of objects for sending to backend
+    const textbooksWithSamples = [];
+    for (const [title, sample] of Object.entries(sampleValues)) {
+      textbooksWithSamples.push({ title, sample });
+    }
+    // Create a formatted string for the confirmation message
+    const confirmationMessage = textbooksWithSamples
+      .map((textbook) => `${textbook.title}: ${textbook.sample},`)
+      .join("\n");
+
+    const confirmation = window.confirm(
+      `You are returning the following texts from ${
+        student.name + " " + student.lastName
+      }:\n${confirmationMessage}\nObservations: ${observations}\nAre you completely sure?`
+    );
+
+    if (confirmation) {
+      fetch(`${hostbase}/textbooks/unassign`, {
+        headers: { "content-type": "application/json" },
+        method: "POST",
+        body: JSON.stringify({
+          student,
+          textbooksWithSamples,
+          observations,
+          admin,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === "ok") {
+            // showNotification("Alert", res.msg);
+            showNotification("Success", "Info received succesfully");
+            // A cleaning of all state must be made when the textbooks are assigned
+            setSampleValues({});
+            setDocument("");
+            setStudent({
+              document: 0,
+              section: "",
+              grade: "",
+              name: "",
+              lastName: "",
+              email: "",
+              blocked: false,
+              hasDeviceRented: false,
+              hasBookRented: false,
+              hasTextBookRented: false,
+              devicehistory: [],
+              bookHistory: [],
+              textBookHistory: [],
+            });
+            setObservations("");
+            setRentedtbs([]);
+            setIsLoaded(false);
+          } else {
+            showNotification("Error", res.msg);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert(
+            "A connection with the server could not be established when trying to search for a book. Please contact ICT support."
+          );
+        });
+    }
+
+    // A cleaning of all state must be made when the textbooks are assigned
+    setSampleValues({});
+    setDocument("");
+    setStudent({
+      document: 0,
+      section: "",
+      grade: "",
+      name: "",
+      lastName: "",
+      email: "",
+      blocked: false,
+      hasDeviceRented: false,
+      hasBookRented: false,
+      hasTextBookRented: false,
+      devicehistory: [],
+      bookHistory: [],
+      textBookHistory: [],
+    });
+    setObservations("");
+    setRentedtbs([]);
+    setIsLoaded(false);
+  };
+
   return (
     <div className="textbooks-section">
       <div className="tb-stat-1">
@@ -271,6 +365,7 @@ export default function Textbooks({ showNotification, socket }) {
             observations={observations}
             handleObservations={handleObservations}
             assignTextBooks={assignTextBooks}
+            unassignTextBooks={unassignTextBooks}
             showNotification={showNotification}
           />
         ) : (

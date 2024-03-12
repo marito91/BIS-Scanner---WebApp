@@ -235,9 +235,9 @@ export default function Collection({ showNotification, userType }) {
             <div className="available">
               <h4>Available</h4>
             </div>
-            <div className="icons">
+            {/* <div className="icons">
               <h4>Quick actions</h4>
-            </div>
+            </div> */}
           </div>
           <div className="collection-container">
             {booksForCurrentPage.map((book) => (
@@ -266,9 +266,11 @@ export default function Collection({ showNotification, userType }) {
                   </div>
                   <div className="book-location">{book.sublocation}</div>
                   <div className="book-available">
-                    {!book.available ? "No" : " Yes"}
+                    {!book.available
+                      ? `Rented by ${book.userDocument}`
+                      : " Yes"}
                   </div>
-                  <div className="book-icons">
+                  {/* <div className="book-icons">
                     {favorites[book.barcode] ? (
                       <img
                         src={starFilled}
@@ -289,27 +291,12 @@ export default function Collection({ showNotification, userType }) {
                       />
                     )}
                     <img src={dots} alt="" id="dots" />
-                  </div>
+                  </div> */}
                 </div>
               </React.Fragment>
             ))}
           </div>
           <div className="collection-tools">
-            {userType === "admin" ? (
-              <div className="collection-btn">
-                <button
-                  className="btn-container"
-                  onClick={() => downloadFile()}
-                >
-                  <div className="button-content">
-                    <img src={download} alt="" className="button-icon" />
-                    <span className="button-text">Download Collection</span>
-                  </div>
-                </button>
-              </div>
-            ) : (
-              <></>
-            )}
             {/* Render pagination controls */}
             <div className="pagination">
               <button disabled={currentPage === 1} onClick={goToFirstPage}>
@@ -347,6 +334,21 @@ export default function Collection({ showNotification, userType }) {
                 {">>"}
               </button>
             </div>
+            {userType === "admin" ? (
+              <div className="collection-btn">
+                <button
+                  className="btn-container"
+                  onClick={() => downloadFile()}
+                >
+                  <div className="button-content">
+                    <img src={download} alt="" className="button-icon" />
+                    <span className="button-text">Download Collection</span>
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </>
         // ) : (
