@@ -8,6 +8,7 @@ export default function SelectedTextbook({
   textbook,
   setSelectedTextbook,
   setShowList,
+  unassignOne,
 }) {
   function closeBookSummary() {
     setSelectedTextbook(<></>);
@@ -44,6 +45,15 @@ export default function SelectedTextbook({
               <label htmlFor="">{tb.title}</label>
               <label htmlFor="">Sample #{tb.sample}</label>
               <label htmlFor="">Rented on {tb.dateRented}</label>
+              <div className="action-btns">
+                <button
+                  className="action-btn"
+                  onClick={() => unassignOne(textbook, tb)}
+                  // onClick={() => console.log(tb)}
+                >
+                  Return
+                </button>
+              </div>
             </div>
           ))}
         </div>

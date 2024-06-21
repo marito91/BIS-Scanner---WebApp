@@ -7,6 +7,7 @@ export default function TextBookCirculation({
   showNotification,
   admin,
   rentedTextbooks,
+  unassignOne,
 }) {
   // The loading variable state is declared as a flag for the spinner component, which will show while data is fetching.
   const [loading, setLoading] = useState(true);
@@ -99,6 +100,7 @@ export default function TextBookCirculation({
           textbook={textbook}
           setSelectedTextbook={setSelectedTextbook}
           setShowList={setShowList}
+          unassignOne={unassignOne}
         />
       </>
     );

@@ -60,9 +60,9 @@ export default function RentTextbooks({
             <button className="action-btn" onClick={() => assignTextBooks()}>
               Assign
             </button>
-            <button className="action-btn" onClick={() => unassignTextBooks()}>
+            {/* <button className="action-btn" onClick={() => unassignTextBooks()}>
               Return
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

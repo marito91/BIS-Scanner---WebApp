@@ -8,7 +8,7 @@ import textbooks from "../assets/textbooks.svg";
 import dashboard from "../assets/dashboard.svg";
 import settings from "../assets/settings.svg";
 import logout from "../assets/logout.svg";
-import logo from "../assets/logo.png";
+import logo from "../assets/logokc.png";
 import chevron from "../assets/chevron-right.svg";
 
 const menuList = [
@@ -59,10 +59,10 @@ export default function Menu({ logout }) {
       <p
         style={{
           color: "#999999",
-          margin: "0 35px",
+          marginTop: "10px",
           padding: "0",
           cursor: "text",
-          textAlign: "left",
+          textAlign: "center",
         }}
       >
         Main Menu

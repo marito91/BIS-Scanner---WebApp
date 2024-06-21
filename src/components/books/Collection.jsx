@@ -3,9 +3,9 @@ import hostbase from "../../hostbase.js";
 
 import cover from "../../assets/cover.png";
 import download from "../../assets/download.svg";
-import dots from "../../assets/dots.svg";
-import star from "../../assets/star.svg";
-import starFilled from "../../assets/star-filled.svg";
+// import dots from "../../assets/dots.svg";
+// import star from "../../assets/star.svg";
+// import starFilled from "../../assets/star-filled.svg";
 
 // One componentis added, Spinner to manage loading times while fetching the collection.
 import Spinner from "../Spinner";
@@ -189,23 +189,23 @@ export default function Collection({ showNotification, userType }) {
     }
   };
 
-  // State to manage the favorite status for each book
-  const [favorites, setFavorites] = useState(() => {
-    const initialFavorites = {};
-    books.forEach((book) => {
-      initialFavorites[book.barcode] = false;
-    });
-    return initialFavorites;
-  });
+  // // State to manage the favorite status for each book
+  // const [favorites, setFavorites] = useState(() => {
+  //   const initialFavorites = {};
+  //   books.forEach((book) => {
+  //     initialFavorites[book.barcode] = false;
+  //   });
+  //   return initialFavorites;
+  // });
 
-  // Function to toggle favorite for a specific book
-  const toggleFavorite = (barcode) => {
-    setFavorites((prevFavorites) => {
-      const newFavorites = { ...prevFavorites };
-      newFavorites[barcode] = !newFavorites[barcode];
-      return newFavorites;
-    });
-  };
+  // // Function to toggle favorite for a specific book
+  // const toggleFavorite = (barcode) => {
+  //   setFavorites((prevFavorites) => {
+  //     const newFavorites = { ...prevFavorites };
+  //     newFavorites[barcode] = !newFavorites[barcode];
+  //     return newFavorites;
+  //   });
+  // };
 
   return (
     //

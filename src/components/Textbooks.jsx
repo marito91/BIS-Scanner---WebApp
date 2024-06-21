@@ -324,6 +324,87 @@ export default function Textbooks({ showNotification, socket }) {
     setIsLoaded(false);
   };
 
+  // Function to handle assigning selected textbooks
+  const unassignOne = (userThatHasTb, textbookToUnassign) => {
+    const confirmation = window.confirm(
+      `You are returning the following texts from ${
+        userThatHasTb.name + " " + userThatHasTb.lastName
+      }:\n${
+        textbookToUnassign.title + " # " + textbookToUnassign.sample
+      }\nAre you completely sure?`
+    );
+
+    if (confirmation) {
+      fetch(`${hostbase}/textbooks/unassign-one`, {
+        headers: { "content-type": "application/json" },
+        method: "POST",
+        body: JSON.stringify({
+          userThatHasTb,
+          textbookToUnassign,
+          admin,
+        }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.status === "ok") {
+            // showNotification("Alert", res.msg);
+            showNotification("Success", "Info received succesfully");
+            // A cleaning of all state must be made when the textbooks are assigned
+            setSampleValues({});
+            setDocument("");
+            setStudent({
+              document: 0,
+              section: "",
+              grade: "",
+              name: "",
+              lastName: "",
+              email: "",
+              blocked: false,
+              hasDeviceRented: false,
+              hasBookRented: false,
+              hasTextBookRented: false,
+              devicehistory: [],
+              bookHistory: [],
+              textBookHistory: [],
+            });
+            setObservations("");
+            setRentedtbs([]);
+            setIsLoaded(false);
+          } else {
+            showNotification("Error", res.msg);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert(
+            "A connection with the server could not be established when trying to search for a book. Please contact ICT support."
+          );
+        });
+    }
+
+    // A cleaning of all state must be made when the textbooks are assigned
+    setSampleValues({});
+    setDocument("");
+    setStudent({
+      document: 0,
+      section: "",
+      grade: "",
+      name: "",
+      lastName: "",
+      email: "",
+      blocked: false,
+      hasDeviceRented: false,
+      hasBookRented: false,
+      hasTextBookRented: false,
+      devicehistory: [],
+      bookHistory: [],
+      textBookHistory: [],
+    });
+    setObservations("");
+    setRentedtbs([]);
+    setIsLoaded(false);
+  };
+
   return (
     <div className="textbooks-section">
       <div className="tb-stat-1">
@@ -343,6 +424,7 @@ export default function Textbooks({ showNotification, socket }) {
           showNotification={showNotification}
           admin={admin}
           rentedTextbooks={rentedTextbooks}
+          unassignOne={unassignOne}
         />
       </div>
       <div className="tb-user">

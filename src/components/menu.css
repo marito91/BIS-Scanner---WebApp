@@ -24,14 +24,15 @@
 }
 
 .logo-box img {
-  width: 90%;
+  width: 85%;
+  margin: 10px 0;
 }
 
 .menu-items {
   list-style: none;
   color: gray;
   padding: 0;
-  margin: 30px 0;
+  margin: 20px 0;
   transition: transform 0.5s, opacity 0.5s;
   align-items: center;
 }

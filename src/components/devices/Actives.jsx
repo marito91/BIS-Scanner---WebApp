@@ -19,7 +19,7 @@ export default function Actives({
   // The function selectUser displays the information from a selected user in the User component. It receives an object, splits the name to show only the first one, adds it to the last name and assigns the active state with the object information so that the component shows the information.
   function selectUser(user, calc) {
     // const fname = user.firstName.split(" ");
-    console.log(calc);
+    // console.log(calc);
     const activeUser = {
       name: user.name + " " + user.lastName,
       section: user.grade + " - " + user.section,
@@ -92,7 +92,7 @@ export default function Actives({
           console.log(e.message);
         });
       socket.on("devicesCount", (data) => {
-        console.log(data.iPads);
+        // console.log(data.iPads);
         setIpads(data.iPads);
         setChromebooks(data.chromeBooks);
         setCalculators(data.calculators);
