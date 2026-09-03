@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # hostBase
-hostbase.js
+hostbase.js.next/
+next-env.d.ts
