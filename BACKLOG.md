@@ -11,6 +11,9 @@
 - [ ] migrate: hostbase.js config to `.env.local`, replace hardcoded backend URL, add `NEXT_PUBLIC_` prefix where read client-side
 - [ ] migrate: data-fetching — decide per-component: Server Component fetch vs. client-side fetch for real-time behavior
 - [ ] migrate: remaining hooks/contexts, add types for API response shapes as encountered
+- [ ] migrate: Spinner, Settings, dashboard/BlockStudents, dashboard/ManageIds, textbooks/txtbooks.js to Server Components (no client deps)
+- [ ] refactor: Restricted.jsx — swap react-router-dom Link → next/link, then qualifies as Server Component (do during routing migration, Day 4)
+- [ ] chore: confirm books/collection/Pagination.jsx is unused, remove if so
 
 ### Cleanup
 
