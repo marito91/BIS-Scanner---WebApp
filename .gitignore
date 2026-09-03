@@ -22,6 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# hostBase
-hostbase.js.next/
+# hostbase
+hostbase.js
+src/hostbase.js
+
+# next.js
+.next/
 next-env.d.ts
