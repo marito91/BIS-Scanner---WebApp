@@ -28,3 +28,4 @@
 - [x] fix: missing hostbase.js blocking compilation (2026-09-03)
 - [x] migrate: Spinner, Settings, dashboard/BlockStudents, dashboard/ManageIds, textbooks/txtbooks.js to Server Components (2026-09-04)
 - [x] migrate: Barcode component to TypeScript Client Component, unused/isolated (2026-09-04)
+- [x] migrate: Devices.jsx to Devices.tsx as Client Component, real-time checkout view (2026-09-07)
