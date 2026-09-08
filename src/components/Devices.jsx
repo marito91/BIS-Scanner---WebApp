@@ -66,7 +66,7 @@ export default function Devices({ setUser, showNotification, socket }) {
         .catch((e) => {
           console.log(e.message);
           alert(
-            "Number of device entries could not be fetched. Please contact ICT Support."
+            "Number of device entries could not be fetched. Please contact ICT Support.",
           );
         });
       socket.on("rentedAllTime", (data) => {
@@ -122,7 +122,7 @@ export default function Devices({ setUser, showNotification, socket }) {
         .catch((e) => {
           console.log(e.message);
           console.log(
-            "The list of rented devices could not be fetched. Please contact ICT Support."
+            "The list of rented devices could not be fetched. Please contact ICT Support.",
           );
         });
       // Set up a listener for the 'deviceRented' event
@@ -166,7 +166,7 @@ export default function Devices({ setUser, showNotification, socket }) {
         .catch((e) => {
           console.log(e.message);
           console.log(
-            "The list of rented devices could not be fetched. Please contact ICT Support."
+            "The list of rented devices could not be fetched. Please contact ICT Support.",
           );
         });
       socket.on("rentedCalcs", (data) => {
@@ -219,7 +219,7 @@ export default function Devices({ setUser, showNotification, socket }) {
     } else {
       if (
         window.confirm(
-          `Are you sure the ${device} #${number} is being returned?`
+          `Are you sure the ${device} #${number} is being returned?`,
         )
       ) {
         fetch(`${hostbase}/devices/return`, {
@@ -248,7 +248,7 @@ export default function Devices({ setUser, showNotification, socket }) {
             console.log(e.message);
             showNotification(
               "Error",
-              "A connection to the server could not be established when trying to return a device. Please contact ICT Support."
+              "A connection to the server could not be established when trying to return a device. Please contact ICT Support.",
             );
           });
       }
@@ -286,7 +286,7 @@ export default function Devices({ setUser, showNotification, socket }) {
     } else {
       if (
         window.confirm(
-          `Are you sure the Calculator #${number} is being returned?`
+          `Are you sure the Calculator #${number} is being returned?`,
         )
       ) {
         fetch(`${hostbase}/devices/return-calc`, {
@@ -316,7 +316,7 @@ export default function Devices({ setUser, showNotification, socket }) {
             console.log(e.message);
             showNotification(
               "Error",
-              "A connection to the server could not be established when trying to return a device. Please contact ICT Support."
+              "A connection to the server could not be established when trying to return a device. Please contact ICT Support.",
             );
           });
       }
@@ -381,7 +381,7 @@ export default function Devices({ setUser, showNotification, socket }) {
       // setHistory(result.data);
       showNotification(
         "Success",
-        `Entries were loaded successfully. Please proceed to download them.`
+        `Entries were loaded successfully. Please proceed to download them.`,
       );
       downloadFile(result.data, "KC Report");
       setSearchInfo({
@@ -400,11 +400,11 @@ export default function Devices({ setUser, showNotification, socket }) {
     if (arr.length === 0) {
       showNotification(
         "Error",
-        "No available information to download. Please choose a filter and load the information."
+        "No available information to download. Please choose a filter and load the information.",
       );
     } else {
       const confirmation = window.confirm(
-        "Do you want to download the entries currently loaded?"
+        "Do you want to download the entries currently loaded?",
       );
       if (confirmation) {
         const header = Object.keys(arr[0]);
@@ -423,7 +423,7 @@ export default function Devices({ setUser, showNotification, socket }) {
             } else {
               return value || ""; // Replace empty values with a placeholder
             }
-          })
+          }),
         );
 
         const rows = newArr.map((entry) => entry.join(","));
