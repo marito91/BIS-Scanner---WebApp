@@ -4,12 +4,13 @@
 
 ### Migration (App Router)
 
-- [ ] migrate: routing — convert React Router routes to `app/` folder structure (page.tsx per route, layout.tsx for shared shells); protected routes are already gated by proxy.ts (see auth-foundation, merged), so page components don't need their own auth check; wire components/Devices.tsx to receive `loggedUser` from lib/auth.ts via its parent Server Component instead of self-decoding (its token read no longer works, the cookie is httpOnly)
-- [ ] migrate: hostbase.js config to `.env.local`, replace hardcoded backend URL, add `NEXT_PUBLIC_` prefix where read client-side
+- [ ] migrate: routing — build page.tsx for /home, /devices, /books, /textbooks, /settings (app shell, landing page, and Login are done, see Done). Protected routes are already gated by proxy.ts, so page components don't need their own auth check. Start with /devices, since components/Devices.tsx is already migrated and just needs loggedUser wired in (see next item)
+- [ ] migrate: wire components/Devices.tsx to receive `loggedUser` from lib/auth.ts via its parent Server Component (app/devices/page.tsx) instead of self-decoding — its token read no longer works now that the cookie is httpOnly
+- [ ] migrate: hostbase.js config to `.env.local`, replace hardcoded backend URL, add `NEXT_PUBLIC_` prefix where read client-side (confirmed blocking: login currently 500s locally with "Invalid URL" since HOSTBASE is unset, 2026-09-09)
 - [ ] migrate: data-fetching — decide per-component: Server Component fetch vs. client-side fetch for real-time behavior
 - [ ] migrate: remaining hooks/contexts, add types for API response shapes as encountered
-- [ ] decide: Restricted.jsx's role now that proxy.ts redirects unauthenticated hits straight to `/` with no message — keep as a bare redirect, or redirect to `/?restricted=true` and render the message on the landing page. If kept as a route, swap react-router-dom Link → next/link.
 - [ ] harden: proxy.ts matcher (`/home`, `/devices`, `/books`, `/textbooks`, `/settings`) is exact-match only, doesn't cover future sub-routes automatically
+- [ ] chore: allow LAN dev access for mobile testing — add device IP(s) to `allowedDevOrigins` in next.config.ts (personal dev config, not part of any migration PR)
 - [ ] chore: confirm books/collection/Pagination.jsx is unused, remove if so
 - [ ] investigate: Barcode integration in devices/Rent.jsx is currently disabled and broken (handleCode referenced but not defined, call is commented out). Confirm if scanning works via a different path, or if this needs to be rebuilt when Rent.jsx migrates.
 - [ ] decide: Barcode.jsx/react-barcode-reader was an alternate, unfinished approach to scanning (likely camera-based), superseded by the working keyboard-emulation input in Rent.jsx (physical scanners type directly into user.document). handleCode was never implemented. Decide during cleanup: delete entirely, or keep as scaffolding for a future camera-scan feature.
@@ -31,3 +32,4 @@
 - [x] migrate: Barcode component to TypeScript Client Component, unused/isolated (2026-09-04)
 - [x] migrate: Devices.jsx to Devices.tsx as Client Component, real-time checkout view (2026-09-07)
 - [x] migrate: auth architecture from localStorage/client-decoded JWT to Next.js BFF pattern — app/api/auth/login+logout route handlers proxy to hostbase and set/clear an httpOnly cookie, proxy.ts gates protected routes by cookie presence, lib/auth.ts for Server Components needing user info. No hostbase changes required; confirmed no other call site sends the token as a bearer header, so scope stayed limited to login/logout. (2026-09-08)
+- [x] migrate: app shell, landing page, and Login to App Router — app/page.tsx, components/Index.tsx (modal toggle preserved, not dropped, see PR notes), components/Login.tsx (BFF-aware, no more localStorage), components/Menu.tsx/HamburgerMenu.tsx/Footer.tsx, app/(protected)/layout.tsx. Resolved Restricted.jsx's role: proxy.ts redirects to /?restricted=true, message renders inside Login's .center card with the original forbid.svg icon. Found and fixed 3 small bugs along the way (submit input casing, missing close icon, missing .catch() on login()), all in files new to this PR. (2026-09-09)
