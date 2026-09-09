@@ -6,7 +6,9 @@ import { NextRequest, NextResponse } from "next/server";
 export default function proxy(request: NextRequest) {
   const token = request.cookies.get("token");
   if (!token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    // Redirect to the landing page with ?restricted=true so app/page.tsx renders
+    // the "access restricted" message next to the login form.
+    return NextResponse.redirect(new URL("/?restricted=true", request.url));
   }
   return NextResponse.next();
 }
