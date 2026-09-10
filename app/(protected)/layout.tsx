@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Menu from "../../components/Menu";
 import Footer from "../../components/Footer";
+import { AppStateProvider } from "../../components/AppStateProvider";
 import "../../src/styles.css";
 
 // Shared shell for the protected routes (/home, /devices, /books, /textbooks,
@@ -33,11 +34,11 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <>
+    <AppStateProvider>
       <Menu logout={logout} />
       {children}
       <Footer logout={logout} />
       <ToastContainer position="top-right" autoClose={4000} pauseOnHover />
-    </>
+    </AppStateProvider>
   );
 }
