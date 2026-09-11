@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import x from "@/assets/x.svg";
 import forbid from "@/assets/forbid.svg";
-import hostbase from "../src/hostbase.js";
+import hostbase from "../lib/hostbase";
 
 // Migrated from src/components/Login.jsx. Same form, fields, validation and
 // error display as the original. Two behavioral changes required by the auth

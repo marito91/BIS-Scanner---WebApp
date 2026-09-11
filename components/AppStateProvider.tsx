@@ -5,7 +5,7 @@ import type { Socket } from "socket.io-client";
 import { toast } from "react-toastify";
 
 import useSocket from "../lib/useSocket";
-import hostbase from "../src/hostbase.js";
+import hostbase from "../lib/hostbase";
 
 // App-wide state that src/App.js (the old CRA root) owned and passed down as
 // props to whichever route was active: a single socket connection keyed on

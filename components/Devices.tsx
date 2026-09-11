@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-import hostbase from "../src/hostbase.js";
+import hostbase from "../lib/hostbase";
 import type { SessionUser } from "../lib/auth";
 import { useAppState } from "./AppStateProvider";
 
