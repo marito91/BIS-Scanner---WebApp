@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import hostbase from "../../hostbase.js";
+import hostbase from "../../../lib/hostbase";
 
 export default function Rent({
   updateRented,

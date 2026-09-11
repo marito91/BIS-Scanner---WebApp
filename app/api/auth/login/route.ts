@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwtDecode from "jwt-decode";
 
-// TODO(BACKLOG): migrate hostbase.js to .env.local — this env var is a
-// placeholder until that item lands; falls back to "" so the fetch below
-// fails loudly (rather than throwing on `undefined`) if it's unset.
-const HOSTBASE = process.env.NEXT_PUBLIC_HOSTBASE_URL || "";
+import HOSTBASE from "../../../../lib/hostbase";
 
 const DEFAULT_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
 

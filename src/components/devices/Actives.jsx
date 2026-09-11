@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import hostbase from "../../hostbase.js";
+import hostbase from "../../../lib/hostbase";
 
 import ipad from "../../assets/ipad.png";
 import chromebook from "../../assets/chromebook.png";

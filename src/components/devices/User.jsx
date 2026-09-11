@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import hostbase from "../../hostbase.js";
+import hostbase from "../../../lib/hostbase";
 
 import contact from "../../assets/contact-icon.svg";
 import building from "../../assets/building-icon.svg";
