@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import type { Socket } from "socket.io-client";
-import jwtDecode from "jwt-decode";
 
 import hostbase from "../src/hostbase.js";
+import type { SessionUser } from "../lib/auth";
+import { useAppState } from "./AppStateProvider";
 
 // NOTE: Actives, Rent, User and Calculators have not migrated yet. They are
 // imported from their original src/components/devices/ location via a relative
@@ -18,12 +18,6 @@ import "../src/components/devices/devices.css";
 
 import add from "../src/assets/add.svg";
 // import search from "../src/assets/search.svg";
-
-// The JWT only ever has its first/last name read off it here.
-interface LoggedUser {
-  first: string;
-  last: string;
-}
 
 // Shape of the `active` state as constructed inside this file. `number` is held
 // as "" on reset but carries a device number when populated by Actives, hence
@@ -61,24 +55,30 @@ interface SearchInfo {
 }
 
 interface DevicesProps {
-  setUser: (user: UserState) => void;
-  showNotification: (title: string, message: string) => void;
-  socket: Socket | null;
+  loggedUser: SessionUser;
 }
 
-export default function Devices({
-  setUser,
-  showNotification,
-  socket,
-}: DevicesProps) {
+export default function Devices({ loggedUser }: DevicesProps) {
   /** Objects used under the devices section
    * active : similar to searchInfo but this object, that also works through state management, shows the information regarding an active device. This will prevent the information to change in different modules.
    */
-  const token: string | null = localStorage.getItem("token");
-  // Non-null assertion: current code assumes a token is always present and does
-  // not null-check before decoding. Behavior (throw on a missing token) is preserved.
-  const loggedUser = jwtDecode<LoggedUser>(token!);
+  const { socket, showNotification } = useAppState();
   const admin = loggedUser.first + " " + loggedUser.last;
+
+  // Was passed down as the `setUser` prop before Devices had its own page;
+  // now local state. Note: appears to be fully dead — reset to blank at both
+  // call sites below, but nothing in this file or any child ever reads `user`.
+  // Left as-is for this migration; tracked in BACKLOG.md as a cleanup candidate.
+  const [user, setUser] = useState<UserState>({
+    document: "",
+    device: "",
+    number: 0,
+    name: "",
+    section: "",
+    date: "",
+    time: "",
+    email: "",
+  });
 
   // Object to show on client side
   const [active, setActive] = useState<ActiveDevice>({

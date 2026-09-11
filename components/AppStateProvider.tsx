@@ -14,8 +14,8 @@ import hostbase from "../src/hostbase.js";
 // app/(protected)/layout.tsx and read by pages via useAppState().
 //
 // Scope note: user/setUser from App.js is deliberately NOT here. That state is
-// only consumed by Devices.tsx and will be handled as local state when Devices
-// is wired into its page.
+// only ever consumed by Devices.tsx, so it lives there as local state instead
+// (wired in alongside app/(protected)/devices/page.tsx).
 
 interface AppState {
   socket: Socket | null;
