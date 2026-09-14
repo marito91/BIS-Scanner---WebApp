@@ -23,6 +23,11 @@
 - [ ] harden: Devices.tsx error handling — catch (error: any) in loadDataAndDownload and the 3 promise .catch(e) sites all use any/implicit any. Tighten to unknown + instanceof Error where it doesn't change existing behavior (note: bare non-Error throws currently interpolate as "undefined" in the message, preserve that if narrowing later). Separate from migration.
 - [ ] cleanup: `user`/`setUser` state in `components/Devices.tsx` appears fully dead — reset to blank in `returnDevice`/`returnCalc`, but never read there or by any child. Confirm and remove if so.
 - [ ] cleanup: `src/hostbase.js` can be deleted once every remaining `hostbase.js` import in the still-unmigrated `src/` files is gone (all live/reachable files now read `process.env.NEXT_PUBLIC_HOSTBASE_URL` directly).
+- [ ] cleanup: confirmed dead code, candidates for deletion in a future cleanup PR: `src/components/Restricted.jsx` (superseded by proxy.ts's silent redirect + `?restricted=true` query param handling in Index; only remaining importer is the unrouted `src/App.js`), `src/components/dashboard/BlockStudents.jsx` and `src/components/dashboard/ManageIds.jsx` (stub placeholders, never imported by Dashboard.jsx or anywhere else).
+
+### Future features
+
+- [ ] feature: blocked-students dashboard widget — the old `src/components/Dashboard.jsx` had a working fetch (`GET /users/blocked_users`) and a partially-built but commented-out UI for it, dropped during the `/home` migration rather than resurrected as-is. If rebuilt, it should be an async Server Component fetch (or a route-level data function), not the old client `useEffect` pattern.
 
 ## Done
 

@@ -13,6 +13,7 @@ export interface SessionUser {
   first: string;
   last: string;
   email: string;
+  userType: string;
 }
 
 async function readToken(): Promise<string | null> {
