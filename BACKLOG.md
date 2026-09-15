@@ -11,6 +11,7 @@
 - [ ] chore: allow LAN dev access for mobile testing — add device IP(s) to `allowedDevOrigins` in next.config.ts (personal dev config, not part of any migration PR)
 - [ ] chore: confirm books/collection/Pagination.jsx is unused, remove if so
 - [ ] note: Devices.tsx (migrated) currently imports Actives, Rent, User, Calculators from their old src/components/devices/ location via a relative cross-tree path. Update each import as its target migrates; remove this note once all 4 are moved.
+- [ ] chore: src/App.js has a dangling import of the now-deleted Textbooks.jsx (and likely accumulates more of these as migration continues) — harmless since App.js isn't part of the App Router build/tsconfig, but should be deleted outright once the CRA leftovers cleanup item runs
 
 ### Cleanup
 
