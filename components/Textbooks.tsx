@@ -1,28 +1,68 @@
-import React, { useState, useEffect, useMemo } from "react";
-// import React from "react";
-import jwtDecode from "jwt-decode";
-import hostbase from "../hostbase.js";
+"use client";
 
-// import TextBooks from "./textbooks/Textbooks.jsx";
-import TextBookCirculation from "./textbooks/TextBookCirculation.jsx";
-import TextBookUser from "./textbooks/TextBookUser.jsx";
-import RentTextbooks from "./textbooks/RentTextbooks.jsx";
-import textBooks from "./textbooks/txtbooks.js";
+import { useState, useEffect, useMemo } from "react";
 
-import "./textbooks/textbooks.css";
-import bookshelves from "../assets/bookshelves.svg";
+import hostbase from "../lib/hostbase";
+import type { SessionUser } from "../lib/auth";
+import { useAppState } from "./AppStateProvider";
 
-export default function Textbooks({ showNotification, socket }) {
-  // User is being checked to see what tools are going to be available for them.
-  const token = localStorage.getItem("token");
-  const loggedUser = jwtDecode(token);
-  // const userType = loggedUser.userType;
+import textBooks from "./textbooks/txtbooks";
+
+// NOTE: TextBookCirculation, TextBookUser and RentTextbooks have not migrated
+// yet. They are imported from their original src/components/textbooks/
+// location via a relative cross-tree path; update each import as its target
+// migrates (tracked in BACKLOG.md).
+import TextBookCirculation from "../src/components/textbooks/TextBookCirculation.jsx";
+import TextBookUser from "../src/components/textbooks/TextBookUser.jsx";
+import RentTextbooks from "../src/components/textbooks/RentTextbooks.jsx";
+
+import "../src/components/textbooks/textbooks.css";
+import bookshelves from "../src/assets/bookshelves.svg";
+
+interface TextbooksProps {
+  loggedUser: SessionUser;
+}
+
+interface Student {
+  document: number;
+  section: string;
+  grade: string;
+  name: string;
+  lastName: string;
+  email: string;
+  blocked: boolean;
+  hasDeviceRented: boolean;
+  hasBookRented: boolean;
+  hasTextBookRented: boolean;
+  devicehistory: unknown[];
+  bookHistory: unknown[];
+  textBookHistory: unknown[];
+}
+
+const emptyStudent: Student = {
+  document: 0,
+  section: "",
+  grade: "",
+  name: "",
+  lastName: "",
+  email: "",
+  blocked: false,
+  hasDeviceRented: false,
+  hasBookRented: false,
+  hasTextBookRented: false,
+  devicehistory: [],
+  bookHistory: [],
+  textBookHistory: [],
+};
+
+export default function Textbooks({ loggedUser }: TextbooksProps) {
+  const { showNotification } = useAppState();
   const admin = loggedUser.first + " " + loggedUser.last;
 
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //  MANAGE NUMBER OF RENTED TEXTBOOKS // // // // // // // //
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // /
 
-  const [rentedTextbooks, setRentedTexbooks] = useState([]);
+  const [rentedTextbooks, setRentedTexbooks] = useState<unknown[]>([]);
 
   const checkRented = async () => {
     const response = await fetch(`${hostbase}/textbooks/rented`, {
@@ -58,45 +98,31 @@ export default function Textbooks({ showNotification, socket }) {
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // //  MANAGE TEXTBOOK RENTAL // // // // // // // //
   // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // // /
 
-  function stringRemove(str) {
+  function stringRemove(str: string) {
     let result = str.replace(/[^\d]/g, "");
     return result;
   }
 
   const [document, setDocument] = useState("");
-  const [student, setStudent] = useState({
-    document: 0,
-    section: "",
-    grade: "",
-    name: "",
-    lastName: "",
-    email: "",
-    blocked: false,
-    hasDeviceRented: false,
-    hasBookRented: false,
-    hasTextBookRented: false,
-    devicehistory: [],
-    bookHistory: [],
-    textBookHistory: [],
-  });
-  const [rentedtbs, setRentedtbs] = useState([]);
+  const [student, setStudent] = useState<Student>(emptyStudent);
+  const [rentedtbs, setRentedtbs] = useState<unknown[]>([]);
 
   const [observations, setObservations] = useState("");
 
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const handleDocument = (event) => {
+  const handleDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setDocument(value);
   };
 
-  const handleObservations = (event) => {
+  const handleObservations = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setObservations(value);
   };
 
-  function getStudent(document) {
-    if (isNaN(document)) {
+  function getStudent(document: string) {
+    if (isNaN(Number(document))) {
       showNotification("Error", "Please enter a valid document.");
     } else {
       // A cleaning of selected sample values must be made first since maybe a student is loaded by accident. So to make sure that sampleValues stays in blank before loading the information.
@@ -126,9 +152,12 @@ export default function Textbooks({ showNotification, socket }) {
     }
   }
 
-  const [sampleValues, setSampleValues] = useState({});
+  const [sampleValues, setSampleValues] = useState<Record<string, string>>({});
 
-  const handleSampleChange = (event, textbookText) => {
+  const handleSampleChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    textbookText: string
+  ) => {
     const newSampleValues = {
       ...sampleValues,
       [textbookText]: event.target.value,
@@ -143,7 +172,7 @@ export default function Textbooks({ showNotification, socket }) {
     console.log(information);
 
     // Create an array of objects for sending to backend
-    const textbooksWithSamples = [];
+    const textbooksWithSamples: { title: string; sample: string }[] = [];
     for (const [title, sample] of Object.entries(sampleValues)) {
       textbooksWithSamples.push({ title, sample });
     }
@@ -177,21 +206,7 @@ export default function Textbooks({ showNotification, socket }) {
             // A cleaning of all state must be made when the textbooks are assigned
             setSampleValues({});
             setDocument("");
-            setStudent({
-              document: 0,
-              section: "",
-              grade: "",
-              name: "",
-              lastName: "",
-              email: "",
-              blocked: false,
-              hasDeviceRented: false,
-              hasBookRented: false,
-              hasTextBookRented: false,
-              devicehistory: [],
-              bookHistory: [],
-              textBookHistory: [],
-            });
+            setStudent(emptyStudent);
             setObservations("");
             setRentedtbs([]);
             setIsLoaded(false);
@@ -210,21 +225,7 @@ export default function Textbooks({ showNotification, socket }) {
     // A cleaning of all state must be made when the textbooks are assigned
     setSampleValues({});
     setDocument("");
-    setStudent({
-      document: 0,
-      section: "",
-      grade: "",
-      name: "",
-      lastName: "",
-      email: "",
-      blocked: false,
-      hasDeviceRented: false,
-      hasBookRented: false,
-      hasTextBookRented: false,
-      devicehistory: [],
-      bookHistory: [],
-      textBookHistory: [],
-    });
+    setStudent(emptyStudent);
     setObservations("");
     setRentedtbs([]);
     setIsLoaded(false);
@@ -237,7 +238,7 @@ export default function Textbooks({ showNotification, socket }) {
     console.log(information);
 
     // Create an array of objects for sending to backend
-    const textbooksWithSamples = [];
+    const textbooksWithSamples: { title: string; sample: string }[] = [];
     for (const [title, sample] of Object.entries(sampleValues)) {
       textbooksWithSamples.push({ title, sample });
     }
@@ -271,21 +272,7 @@ export default function Textbooks({ showNotification, socket }) {
             // A cleaning of all state must be made when the textbooks are assigned
             setSampleValues({});
             setDocument("");
-            setStudent({
-              document: 0,
-              section: "",
-              grade: "",
-              name: "",
-              lastName: "",
-              email: "",
-              blocked: false,
-              hasDeviceRented: false,
-              hasBookRented: false,
-              hasTextBookRented: false,
-              devicehistory: [],
-              bookHistory: [],
-              textBookHistory: [],
-            });
+            setStudent(emptyStudent);
             setObservations("");
             setRentedtbs([]);
             setIsLoaded(false);
@@ -304,28 +291,14 @@ export default function Textbooks({ showNotification, socket }) {
     // A cleaning of all state must be made when the textbooks are assigned
     setSampleValues({});
     setDocument("");
-    setStudent({
-      document: 0,
-      section: "",
-      grade: "",
-      name: "",
-      lastName: "",
-      email: "",
-      blocked: false,
-      hasDeviceRented: false,
-      hasBookRented: false,
-      hasTextBookRented: false,
-      devicehistory: [],
-      bookHistory: [],
-      textBookHistory: [],
-    });
+    setStudent(emptyStudent);
     setObservations("");
     setRentedtbs([]);
     setIsLoaded(false);
   };
 
   // Function to handle assigning selected textbooks
-  const unassignOne = (userThatHasTb, textbookToUnassign) => {
+  const unassignOne = (userThatHasTb: any, textbookToUnassign: any) => {
     const confirmation = window.confirm(
       `You are returning the following texts from ${
         userThatHasTb.name + " " + userThatHasTb.lastName
@@ -352,21 +325,7 @@ export default function Textbooks({ showNotification, socket }) {
             // A cleaning of all state must be made when the textbooks are assigned
             setSampleValues({});
             setDocument("");
-            setStudent({
-              document: 0,
-              section: "",
-              grade: "",
-              name: "",
-              lastName: "",
-              email: "",
-              blocked: false,
-              hasDeviceRented: false,
-              hasBookRented: false,
-              hasTextBookRented: false,
-              devicehistory: [],
-              bookHistory: [],
-              textBookHistory: [],
-            });
+            setStudent(emptyStudent);
             setObservations("");
             setRentedtbs([]);
             setIsLoaded(false);
@@ -385,21 +344,7 @@ export default function Textbooks({ showNotification, socket }) {
     // A cleaning of all state must be made when the textbooks are assigned
     setSampleValues({});
     setDocument("");
-    setStudent({
-      document: 0,
-      section: "",
-      grade: "",
-      name: "",
-      lastName: "",
-      email: "",
-      blocked: false,
-      hasDeviceRented: false,
-      hasBookRented: false,
-      hasTextBookRented: false,
-      devicehistory: [],
-      bookHistory: [],
-      textBookHistory: [],
-    });
+    setStudent(emptyStudent);
     setObservations("");
     setRentedtbs([]);
     setIsLoaded(false);
