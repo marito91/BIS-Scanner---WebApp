@@ -148,7 +148,6 @@ export default function Rent({
     <div className="rent-form">
       <h2>Rent</h2>
       <div className="rent-form-container">
-        {/* <Barcode handleCode={handleCode} user={user} /> */}
         <label>Document</label>
         <input
           name="document"
