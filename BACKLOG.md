@@ -21,6 +21,7 @@
 - [ ] harden: Devices.tsx error handling — catch (error: any) in loadDataAndDownload and the 3 promise .catch(e) sites all use any/implicit any. Tighten to unknown + instanceof Error where it doesn't change existing behavior (note: bare non-Error throws currently interpolate as "undefined" in the message, preserve that if narrowing later). Separate from migration.
 - [ ] cleanup: `user`/`setUser` state in `components/Devices.tsx` appears fully dead — reset to blank in `returnDevice`/`returnCalc`, but never read there or by any child. Confirm and remove if so.
 - [ ] cleanup: `src/hostbase.js` can be deleted once every remaining `hostbase.js` import in the still-unmigrated `src/` files is gone (all live/reachable files now read `process.env.NEXT_PUBLIC_HOSTBASE_URL` directly).
+- [ ] cleanup: `ManageBooks.jsx` independently decodes its own JWT via `localStorage`/`jwt-decode`, redundant with the `admin` prop `NewBooks.tsx` already passes it. Resolve when `ManageBooks.jsx` migrates — likely means dropping the local decode and using the prop instead.
 
 ### Future features
 
