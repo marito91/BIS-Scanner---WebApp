@@ -1,13 +1,44 @@
-import React, { useState } from "react";
-import hostbase from "../../../lib/hostbase";
+"use client";
 
-import contact from "../../assets/contact-icon.svg";
-import building from "../../assets/building-icon.svg";
-import devices from "../../assets/devices-icon.svg";
-import calendar from "../../assets/calendar-icon.svg";
-import condition from "../../assets/condition-icon.svg";
-import email from "../../assets/email.svg";
-import calculator from "../../assets/calculator-icon.svg";
+import React, { useState } from "react";
+
+import hostbase from "../../lib/hostbase";
+
+import contact from "../../src/assets/contact-icon.svg";
+import building from "../../src/assets/building-icon.svg";
+import devices from "../../src/assets/devices-icon.svg";
+import calendar from "../../src/assets/calendar-icon.svg";
+import condition from "../../src/assets/condition-icon.svg";
+import email from "../../src/assets/email.svg";
+import calculator from "../../src/assets/calculator-icon.svg";
+
+// Shape of the `active` prop. Mirrors Devices.tsx's own ActiveDevice type
+// (document/device/number/name/section/date/time/email/conditions) plus the
+// calculator/calcDate/calcConditions fields this component reads, which
+// Actives.tsx sets on the object it hands to setActive but which
+// Devices.tsx's ActiveDevice type doesn't declare — see migration report.
+interface ActiveUser {
+  document: string;
+  device: string;
+  number: string | number;
+  name: string;
+  section: string;
+  date: string;
+  time: string;
+  email: string;
+  conditions?: string;
+  calculator?: string | number;
+  calcDate?: string;
+  calcConditions?: string;
+}
+
+interface UserProps {
+  returnDevice: (rentedDevice: [string, string | number]) => void;
+  active: ActiveUser;
+  closeUser: () => void;
+  showNotification: (title: string, message: string) => void;
+  returnCalc: (number: string | number) => void;
+}
 
 export default function User({
   returnDevice,
@@ -15,13 +46,13 @@ export default function User({
   closeUser,
   showNotification,
   returnCalc,
-}) {
+}: UserProps) {
   const device = active.device + " #" + active.number;
   // const date = "Rented on " + active.date + " at " + active.time;
   const date = "Rented on " + active.date;
 
   // This function notifies a selected student via email. First it checks if the user object contains the actual information needed to connect to server side. After confirming everything is okay and the client also confirms, a message is sent from the server side to the selected user.
-  function notifyOne(user) {
+  function notifyOne(user: ActiveUser) {
     if (user.email === "") {
       showNotification("Error", "Please select a user first!");
     } else {
@@ -55,11 +86,16 @@ export default function User({
     }
   }
 
-  const [hoveredCalc, setHoveredCalc] = useState(null);
+  const [hoveredCalc, setHoveredCalc] = useState<string | null | undefined>(
+    null
+  );
 
   const [modalCoordinates, setModalCoordinates] = useState({ x: 0, y: 0 });
 
-  const handleMouseOver = (active, event) => {
+  const handleMouseOver = (
+    active: ActiveUser,
+    event: React.MouseEvent<HTMLLabelElement>
+  ) => {
     setModalCoordinates({ x: event.clientX, y: event.clientY });
     setHoveredCalc(active.calcDate); // Update the hovered book title
   };
@@ -69,7 +105,7 @@ export default function User({
     setHoveredCalc(null);
   };
 
-  const modalStyles = {
+  const modalStyles: React.CSSProperties = {
     display: hoveredCalc ? "block" : "none",
     position: "fixed",
     top: `${modalCoordinates.y - 20}px`,
@@ -111,7 +147,7 @@ export default function User({
                     onMouseOver={(event) => handleMouseOver(active, event)}
                     onMouseOut={handleMouseOut}
                     onClick={() => {
-                      returnCalc(active.calculator);
+                      returnCalc(active.calculator!);
                       handleMouseOut();
                     }}
                   >
