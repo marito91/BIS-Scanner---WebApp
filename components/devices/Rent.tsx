@@ -1,5 +1,27 @@
+"use client";
+
 import React, { useState } from "react";
-import hostbase from "../../../lib/hostbase";
+
+import hostbase from "../../lib/hostbase";
+
+// Local shape for the rent form state. `number` starts as the number 0 but
+// handleChange always writes strings from event.target.value onto it, so it's
+// string | number at runtime — same looseness Devices.tsx's own ActiveDevice
+// type documents for an equivalent field.
+interface RentFormState {
+  document: string;
+  device: string;
+  number: string | number;
+  conditions: string;
+}
+
+interface RentProps {
+  updateRented: () => void;
+  entryCount: () => void;
+  showNotification: (title: string, message: string) => void;
+  admin: string;
+  closeRentModal: () => void;
+}
 
 export default function Rent({
   updateRented,
@@ -7,17 +29,21 @@ export default function Rent({
   showNotification,
   admin,
   closeRentModal,
-}) {
+}: RentProps) {
   // This user object, which is managed by states, will contain the information that's sent to server regarding the renting of devices.
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<RentFormState>({
     document: "",
     device: "",
     number: 0,
     conditions: "",
   });
   // The function handlechange() determines the values that will be assigned under the user object when a device is going to be rented.
-  const handleChange = (event) => {
-    const name = event.target.name;
+  const handleChange = (
+    event: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const name = event.target.name as keyof RentFormState;
     const value = event.target.value;
     setUser((user) => ({ ...user, [name]: value }));
   };
@@ -28,12 +54,12 @@ export default function Rent({
     if (
       user.document === "----------" ||
       user.document === "" ||
-      isNaN(user.document)
+      isNaN(Number(user.document))
     ) {
       showNotification("Error", "Please enter a valid document number.");
     } else {
       // It doesn't accept the device number if is not in the 0-30 range, since this is the actual number of available devices. If the number changes physically in the library or IT department, then this part needs to be adjusted.
-      if (user.number > 30 || user.number <= 0) {
+      if (Number(user.number) > 30 || Number(user.number) <= 0) {
         showNotification(
           "Error",
           "Please enter a valid number between 1 and 30."
@@ -89,12 +115,12 @@ export default function Rent({
     if (
       user.document === "----------" ||
       user.document === "" ||
-      isNaN(user.document)
+      isNaN(Number(user.document))
     ) {
       showNotification("Error", "Please enter a valid document number.");
     } else {
       // It doesn't accept the device number if is not in the 0-10 range, since this is the actual number of available calculators. If the number changes physically in the library or IT department, then this part needs to be adjusted.
-      if (user.number > 10 || user.number <= 0) {
+      if (Number(user.number) > 10 || Number(user.number) <= 0) {
         showNotification(
           "Error",
           "Please enter a valid number between 1 and 10."
@@ -184,7 +210,6 @@ export default function Rent({
           style={{ fontSize: "16px" }} // This is done because when using mobile it zooms.
           name="conditions"
           value={user.conditions}
-          type="text"
           rows={4}
           placeholder="Good conditions or broken screen, small damage, etc."
           onChange={handleChange}

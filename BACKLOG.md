@@ -10,7 +10,6 @@
 - [ ] harden: proxy.ts matcher (`/home`, `/devices`, `/books`, `/textbooks`, `/settings`) is exact-match only, doesn't cover future sub-routes automatically
 - [ ] chore: allow LAN dev access for mobile testing — add device IP(s) to `allowedDevOrigins` in next.config.ts (personal dev config, not part of any migration PR)
 - [ ] chore: confirm books/collection/Pagination.jsx is unused, remove if so
-- [ ] note: Devices.tsx (migrated) currently imports Actives, Rent, User, Calculators from their old src/components/devices/ location via a relative cross-tree path. Update each import as its target migrates; remove this note once all 4 are moved.
 - [ ] chore: src/App.js has a dangling import of the now-deleted Textbooks.jsx (and likely accumulates more of these as migration continues) — harmless since App.js isn't part of the App Router build/tsconfig, but should be deleted outright once the CRA leftovers cleanup item runs
 - [ ] circulation/Group.jsx not yet inventoried in original child-migration scope — `src/components/books/circulation/Group.jsx` (imported by `Circulation.jsx`, itself imported by `Collections.jsx`) was missed in the initial Devices/NewBooks/Textbooks children scoping. Genuine Client Component (useState×2, hover/click handlers). Imports the old `src/hostbase.js`, needs updating to `lib/hostbase` when migrated. Add to the Books migration wave alongside Collections/Collection/Circulation.
 
@@ -26,6 +25,8 @@
 - [ ] cleanup: `ManageBooks.jsx` independently decodes its own JWT via `localStorage`/`jwt-decode`, redundant with the `admin` prop `NewBooks.tsx` already passes it. Resolve when `ManageBooks.jsx` migrates — likely means dropping the local decode and using the prop instead.
 - [ ] Spinner duplicate: new version orphaned, old version still live — `components/Spinner.tsx` (migrated Day 1) has zero importers anywhere in the codebase. The old `src/components/Spinner.jsx` is the one actually rendering in production, via `src/components/books/Collection.jsx`. Before switching `Collection.jsx`'s import to the new version, confirm they're functionally identical (props, rendered output) — don't assume a blind swap is safe.
 - [ ] fix: broken icon in login modal (Index.tsx) — the small icon next to "We are sorry..." in the restricted-access login modal renders as a broken image (missing/incorrect image reference). Pre-existing, unrelated to any recent migration PR. Cosmetic only, doesn't block login functionality.
+- [ ] fix: `ActiveDevice` type doesn't match real data shape flowing through Devices.tsx → Actives.tsx → User.tsx. `Actives.tsx`'s `selectUser()` never sets the required `document` field, and sets `calculator`/`calcDate`/`calcConditions` fields the type doesn't declare at all. `Actives.tsx`'s `setActive` prop is currently typed `any` to route around this rather than force a wrong shape. Reconcile by extending `ActiveDevice` to match what's actually passed/read across all 3 files.
+- [ ] cleanup: missing `key` prop on `Calculators.tsx`'s `rentedCalcs.map()` `<tr>` list — React will warn in dev, pre-existing from the original .jsx.
 
 ### Future features
 

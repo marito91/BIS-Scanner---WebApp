@@ -1,10 +1,71 @@
-import React, { useState, useEffect } from "react";
-import hostbase from "../../../lib/hostbase";
+"use client";
 
-import ipad from "../../assets/ipad.png";
-import chromebook from "../../assets/chromebook.png";
-import Calculator from "../../assets/calculator.png";
-import inactive from "../../assets/inactive.svg";
+import React, { useState, useEffect } from "react";
+import type { Socket } from "socket.io-client";
+
+import hostbase from "../../lib/hostbase";
+
+import ipad from "../../src/assets/ipad.png";
+import chromebook from "../../src/assets/chromebook.png";
+import Calculator from "../../src/assets/calculator.png";
+import inactive from "../../src/assets/inactive.svg";
+
+// Shape of an entry inside the `rented` array. Devices.tsx types `rented` as
+// `unknown[]` (the full shape isn't modeled there), so this component casts
+// into this shape once it's received, based on the fields actually read below.
+interface RentedDevice {
+  document: string;
+  name: string;
+  lastName: string;
+  grade: string;
+  section: string;
+  device: string;
+  number: string | number;
+  date: string;
+  time: string;
+  email: string;
+  conditions: string;
+}
+
+// Shape of an entry inside `rentedCalcs`, same reasoning as RentedDevice.
+interface RentedCalculator {
+  document: string;
+  number: string | number;
+  date: string;
+  conditions: string;
+}
+
+// Shape of the object built below and handed to `setActive`. Devices.tsx's
+// own ActiveDevice type requires `document` (never set below) and has no
+// calculator/calcDate/calcConditions fields (set here conditionally, and
+// read back by User.tsx), so it doesn't structurally match this shape either
+// way. setActive's prop type is `any` (see ActivesProps) rather than forcing
+// a shape that matches neither the real setter nor this object — see
+// migration report.
+interface ActiveUserPayload {
+  name: string;
+  section: string;
+  device: string;
+  number: string | number;
+  date: string;
+  time: string;
+  email: string;
+  conditions: string;
+  calculator?: string | number;
+  calcDate?: string;
+  calcConditions?: string;
+}
+
+interface ActivesProps {
+  rented: unknown[];
+  entries: number;
+  setActive: (active: any) => void;
+  setIsUserVisible: (visible: boolean) => void;
+  setCalcModalIsVisible: (visible: boolean) => void;
+  closeRentModal: () => void;
+  rentedCalcs: unknown[];
+  socket: Socket | null;
+}
 
 export default function Actives({
   rented,
@@ -15,12 +76,15 @@ export default function Actives({
   closeRentModal,
   rentedCalcs,
   socket,
-}) {
+}: ActivesProps) {
+  const rentedDevices = rented as RentedDevice[];
+  const rentedCalcsList = rentedCalcs as RentedCalculator[];
+
   // The function selectUser displays the information from a selected user in the User component. It receives an object, splits the name to show only the first one, adds it to the last name and assigns the active state with the object information so that the component shows the information.
-  function selectUser(user, calc) {
+  function selectUser(user: RentedDevice, calc?: RentedCalculator) {
     // const fname = user.firstName.split(" ");
     // console.log(calc);
-    const activeUser = {
+    const activeUser: ActiveUserPayload = {
       name: user.name + " " + user.lastName,
       section: user.grade + " - " + user.section,
       device: user.device,
@@ -42,7 +106,7 @@ export default function Actives({
 
   // fetchData() is called whenever data is updated.
   // The function arrangeName takes the data coming from server side (first and last names) and capitalizes the first letter of each string so that it can be displayed in the actives list.
-  function arrangeName(strFirst, strLast) {
+  function arrangeName(strFirst: string, strLast: string) {
     // Strings first values are taken and lowered cased.
     const first = strFirst.toLowerCase().split(" ")[0];
     const last = strLast.toLowerCase().split(" ")[0];
@@ -56,9 +120,9 @@ export default function Actives({
   }
 
   // Two states are created to show the number of devices contained for each type (iPads, Chromebooks)
-  const [ipads, setIpads] = useState([]);
-  const [chromebooks, setChromebooks] = useState([]);
-  const [calculators, setCalculators] = useState([]);
+  const [ipads, setIpads] = useState<unknown[]>([]);
+  const [chromebooks, setChromebooks] = useState<unknown[]>([]);
+  const [calculators, setCalculators] = useState<unknown[]>([]);
 
   // The information is fetched from the server so that the count can be updated.
   const availableDevicesCount = async () => {
@@ -138,8 +202,10 @@ export default function Actives({
     <>
       <div className="stats-container">
         <div className="stats-1" id="active-devices">
-          <label id="stat">{rented.length}</label>
-          <label id="data">Active User{rented.length !== 1 ? "s" : ""}!</label>
+          <label id="stat">{rentedDevices.length}</label>
+          <label id="data">
+            Active User{rentedDevices.length !== 1 ? "s" : ""}!
+          </label>
         </div>
         <div className="stats-2" id="active-chromes">
           <label id="stat">{chromebooks.length}</label>
@@ -165,12 +231,12 @@ export default function Actives({
           <label id="data">Entries so far!</label>
         </div>
       </div>
-      {rented.length > 0 ? (
+      {rentedDevices.length > 0 ? (
         <>
           <div className="actives-container">
-            {rented.map((entry, index) => {
+            {rentedDevices.map((entry, index) => {
               // Check if entry.document is in rentedCalcs array
-              const calc = rentedCalcs.find(
+              const calc = rentedCalcsList.find(
                 (calc) => calc.document === entry.document
               );
 
@@ -187,8 +253,8 @@ export default function Actives({
                   <img
                     src={
                       entry.device.toLowerCase() === "chromebook"
-                        ? chromebook
-                        : ipad
+                        ? chromebook.src
+                        : ipad.src
                     }
                     alt=""
                   />
@@ -199,7 +265,7 @@ export default function Actives({
                     <label id="grade">{entry.grade}</label>
                     <label id="dev">{entry.device + " #" + entry.number}</label>
                   </div>
-                  {calc && <img src={Calculator} id="calculator" alt="" />}
+                  {calc && <img src={Calculator.src} id="calculator" alt="" />}
                 </div>
               );
             })}

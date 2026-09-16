@@ -6,13 +6,10 @@ import hostbase from "../lib/hostbase";
 import type { SessionUser } from "../lib/auth";
 import { useAppState } from "./AppStateProvider";
 
-// NOTE: Actives, Rent, User and Calculators have not migrated yet. They are
-// imported from their original src/components/devices/ location via a relative
-// cross-tree path; update each import as its target migrates (tracked in BACKLOG.md).
-import Actives from "../src/components/devices/Actives.jsx";
-import Rent from "../src/components/devices/Rent.jsx";
-import User from "../src/components/devices/User.jsx";
-import Calculators from "../src/components/devices/Calculators.jsx";
+import Actives from "./devices/Actives";
+import Rent from "./devices/Rent";
+import User from "./devices/User";
+import Calculators from "./devices/Calculators";
 
 import "../src/components/devices/devices.css";
 

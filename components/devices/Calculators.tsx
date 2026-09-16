@@ -1,14 +1,34 @@
+"use client";
+
 import React from "react";
 
-import close from "../../assets/x.svg";
+import close from "../../src/assets/x.svg";
+
+// Shape of an entry inside `rentedCalcs`. Devices.tsx types `rentedCalcs` as
+// `unknown[]` (the full shape isn't modeled there), so this component casts
+// into this shape once it's received, based on the fields actually read below.
+interface RentedCalculator {
+  name: string;
+  lastName: string;
+  number: string | number;
+  date: string;
+}
+
+interface CalculatorsProps {
+  rentedCalcs: unknown[];
+  returnCalc: (number: string | number) => void;
+  closeCalcModal: (value?: boolean) => void;
+}
 
 export default function Calculators({
   rentedCalcs,
   returnCalc,
   closeCalcModal,
-}) {
+}: CalculatorsProps) {
+  const rentedCalcsList = rentedCalcs as RentedCalculator[];
+
   // The function arrangeName takes the data coming from server side (first and last names) and capitalizes the first letter of each string so that it can be displayed in the actives list.
-  function arrangeName(strFirst, strLast) {
+  function arrangeName(strFirst: string, strLast: string) {
     // Strings first values are taken and lowered cased.
     const first = strFirst.toLowerCase().split(" ")[0];
     const last = strLast.toLowerCase().split(" ")[0];
@@ -33,13 +53,11 @@ export default function Calculators({
             </tr>
           </thead>
           <tbody>
-            {rentedCalcs.map((calc) => (
+            {rentedCalcsList.map((calc) => (
               <tr className="calc-row" onClick={() => returnCalc(calc.number)}>
-                <td htmlFor="">{arrangeName(calc.name, calc.lastName)}</td>
-                <td id="number" htmlFor="">
-                  {"#" + calc.number}
-                </td>
-                <td htmlFor="">{calc.date}</td>
+                <td>{arrangeName(calc.name, calc.lastName)}</td>
+                <td id="number">{"#" + calc.number}</td>
+                <td>{calc.date}</td>
               </tr>
             ))}
           </tbody>
