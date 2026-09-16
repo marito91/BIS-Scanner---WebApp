@@ -28,6 +28,13 @@
 
 - [ ] feature: blocked-students dashboard widget — the old `src/components/Dashboard.jsx` had a working fetch (`GET /users/blocked_users`) and a partially-built but commented-out UI for it, dropped during the `/home` migration rather than resurrected as-is. If rebuilt, it should be an async Server Component fetch (or a route-level data function), not the old client `useEffect` pattern.
 
+### Broken icon in login modal (Index.tsx)
+
+The small icon next to "We are sorry..." in the restricted-access login modal
+renders as a broken image (missing/incorrect image reference). Pre-existing,
+unrelated to any recent migration PR. Cosmetic only, doesn't block login
+functionality. Needs the image asset path checked in Index.tsx.
+
 ## Done
 
 - [x] fix: CRA/Next.js toolchain collision, moved app/ out of src/ (2026-09-03)
