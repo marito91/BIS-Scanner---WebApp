@@ -1,4 +1,32 @@
+"use client";
+
 import React from "react";
+
+import type { Textbook } from "./txtbooks";
+
+// Only the field this component actually reads from Textbooks.tsx's Student
+// shape (grade), redeclared locally since that interface isn't exported —
+// same approach used for un-exported parent-owned shapes elsewhere.
+interface StudentGradeInfo {
+  grade: string;
+}
+
+interface RentTextbooksProps {
+  textBooks: Textbook[];
+  rentedtbs: unknown[];
+  stringRemove: (str: string) => string;
+  student: StudentGradeInfo;
+  sampleValues: Record<string, string>;
+  handleSampleChange: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    textbookText: string
+  ) => void;
+  observations: string;
+  handleObservations: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  assignTextBooks: () => void;
+  unassignTextBooks: () => void;
+  showNotification: (title: string, message: string) => void;
+}
 
 export default function RentTextbooks({
   textBooks,
@@ -12,7 +40,7 @@ export default function RentTextbooks({
   assignTextBooks,
   unassignTextBooks,
   showNotification,
-}) {
+}: RentTextbooksProps) {
   return (
     <>
       {/* <div className="rented-tb-table">

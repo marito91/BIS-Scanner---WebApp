@@ -8,13 +8,9 @@ import { useAppState } from "./AppStateProvider";
 
 import textBooks from "./textbooks/txtbooks";
 
-// NOTE: TextBookCirculation, TextBookUser and RentTextbooks have not migrated
-// yet. They are imported from their original src/components/textbooks/
-// location via a relative cross-tree path; update each import as its target
-// migrates (tracked in BACKLOG.md).
-import TextBookCirculation from "../src/components/textbooks/TextBookCirculation.jsx";
-import TextBookUser from "../src/components/textbooks/TextBookUser.jsx";
-import RentTextbooks from "../src/components/textbooks/RentTextbooks.jsx";
+import TextBookCirculation from "./textbooks/TextBookCirculation";
+import TextBookUser from "./textbooks/TextBookUser";
+import RentTextbooks from "./textbooks/RentTextbooks";
 
 import "../src/components/textbooks/textbooks.css";
 import bookshelves from "../src/assets/bookshelves.svg";
