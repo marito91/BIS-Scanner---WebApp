@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Spinner from "../Spinner.jsx";
+import Spinner from "../../../components/Spinner";
 
 import SelectedTextbook from "./SelectedTextbook.jsx";
 
