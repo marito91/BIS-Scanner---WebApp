@@ -1,28 +1,51 @@
-import React, { useState } from "react";
-import jwtDecode from "jwt-decode";
-import hostbase from "../../hostbase.js";
+"use client";
 
-import load from "../../assets/load.svg";
-import upload from "../../assets/upload.svg";
-import editalt from "../../assets/editalt.svg";
-import clear from "../../assets/clear.svg";
-import trash from "../../assets/trash.svg";
-import close from "../../assets/x.svg";
+import React, { useState } from "react";
+import hostbase from "../../lib/hostbase";
+
+import load from "../../src/assets/load.svg";
+import upload from "../../src/assets/upload.svg";
+import editalt from "../../src/assets/editalt.svg";
+import clear from "../../src/assets/clear.svg";
+import trash from "../../src/assets/trash.svg";
+import close from "../../src/assets/x.svg";
+
+interface BookForm {
+  barcode: string;
+  author: string;
+  title: string;
+  publicationYear: string;
+  isbn: string;
+  price: string;
+  circulationType: string;
+  materialType: string;
+  sublocation: string;
+  vendor: string;
+  dewey: string;
+  conditions: string;
+}
+
+interface ManageBooksProps {
+  showNotification: (title: string, message: string) => void;
+  admin: string;
+  closeBookEditModal: (visible?: boolean) => void;
+}
 
 export default function ManageBooks({
   showNotification,
   admin,
   closeBookEditModal,
-}) {
+}: ManageBooksProps) {
   // First, a state is set for the barcode string, which will help for searching in server.
   const [barcode, setBarcode] = useState("");
 
-  const token = localStorage.getItem("token");
-  const loggedUser = jwtDecode(token);
-  const name = loggedUser.first + " " + loggedUser.last;
+  // Previously decoded its own JWT from localStorage to derive the admin's
+  // display name; now reads the same value from the `admin` prop NewBooks.tsx
+  // already computes (loggedUser.first + " " + loggedUser.last).
+  const name = admin;
 
   // Then, an object which will contain the book information is created. All values are set to null in the initial state.
-  const [book, setBook] = useState({
+  const [book, setBook] = useState<BookForm>({
     barcode: "",
     author: "",
     title: "",
@@ -38,20 +61,20 @@ export default function ManageBooks({
   });
 
   // The function handleBarcode() will manage the input field for the barcode value.
-  const handleBarcode = (event) => {
+  const handleBarcode = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setBarcode(value);
   };
 
   // The function handleBook() will manage all of the inputs and select fields in the form regarding the book that is searched.
-  const handleBook = (event) => {
-    const name = event.target.name;
+  const handleBook = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.name as keyof BookForm;
     const value = event.target.value;
     setBook((book) => ({ ...book, [name]: value }));
   };
 
   // The getBook() function will receive a barcode as params and will use it to search in the database on the server for the book requested.
-  function getBook(barcode) {
+  function getBook(barcode: string) {
     fetch(`${hostbase}/books/getBook`, {
       headers: { "content-type": "application/json" },
       method: "POST",
@@ -128,7 +151,7 @@ export default function ManageBooks({
   }
 
   // The deleteBook() function will send to the server the requested book's barcode that's part of the collection and that's been already loaded in the fields. The book object's information is sent to the server which then validates with the database and deletes it.
-  function deleteBook(barcode) {
+  function deleteBook(barcode?: string) {
     // Many validations and confirmations are done first since deleting a book is a big deal.
     if (book.title === "") {
       showNotification("Alert", "Please load a book first!");
@@ -198,7 +221,7 @@ export default function ManageBooks({
           showNotification("Alert", "Please enter the Material Type ");
         } else if (book.circulationType === "- Choose one") {
           showNotification("Alert", "Please enter the Circulation Type ");
-        } else if (isNaN(book.price)) {
+        } else if (isNaN(Number(book.price))) {
           showNotification(
             "Error",
             "Please enter a valid price. If N/A enter 0"
@@ -279,7 +302,7 @@ export default function ManageBooks({
           {/* <button onClick={() => getBook(barcode)}>Load</button> */}
           <button className="btn-container" onClick={() => getBook(barcode)}>
             <div className="button-content">
-              <img src={load} alt="" className="button-icon" />
+              <img src={load.src} alt="" className="button-icon" />
               <span className="button-text">Load</span>
             </div>
           </button>
@@ -293,9 +316,7 @@ export default function ManageBooks({
               value={book.title || ""}
               onChange={handleBook}
             />
-            <label htmlFor="" required>
-              Author
-            </label>
+            <label htmlFor="">Author</label>
             <input
               type="text"
               name="author"
@@ -378,31 +399,35 @@ export default function ManageBooks({
         <div className="book-actions">
           <button className="btn-container" onClick={() => insertNewBook()}>
             <div className="button-content">
-              <img src={upload} alt="" className="button-icon" />
+              <img src={upload.src} alt="" className="button-icon" />
               <span className="button-text">Insert</span>
             </div>
           </button>
           <button className="btn-container" onClick={() => updateBook()}>
             <div className="button-content">
-              <img src={editalt} alt="" className="button-icon" />
+              <img src={editalt.src} alt="" className="button-icon" />
               <span className="button-text">Update</span>
             </div>
           </button>
           <button className="btn-container" onClick={() => clearFields()}>
             <div className="button-content">
-              <img src={clear} alt="" className="button-icon" />
+              <img src={clear.src} alt="" className="button-icon" />
               <span className="button-text">Clear</span>
             </div>
           </button>
           <button className="btn-container" onClick={() => deleteBook()}>
             <div className="button-content">
-              <img src={trash} alt="" className="button-icon" />
+              <img src={trash.src} alt="" className="button-icon" />
               <span className="button-text">Delete</span>
             </div>
           </button>
         </div>
         <div className="close-button-container">
-          <img src={close} alt="" onClick={() => closeBookEditModal(false)} />
+          <img
+            src={close.src}
+            alt=""
+            onClick={() => closeBookEditModal(false)}
+          />
         </div>
       </div>
     </>
