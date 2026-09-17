@@ -1,21 +1,48 @@
-import React, { useState } from "react";
-import hostbase from "../../../hostbase.js";
+"use client";
 
-import "../../books/circulation.css";
+import React, { useState } from "react";
+import hostbase from "../../../lib/hostbase";
+
+import "../../../src/components/books/circulation.css";
+
+interface BookHistoryEntry {
+  dueDate: string;
+}
+
+// Shape of an entry inside `rentedBooks`. Circulation.tsx types `rentedBooks`
+// as `unknown[]` (the full shape isn't modeled there), so this component casts
+// into this shape once it's received, based on the fields actually read below.
+interface RentedBookUser {
+  email: string;
+  name: string;
+  lastName: string;
+  grade: string;
+  barcode: string;
+  title: string;
+  bookHistory: BookHistoryEntry[];
+}
+
+interface GroupProps {
+  rentedBooks: unknown[];
+  selectedGrade: string;
+  showNotification: (title: string, message: string) => void;
+}
 
 // This component receives 2 props: rentedBooks which contains all the active rentedBooks, and selecteGrade which is the string that decides what section/grade/class is going to be displayed.
 export default function Group({
   rentedBooks,
   selectedGrade,
   showNotification,
-}) {
+}: GroupProps) {
+  const rentedBooksList = rentedBooks as RentedBookUser[];
+
   // A new array is created by filtering the rentedBooks array with the grade that was selected by the user. This new array, is the table that's going to be displayed.
-  const tableToDisplay = rentedBooks.filter(
+  const tableToDisplay = rentedBooksList.filter(
     (user) => user.grade === selectedGrade
   );
 
   // The notifyUser funtcion will receive the user object as params and after confirmation it will grab the email and send the notification to the selected user via the server.
-  function notifyUser(user) {
+  function notifyUser(user: RentedBookUser) {
     const confirmation = window.confirm(
       `Do you want to send a notification to ${user.email}`
     );
@@ -39,11 +66,16 @@ export default function Group({
     }
   }
 
-  const [hoveredBookTitle, setHoveredBookTitle] = useState(null);
+  const [hoveredBookTitle, setHoveredBookTitle] = useState<string | null>(
+    null
+  );
 
   const [modalCoordinates, setModalCoordinates] = useState({ x: 0, y: 0 });
 
-  const handleMouseOver = (barcode, event) => {
+  const handleMouseOver = (
+    barcode: string,
+    event: React.MouseEvent<HTMLTableCellElement>
+  ) => {
     const user = tableToDisplay.find((user) => user.barcode === barcode);
     if (user) {
       setModalCoordinates({ x: event.clientX, y: event.clientY });
@@ -56,7 +88,7 @@ export default function Group({
     setHoveredBookTitle(null);
   };
 
-  const modalStyles = {
+  const modalStyles: React.CSSProperties = {
     display: hoveredBookTitle ? "block" : "none",
     position: "fixed",
     top: `${modalCoordinates.y - 20}px`,

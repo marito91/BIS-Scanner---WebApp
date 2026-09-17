@@ -1,10 +1,19 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
-import hostbase from "../../hostbase.js";
+import hostbase from "../../lib/hostbase";
 
-import Group from "./circulation/Group.jsx";
-import "../books/circulation.css";
+import Group from "./circulation/Group";
+import "../../src/components/books/circulation.css";
 
-export default function Circulation({ showNotification }) {
+interface CirculationProps {
+  showNotification: (title: string, message: string) => void;
+  // Passed down from Collections.tsx but not read here, mirroring the
+  // original .jsx's behavior (only showNotification was destructured).
+  userType?: string;
+}
+
+export default function Circulation({ showNotification }: CirculationProps) {
   // First, all of the sections available in the school are declared inside an array called sections.
   const sections = [
     { value: "", text: "--Choose a grade or section--" },
@@ -49,11 +58,11 @@ export default function Circulation({ showNotification }) {
    * rentedBooks = Which will contain the books rented to the selected section/grade
    * selectedGrade = Which will manage the selected grade for the students sections.
    */
-  const [rentedBooks, setRentedBooks] = useState([]);
+  const [rentedBooks, setRentedBooks] = useState<unknown[]>([]);
   const [selectedGrade, setSelectedGrade] = useState("");
 
   // The following function handles which section will be displayed.
-  const handleSection = (event) => {
+  const handleSection = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedGrade(event.target.value);
   };
 

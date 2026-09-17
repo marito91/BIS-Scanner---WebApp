@@ -1,9 +1,19 @@
+"use client";
+
 import React, { useState } from "react";
 
-import Collection from "../books/Collection";
-import Circulation from "../books/Circulation.jsx";
+import Collection from "./Collection";
+import Circulation from "./Circulation";
 
-export default function Collections({ userType, showNotification }) {
+interface CollectionsProps {
+  userType: string;
+  showNotification: (title: string, message: string) => void;
+}
+
+export default function Collections({
+  userType,
+  showNotification,
+}: CollectionsProps) {
   // A state is declared which will hold the active component for the books section. It is set to the collection by default.
   const [activeTool, setActiveTool] = useState("collection");
   return (

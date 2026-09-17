@@ -1,9 +1,19 @@
+"use client";
+
 import React from "react";
 
-import rent from "../../assets/rent.svg";
-import giveBack from "../../assets/return.svg";
-import edit from "../../assets/edit.svg";
-import read from "../../assets/read.svg";
+import rent from "../../src/assets/rent.svg";
+import giveBack from "../../src/assets/return.svg";
+import edit from "../../src/assets/edit.svg";
+import read from "../../src/assets/read.svg";
+
+interface BooksDashboardProps {
+  admin: string;
+  showNotification: (title: string, message: string) => void;
+  setRentModalIsVisible: (visible: boolean) => void;
+  setReturnModalIsVisible: (visible: boolean) => void;
+  setBookEditModalIsVisible: (visible: boolean) => void;
+}
 
 export default function BooksDashboard({
   admin,
@@ -11,7 +21,7 @@ export default function BooksDashboard({
   setRentModalIsVisible,
   setReturnModalIsVisible,
   setBookEditModalIsVisible,
-}) {
+}: BooksDashboardProps) {
   return (
     <>
       <div className="book-dashboard-container">
@@ -23,7 +33,7 @@ export default function BooksDashboard({
               onClick={() => setRentModalIsVisible(true)}
             >
               <div className="button-content">
-                <img src={rent} alt="" className="button-icon" />
+                <img src={rent.src} alt="" className="button-icon" />
                 <span className="button-text">New Rent</span>
               </div>
             </button>
@@ -32,7 +42,7 @@ export default function BooksDashboard({
               onClick={() => setReturnModalIsVisible(true)}
             >
               <div className="button-content">
-                <img src={giveBack} alt="" className="button-icon" />
+                <img src={giveBack.src} alt="" className="button-icon" />
                 <span className="button-text">Return</span>
               </div>
             </button>
@@ -41,13 +51,13 @@ export default function BooksDashboard({
               onClick={() => setBookEditModalIsVisible(true)}
             >
               <div className="button-content">
-                <img src={edit} alt="" className="button-icon" />
+                <img src={edit.src} alt="" className="button-icon" />
                 <span className="button-text">Edit Books</span>
               </div>
             </button>
           </div>
           <div>
-            <img src={read} id="reading" alt="" />
+            <img src={read.src} id="reading" alt="" />
           </div>
         </div>
       </div>
