@@ -1,16 +1,35 @@
+"use client";
+
 import React from "react";
-import pic from "../../assets/student.png";
-// import waiting from "../../assets/waiting.svg";
+import pic from "../../src/assets/student.png";
+// import waiting from "../../src/assets/waiting.svg";
+
+// Shape of the fields actually read from `student`. Textbooks.tsx's own
+// `Student` interface isn't exported, so this is redeclared here based on
+// usage — same approach lib/auth.ts documents for Devices.tsx's LoggedUser.
+interface StudentInfo {
+  name: string;
+  lastName: string;
+  grade: string;
+  email: string;
+}
+
+interface TextBookUserProps {
+  document: string;
+  handleDocument: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  getStudent: (document: string) => void;
+  student: StudentInfo;
+}
 
 export default function TextBookUser({
   document,
   handleDocument,
   getStudent,
   student,
-}) {
+}: TextBookUserProps) {
   return (
     <div className="tb-student-loader">
-      <img src={pic} alt="" />
+      <img src={pic.src} alt="" />
 
       {student.name === "" ? (
         <div className="not-loaded-student">

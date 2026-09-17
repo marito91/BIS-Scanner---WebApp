@@ -1,25 +1,60 @@
-import React, { useState, useEffect } from "react";
-import Spinner from "../../../components/Spinner";
+"use client";
 
-import SelectedTextbook from "./SelectedTextbook.jsx";
+import React, { useState, useEffect } from "react";
+import Spinner from "../Spinner";
+
+import SelectedTextbook from "./SelectedTextbook";
+
+interface TextbookEntry {
+  title: string;
+  sample: string | number;
+  dateRented: string;
+}
+
+// Shape of an entry inside `rentedTextbooks`. Textbooks.tsx types
+// `rentedTextbooks` as `unknown[]` (the full shape isn't modeled there), so
+// this component casts into this shape once it's received, based on the
+// fields actually read below. `document` mirrors Textbooks.tsx's own
+// `Student.document: number`.
+interface RentedTextbookGroup {
+  document: number;
+  name: string;
+  lastName: string;
+  grade: string;
+  section: string;
+  email: string;
+  textbooks: TextbookEntry[];
+}
+
+interface TextBookCirculationProps {
+  showNotification: (title: string, message: string) => void;
+  admin: string;
+  rentedTextbooks: unknown[];
+  unassignOne: (userThatHasTb: any, textbookToUnassign: any) => void;
+}
 
 export default function TextBookCirculation({
   showNotification,
   admin,
   rentedTextbooks,
   unassignOne,
-}) {
+}: TextBookCirculationProps) {
+  const rentedTextbooksList = rentedTextbooks as RentedTextbookGroup[];
+
   // The loading variable state is declared as a flag for the spinner component, which will show while data is fetching.
   const [loading, setLoading] = useState(true);
 
   // While the information is being fetched from the server, the Spinner will be active and as soon the length of the array is greater than 0, the Spinner will deactivate and the collection will be displayed.
   useEffect(() => {
-    if (rentedTextbooks.length > 0) {
+    if (rentedTextbooksList.length > 0) {
       setLoading(false);
     }
-  }, [rentedTextbooks]);
+  }, [rentedTextbooksList]);
 
-  const downloadFile = async function (arr, fileName) {
+  const downloadFile = async function (
+    arr: Record<string, any>[],
+    fileName: string
+  ) {
     if (arr.length === 0) {
       showNotification(
         "Error",
@@ -78,22 +113,24 @@ export default function TextBookCirculation({
   const [inputText, setInputText] = useState("");
 
   // The following state is declared to be used when the user selects a book and wants to display more details about it.
-  const [selectedTextbook, setSelectedTextbook] = useState(<></>);
+  const [selectedTextbook, setSelectedTextbook] = useState<React.ReactNode>(
+    <></>
+  );
 
-  let handleInput = (e) => {
+  let handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
 
   // While the information is being fetched from the server, the Spinner will be active and as soon the length of the array is greater than 0, the Spinner will deactivate and the collection will be displayed.
   useEffect(() => {
-    if (rentedTextbooks.length > 0) {
+    if (rentedTextbooksList.length > 0) {
       setLoading(false);
     }
-  }, [rentedTextbooks]);
+  }, [rentedTextbooksList]);
 
   // The following function will display the book summary for the one selected by the user. When the user clicks on one from the list, important info from the book will be shown and the collection state will be switched to false .
-  function openTextbookSummary(textbook) {
+  function openTextbookSummary(textbook: RentedTextbookGroup) {
     setSelectedTextbook(
       <>
         <SelectedTextbook
@@ -112,7 +149,7 @@ export default function TextBookCirculation({
   const [currentPage, setCurrentPage] = useState(1);
 
   // Since the collection is very big, sometimes the user will likely search for a book. That's why they can search for any book based on title, author or barcode. This will help them narrow their search.
-  const filteredTextbooks = rentedTextbooks.filter((entry) => {
+  const filteredTextbooks = rentedTextbooksList.filter((entry) => {
     if (inputText === "") {
       return true;
     } else {
@@ -125,6 +162,10 @@ export default function TextBookCirculation({
       const matchesGrade = entry.grade
         .toLowerCase()
         .includes(inputText.toLowerCase());
+      // NOTE: `document` here resolves to the global DOM `document`, not
+      // `entry.document` — nothing in this file shadows it, so
+      // `typeof document === "number"` is always false and this branch never
+      // matches. Pre-existing bug, preserved as-is; tracked in BACKLOG.md.
       const matchesDocument =
         typeof document === "number"
           ? String(entry.document).includes(inputText.toLowerCase())
@@ -168,7 +209,7 @@ export default function TextBookCirculation({
   const visiblePages = calculateVisiblePages(currentPage, totalPages);
 
   // This function will calculate the range of visible page numbers
-  function calculateVisiblePages(currentPage, totalPages) {
+  function calculateVisiblePages(currentPage: number, totalPages: number) {
     const range = 2; // Number of visible pages on each side of the current page
     let start = currentPage - range;
     let end = currentPage + range;
@@ -188,7 +229,7 @@ export default function TextBookCirculation({
   }
 
   // Handle page navigation
-  function goToPage(page) {
+  function goToPage(page: number) {
     setCurrentPage(page);
   }
 
@@ -287,12 +328,17 @@ export default function TextBookCirculation({
                   {">>"}
                 </button>
               </div>
-              {admin.userType === "admin" ? (
+              {/* NOTE: `admin` is the display-name string Textbooks.tsx passes
+                  down (`loggedUser.first + " " + loggedUser.last`), not an
+                  object — `.userType` is always undefined, so this is always
+                  false and the button never renders for anyone. Pre-existing
+                  bug, preserved as-is; tracked in BACKLOG.md. */}
+              {(admin as any).userType === "admin" ? (
                 <div className="download">
                   <button
                     onClick={() =>
                       downloadFile(
-                        rentedTextbooks,
+                        rentedTextbooksList,
                         "Knowledge Centre Books Collection"
                       )
                     }
