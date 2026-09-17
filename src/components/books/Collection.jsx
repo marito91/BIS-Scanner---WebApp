@@ -8,7 +8,7 @@ import download from "../../assets/download.svg";
 // import starFilled from "../../assets/star-filled.svg";
 
 // One componentis added, Spinner to manage loading times while fetching the collection.
-import Spinner from "../Spinner";
+import Spinner from "../../../components/Spinner";
 
 export default function Collection({ showNotification, userType }) {
   // The loading variable state is declared as a flag for the spinner component, which will show while data is fetching.
