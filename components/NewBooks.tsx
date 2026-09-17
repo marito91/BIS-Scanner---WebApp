@@ -8,7 +8,7 @@ import { useAppState } from "./AppStateProvider";
 import BooksDashboard from "./books/BooksDashboard";
 import RentBook from "./books/RentBook";
 import ReturnBook from "./books/ReturnBook";
-import ManageBooks from "../src/components/books/ManageBooks.jsx";
+import ManageBooks from "./books/ManageBooks";
 import Collections from "./books/Collections";
 
 import "../src/components/books/newbooks.css";
