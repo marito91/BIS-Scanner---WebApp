@@ -5,15 +5,11 @@ import { useState } from "react";
 import type { SessionUser } from "../lib/auth";
 import { useAppState } from "./AppStateProvider";
 
-// NOTE: BooksDashboard, RentBook, ReturnBook, ManageBooks and Collections have
-// not migrated yet. They are imported from their original src/components/books/
-// location via a relative cross-tree path; update each import as its target
-// migrates (tracked in BACKLOG.md).
-import BooksDashboard from "../src/components/books/BooksDashboard.jsx";
-import RentBook from "../src/components/books/RentBook.jsx";
-import ReturnBook from "../src/components/books/ReturnBook.jsx";
+import BooksDashboard from "./books/BooksDashboard";
+import RentBook from "./books/RentBook";
+import ReturnBook from "./books/ReturnBook";
 import ManageBooks from "../src/components/books/ManageBooks.jsx";
-import Collections from "../src/components/books/Collections.jsx";
+import Collections from "./books/Collections";
 
 import "../src/components/books/newbooks.css";
 

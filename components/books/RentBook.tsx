@@ -1,9 +1,21 @@
+"use client";
+
 import React, { useState } from "react";
 
-import hostbase from "../../hostbase.js";
-import close from "../../assets/x.svg";
+import hostbase from "../../lib/hostbase";
+import close from "../../src/assets/x.svg";
 
-export default function RentBook({ showNotification, admin, closeRentModal }) {
+interface RentBookProps {
+  showNotification: (title: string, message: string) => void;
+  admin: string;
+  closeRentModal: (visible?: boolean) => void;
+}
+
+export default function RentBook({
+  showNotification,
+  admin,
+  closeRentModal,
+}: RentBookProps) {
   /** The initial states are declared.
    * Document = Which will manage the client's document number.
    * DueDate = Which will assign the date in which the book has to be returned.
@@ -18,22 +30,22 @@ export default function RentBook({ showNotification, admin, closeRentModal }) {
    * HandleBarcode = Manages the barcode state.
    * HandleDueDate = Manages the dueDate state.
    */
-  const handleDocument = (event) => {
+  const handleDocument = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setDocument(value);
   };
-  const handleBarcode = (event) => {
+  const handleBarcode = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setBarcode(value);
   };
-  const handleDueDate = (event) => {
+  const handleDueDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setDueDate(value);
   };
 
   // Then the function rentBook() is declared in which the information from the previous states and inputs will be sent to the server so that it can validate with database and confirm if a book could be rented or not.
   function rentBook() {
-    if (isNaN(document)) {
+    if (isNaN(Number(document))) {
       showNotification("Error", "Please enter a valid document.");
     } else {
       fetch(`${hostbase}/books/rent`, {
@@ -101,7 +113,7 @@ export default function RentBook({ showNotification, admin, closeRentModal }) {
         </button>
       </div>
       <div className="close-button-container">
-        <img src={close} alt="" onClick={() => closeRentModal(false)} />
+        <img src={close.src} alt="" onClick={() => closeRentModal(false)} />
       </div>
     </div>
   );

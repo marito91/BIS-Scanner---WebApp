@@ -1,24 +1,45 @@
-import React, { useState, useEffect } from "react";
-import hostbase from "../../hostbase.js";
+"use client";
 
-import cover from "../../assets/cover.png";
-import download from "../../assets/download.svg";
-// import dots from "../../assets/dots.svg";
-// import star from "../../assets/star.svg";
-// import starFilled from "../../assets/star-filled.svg";
+import React, { useState, useEffect } from "react";
+import hostbase from "../../lib/hostbase";
+
+import cover from "../../src/assets/cover.png";
+import download from "../../src/assets/download.svg";
+// import dots from "../../src/assets/dots.svg";
+// import star from "../../src/assets/star.svg";
+// import starFilled from "../../src/assets/star-filled.svg";
 
 // One componentis added, Spinner to manage loading times while fetching the collection.
-import Spinner from "../../../components/Spinner";
+import Spinner from "../Spinner";
 
-export default function Collection({ showNotification, userType }) {
+// Shape of an entry inside `books`, based on the fields actually read below.
+interface Book {
+  barcode: string;
+  title: string;
+  author: string;
+  publicationYear: string | number;
+  sublocation: string;
+  available: boolean;
+  userDocument?: string;
+}
+
+interface CollectionProps {
+  showNotification: (title: string, message: string) => void;
+  userType: string;
+}
+
+export default function Collection({
+  showNotification,
+  userType,
+}: CollectionProps) {
   // The loading variable state is declared as a flag for the spinner component, which will show while data is fetching.
   const [loading, setLoading] = useState(true);
   const [inputText, setInputText] = useState("");
 
   // A state is declared to manage the array of books which will hold the entire collection.
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState<Book[]>([]);
 
-  let handleInput = (e) => {
+  let handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     let lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
   };
@@ -89,7 +110,7 @@ export default function Collection({ showNotification, userType }) {
   const visiblePages = calculateVisiblePages(currentPage, totalPages);
 
   // This function will calculate the range of visible page numbers
-  function calculateVisiblePages(currentPage, totalPages) {
+  function calculateVisiblePages(currentPage: number, totalPages: number) {
     const range = 2; // Number of visible pages on each side of the current page
     let start = currentPage - range;
     let end = currentPage + range;
@@ -109,7 +130,7 @@ export default function Collection({ showNotification, userType }) {
   }
 
   // Handle page navigation
-  function goToPage(page) {
+  function goToPage(page: number) {
     setCurrentPage(page);
   }
 
@@ -136,8 +157,16 @@ export default function Collection({ showNotification, userType }) {
 
   // When the information is fetched from server side and is loaded and ready to download, a button will be available to call the downloadFile() function, which will ask for confirmation after validation and create a table organizing all of the information that was previously fetched.
 
-  const downloadFile = async function (arr, fileName) {
-    if (arr.length === 0) {
+  // NOTE: the only call site below invokes this with zero arguments
+  // (`onClick={() => downloadFile()}`), so `arr`/`fileName` are always
+  // undefined at runtime — preserved as-is (pre-existing bug, tracked in
+  // BACKLOG.md), hence the optional params + non-null assertions below rather
+  // than required params, which would misrepresent actual usage.
+  const downloadFile = async function (
+    arr?: Record<string, any>[],
+    fileName?: string
+  ) {
+    if (arr!.length === 0) {
       showNotification(
         "Error",
         "No available information to download. Please choose a filter and load the information."
@@ -147,9 +176,9 @@ export default function Collection({ showNotification, userType }) {
         "Do you want to download the books collection?"
       );
       if (confirmation) {
-        const header = Object.keys(arr[0]);
+        const header = Object.keys(arr![0]);
 
-        const newArr = arr.map((entry) =>
+        const newArr = arr!.map((entry) =>
           header.map((key) => {
             const value = entry[key];
             if (Array.isArray(value)) {
@@ -177,7 +206,7 @@ export default function Collection({ showNotification, userType }) {
 
         const link = document.createElement("a");
         link.setAttribute("href", url);
-        link.setAttribute("download", encodeURIComponent(fileName));
+        link.setAttribute("download", encodeURIComponent(fileName!));
         document.body.appendChild(link);
         link.click();
 
@@ -250,7 +279,7 @@ export default function Collection({ showNotification, userType }) {
                     className="book-main-info"
                     // onClick={() => console.log(book)}
                   >
-                    <img src={cover} alt="" />
+                    <img src={cover.src} alt="" />
                     <div>
                       <label htmlFor="" id="book-title">
                         {book.title}
@@ -341,7 +370,7 @@ export default function Collection({ showNotification, userType }) {
                   onClick={() => downloadFile()}
                 >
                   <div className="button-content">
-                    <img src={download} alt="" className="button-icon" />
+                    <img src={download.src} alt="" className="button-icon" />
                     <span className="button-text">Download Collection</span>
                   </div>
                 </button>

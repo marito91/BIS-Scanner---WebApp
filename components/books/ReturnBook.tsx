@@ -1,17 +1,25 @@
+"use client";
+
 import React, { useState } from "react";
-import hostbase from "../../hostbase.js";
-import close from "../../assets/x.svg";
+import hostbase from "../../lib/hostbase";
+import close from "../../src/assets/x.svg";
+
+interface ReturnBookProps {
+  showNotification: (title: string, message: string) => void;
+  admin: string;
+  closeReturnModal: (visible?: boolean) => void;
+}
 
 export default function ReturnBook({
   showNotification,
   admin,
   closeReturnModal,
-}) {
+}: ReturnBookProps) {
   // To return a book, only the barcode is needed so that's why in this component, the only state to declare is the barcode.
   const [barcode, setBarcode] = useState("");
 
   // There will be a function that handles the barcode state.
-  const handleBarcode = (event) => {
+  const handleBarcode = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setBarcode(value);
   };
@@ -65,7 +73,7 @@ export default function ReturnBook({
         </button>
       </div>
       <div className="close-button-container">
-        <img src={close} alt="" onClick={() => closeReturnModal(false)} />
+        <img src={close.src} alt="" onClick={() => closeReturnModal(false)} />
       </div>
     </div>
   );
